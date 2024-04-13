@@ -1,5 +1,6 @@
-package com.seg83.childbank;
+package com.seg83.childbank.TestDao;
 
+import com.seg83.childbank.dao.DataWrapperDao;
 import com.seg83.childbank.gui.SwingApp;
 import com.seg83.childbank.gui.component.MainFrame;
 import org.junit.jupiter.api.BeforeAll;
@@ -7,20 +8,23 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.ActiveProfiles;
 
-import java.awt.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class ChildbankApplicationTests {
+public class TestDataWrapperDao {
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
     }
 
+    @Autowired
+    private DataWrapperDao dataWrapperDao;
+
     @Test
-    void contextLoads() {
-        System.out.println("Test");
+    void testLoadJsonFile() throws Exception{
+        System.out.println(dataWrapperDao.loadJsonFile());
     }
 
 }
