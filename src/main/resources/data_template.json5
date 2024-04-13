@@ -3,25 +3,25 @@
   "admin": {
     //  Admin.java
     "adminPassword": "114514",
-    "account": {
-      //  Account.java
-      "depositAccount": {
-        //  DepositAccount.java
-        "depositAccountBills": [
-          //  Bill.java
-          {
-            "depositAccountBillId": "1",
-            "depositAccountBillAmount": "100",
-            "depositAccountBillRate": "0.5",
-            "depositAccountBillExpireDate": "2020-01-01",
-          },
-        ],
-      },
-      "currentAccount": {
-        //  CurrentAccount.java
-        "currentAccountAmount": "1000",
-        "currentAccountRate": "0.3",
-      },
+  },
+  "account": {
+    //  Account.java
+    "depositAccount": {
+      //  DepositAccount.java
+      "depositAccountBills": [
+        //  Bill.java
+        {
+          "depositAccountBillId": "1",
+          "depositAccountBillAmount": "100",
+          "depositAccountBillRate": "0.5",
+          "depositAccountBillExpireDate": "2020-01-01",
+        },
+      ],
     },
-  }
+    "currentAccount": {
+      //  CurrentAccount.java
+      "currentAccountAmount": "1000",
+      "currentAccountRate": "0.3",
+    },
+  },
 }
