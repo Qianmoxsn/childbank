@@ -1,18 +1,17 @@
 package com.seg83.childbank.gui;
 
+import com.seg83.childbank.gui.component.MainFrame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import com.seg83.childbank.gui.component.MainFrame;
 
 
 @Component
 public class SwingApp {
 
-    private MainFrame mainFrame;
+    private final MainFrame mainFrame;
 
     @Autowired
-    private void setMainFrame(MainFrame frame) {
+    public SwingApp(MainFrame frame) {
         this.mainFrame = frame;
     }
 

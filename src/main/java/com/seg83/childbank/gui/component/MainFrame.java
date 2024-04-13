@@ -9,6 +9,7 @@ import java.awt.*;
 @Component
 @Slf4j
 public class MainFrame extends JFrame {
+
     public MainFrame() throws HeadlessException {
         setTitle("ChildBank");
         setSize(800, 600);

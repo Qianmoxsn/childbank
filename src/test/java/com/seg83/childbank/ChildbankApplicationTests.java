@@ -8,6 +8,7 @@ class ChildbankApplicationTests {
 
     @Test
     void contextLoads() {
+        
     }
 
 }
