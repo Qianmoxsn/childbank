@@ -3,5 +3,5 @@ spring:
     name: child-bank
 
 json:
-  template-path: src/main/resources/data_template.json
+  template-path: src/main/resources/data_template.json5
   data-path: src/main/resources/data.json

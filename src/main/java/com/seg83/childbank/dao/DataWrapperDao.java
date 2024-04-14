@@ -26,8 +26,8 @@ public class DataWrapperDao {
             String json = new String(Files.readAllBytes(jsonFilePath));
             return JSON.parseObject(json);
         } catch (IOException e) {
-            log.error("Failed to read JSON data", e);
-            throw new RuntimeException("Failed to read JSON data", e);
+            log.error("Failed to load JSON file", e);
+            throw new RuntimeException("Failed to load JSON file", e);
         }
     }
 
@@ -36,8 +36,8 @@ public class DataWrapperDao {
             String json = JSON.toJSONString(jsonData);
             Files.write(jsonFilePath, json.getBytes());
         } catch (IOException e) {
-            log.error("Failed to save JSON data", e);
-            throw new RuntimeException("Failed to save JSON data", e);
+            log.error("Failed to save JSON file", e);
+            throw new RuntimeException("Failed to save JSON file", e);
         }
     }
 }

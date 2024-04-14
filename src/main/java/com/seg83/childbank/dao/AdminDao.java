@@ -19,10 +19,20 @@ public class AdminDao {
         JSONObject jsonData = dataWrapperDao.loadJsonFile();
         return jsonData.getObject("admin", Admin.class);
     }
+    public String getAdminPassword() {
+        JSONObject jsonData = dataWrapperDao.loadJsonFile();
+        return jsonData.getJSONObject("admin").getString("adminPassword");
+    }
 
-    public void saveAdmin(Admin admin) {
+    public void setAdminPassword(Admin admin) {
         JSONObject jsonData = dataWrapperDao.loadJsonFile();
         jsonData.put("admin", JSON.parseObject(JSON.toJSONString(admin)));
+        dataWrapperDao.saveJsonFile(jsonData);
+    }
+
+    public void setAdminPassword(String password) {
+        JSONObject jsonData = dataWrapperDao.loadJsonFile();
+        jsonData.getJSONObject("admin").put("adminPassword", password);
         dataWrapperDao.saveJsonFile(jsonData);
     }
 }
