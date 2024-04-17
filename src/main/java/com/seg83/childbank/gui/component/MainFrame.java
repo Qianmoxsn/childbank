@@ -29,6 +29,7 @@ public class MainFrame extends JFrame {
 
     @PostConstruct
     public void init() {
+        homePanel.$$$getRootComponent$$$().updateUI();
         setContentPane(this.homePanel.$$$getRootComponent$$$());
         log.info("Create homePanel in MainFrame");
     }
