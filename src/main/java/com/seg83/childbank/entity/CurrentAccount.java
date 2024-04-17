@@ -8,8 +8,8 @@ public class CurrentAccount {
 
 
     @JSONField(name = "currentAccountAmount")
-    private String currentAccountAmount;
+    private double currentAccountAmount;
 
     @JSONField(name = "currentAccountRate")
-    private String currentAccountRate;
+    private double currentAccountRate;
 }

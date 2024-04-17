@@ -2,7 +2,6 @@ package com.seg83.childbank.TestDao;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.seg83.childbank.dao.AdminDao;
-import com.seg83.childbank.dao.DataWrapperDao;
 import com.seg83.childbank.gui.SwingApp;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -25,10 +24,9 @@ public class TestAdminDao {
 
     @MockBean
     private SwingApp swingApp; //avoid the GUI
+
     @Autowired
     private AdminDao adminDao;
-    @Autowired
-    private DataWrapperDao dataWrapperDao;
 
     @BeforeAll
     static void setup() {
@@ -47,7 +45,6 @@ public class TestAdminDao {
     void testLoad() {
         log.info("Testing :: Load Admin Data in JSON format");
         JSONObject admin = adminDao.load();
-        log.info("Admin Data: {}", admin);
 
         JSONObject target = new JSONObject();
         target.put("adminPassword", "114514");
@@ -59,29 +56,18 @@ public class TestAdminDao {
     void testGetAdminPassword() {
         log.info("Testing :: getAdminPassword");
         String password = (String) adminDao.getAttribute("adminPassword");
-        log.info("Admin Password: {}",password);
 
-        assertEquals("114514", passwor d);
+        assertEquals("114514", password);
     }
 
 
     @Test
-    void testSetAdminPasswordString() {
-        log.info("Testing :: changeAdminPassword(String)");
+    void testSetAdminPassword() {
+        log.info("Testing :: changeAdminPassword");
         adminDao.setAttribute("adminPassword", "123456");
+
         String target = "123456";
-        log.info("Admin Password: {}", adminDao.getAttribute("adminPassword"));
 
         assertEquals(target, adminDao.getAttribute("adminPassword"));
-
     }
 }
-
-A{
-    int a1;
-    B b1;
-}
-B b{
-int b1;
-int b2;
-    }

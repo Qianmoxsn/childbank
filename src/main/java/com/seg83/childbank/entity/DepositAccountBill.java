@@ -6,13 +6,13 @@ import lombok.Data;
 @Data
 public class DepositAccountBill {
     @JSONField(name = "depositAccountBillId")
-    private String depositAccountBillId;
+    private long depositAccountBillId;
 
     @JSONField(name = "depositAccountBillAmount")
-    private String depositAccountBillAmount;
+    private double depositAccountBillAmount;
 
     @JSONField(name = "depositAccountBillRate")
-    private String depositAccountBillRate;
+    private double depositAccountBillRate;
 
     @JSONField(name = "depositAccountBillExpireDate")
     private String depositAccountBillExpireDate;

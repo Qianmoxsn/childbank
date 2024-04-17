@@ -5,6 +5,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
 import com.seg83.childbank.entity.Account;
 import com.seg83.childbank.entity.Admin;
+import com.seg83.childbank.entity.DataWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -35,28 +36,15 @@ public class DataWrapperDao extends AbstractDao {
         }
     }
 
-    public void saveJsonFile(JSONObject jsonData) {
+    public void saveJsonFile(DataWrapper dataWrapper) {
         try {
-            String json = JSON.toJSONString(jsonData, JSONWriter.Feature.PrettyFormat);
+            String json = JSON.toJSONString(dataWrapper, JSONWriter.Feature.PrettyFormat);
             Files.write(jsonFilePath, json.getBytes());
         } catch (IOException e) {
             log.error("Failed to save JSON file", e);
             throw new RuntimeException("Failed to save JSON file", e);
         }
     }
-
-    public void saveJsonFile(JSONObject childJsonObject, String childName) {
-        try {
-            JSONObject jsonData = this.loadJsonFile();
-            jsonData.put(childName, childJsonObject);
-            String json = JSON.toJSONString(jsonData, JSONWriter.Feature.PrettyFormat);
-            Files.write(jsonFilePath, json.getBytes());
-        } catch (IOException e) {
-            log.error("Failed to save JSON file", e);
-            throw new RuntimeException("Failed to save JSON file", e);
-        }
-    }
-
 
     @Override
     public JSONObject load() {
@@ -64,22 +52,49 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     @Override
-    public void save(JSONObject jsobj) {
-
+    public void setAttribute(String attrname, Object value) {
+        DataWrapper modifiedDataWrapper;
+        switch (attrname) {
+            case "admin" -> modifiedDataWrapper = this.setAdmin((Admin) value);
+            case "account" -> modifiedDataWrapper = this.setAccount((Account) value);
+            default -> throw new RuntimeException("Invalid attribute name");
+        }
+        this.saveJsonFile(modifiedDataWrapper);
     }
 
-    @Override
-    public void setAttribute(String attrname, Object value) {
-        // forbidden to set attributes of the data wrapper
+    private DataWrapper setAccount(Account value) {
+        DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
+        dataWrapper.setAccount(value);
+        return dataWrapper;
+    }
+
+    private DataWrapper setAdmin(Admin value) {
+        DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
+        dataWrapper.setAdmin(value);
+        return dataWrapper;
     }
 
     @Override
     public Object getAttribute(String attrname) {
         return switch (attrname) {
-            case "admin" -> this.load().getJSONObject("admin").toJavaObject(Admin.class);
-            case "account" -> this.load().getJSONObject("account").toJavaObject(Account.class);
+            case "admin" -> this.getAdmin();
+            case "account" -> this.getAccount();
             default -> throw new RuntimeException("Invalid attribute name");
         };
+    }
+
+    private Admin getAdmin() {
+        log.info("Request admin data in JSON format");
+        Admin admin = this.load().getJSONObject("admin").toJavaObject(Admin.class);
+        log.debug("Get admin data {}", admin);
+        return admin;
+    }
+
+    private Account getAccount() {
+        log.info("Request account data in JSON format");
+        Account account = this.load().getJSONObject("account").toJavaObject(Account.class);
+        log.debug("Get account data {}", account);
+        return account;
     }
 
     @Override

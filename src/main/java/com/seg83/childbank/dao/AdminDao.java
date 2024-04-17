@@ -1,6 +1,7 @@
 package com.seg83.childbank.dao;
 
 import com.alibaba.fastjson2.JSONObject;
+import com.seg83.childbank.entity.Admin;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -17,9 +18,6 @@ public class AdminDao extends AbstractDao {
         this.dataWrapperDao = dataWrapperDao;
     }
 
-    // TODO: 返回json
-    // TODO: 打log
-
     @Override
     public JSONObject load() {
         log.info("Request admin data in JSON format");
@@ -29,33 +27,37 @@ public class AdminDao extends AbstractDao {
     }
 
     @Override
-    public void save(JSONObject jsobj) {
-
-    }
-
-    @Override
     public void setAttribute(String attrname, Object value) {
+        Admin modifiedAdmin;
         switch (attrname) {
             case "adminPassword" -> {
                 log.info("Setting admin password to {}", value);
-                this.setAdminPassword((String) value);
+                modifiedAdmin = this.setAdminPassword((String) value);
             }
             default -> throw new RuntimeException("Invalid attribute name");
         }
+        dataWrapperDao.setAttribute("admin", modifiedAdmin);
+    }
 
+    private Admin setAdminPassword(String password) {
+        Admin admin = this.load().toJavaObject(Admin.class);
+        admin.setAdminPassword(password);
+        return admin;
     }
 
     @Override
     public Object getAttribute(String attrname) {
-        switch (attrname) {
-            case "adminPassword" -> {
-                log.info("Request adminPassword");
-                String adminPassword = this.load().getString("adminPassword");
-                log.debug("Get adminPassword {}", adminPassword);
-                return adminPassword;
-            }
+        return switch (attrname) {
+            case "adminPassword" -> this.getAdminPassword();
             default -> throw new RuntimeException("Invalid attribute name");
-        }
+        };
+    }
+
+    private String getAdminPassword() {
+        log.info("Request adminPassword");
+        String adminPassword = this.load().getString("adminPassword");
+        log.debug("Get adminPassword {}", adminPassword);
+        return adminPassword;
     }
 
     @Override
@@ -65,11 +67,4 @@ public class AdminDao extends AbstractDao {
         log.debug("Get all attributes of admin {}", objectList);
         return objectList;
     }
-
-    private JSONObject setAdminPassword(String password) {
-        JSONObject adminJson = this.load();
-        adminJson.put("adminPassword", password);
-        return adminJson;
-    }
-
 }

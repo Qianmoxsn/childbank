@@ -2,6 +2,7 @@ package com.seg83.childbank.TestDao;
 
 import com.seg83.childbank.dao.CurrentAccountDao;
 import com.seg83.childbank.gui.SwingApp;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -13,15 +14,17 @@ import java.nio.file.Path;
 
 import static com.seg83.childbank.utils.FileDuplicator.restoreFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
+@Slf4j
 public class TestCurrentAccountDao {
     private static final Path template = Path.of("src/main/resources/data_template.json5");
     private static final Path copy = Path.of("src/test/temp/data_template_test.json5");
 
     @MockBean
     private SwingApp swingApp; //avoid the GUI
+    @Autowired
+    private CurrentAccountDao currentAccountDao;
 
     @BeforeAll
     static void setup() {
@@ -30,42 +33,37 @@ public class TestCurrentAccountDao {
         restoreFile(template, copy);
     }
 
-    @Autowired
-    private CurrentAccountDao currentAccountDao;
-
-    @Test
-    public void testGetCurrentAccount() {
-        assertNotNull(currentAccountDao.getCurrentAccount());
-    }
-
-    @Test
-    public void testGetCurrentAccountAmount() {
-        String amount = currentAccountDao.getCurrentAccountAmount();
-        assertEquals("1000", amount);
-    }
-
-    @Test
-    public void testGetCurrentAccountRate() {
-        String rate=currentAccountDao.getCurrentAccountRate();
-        assertEquals("0.3", rate);
-    }
-
-    @Test
-    public void testSetCurrentAccountAmount() {
-        currentAccountDao.setCurrentAccountAmount("2000");
-        assertEquals("2000", currentAccountDao.getCurrentAccountAmount());
-    }
-
-    @Test
-    public void testSetCurrentAccountRate() {
-        currentAccountDao.setCurrentAccountRate("0.4");
-        assertEquals("0.4", currentAccountDao.getCurrentAccountRate());
-    }
-
     @AfterEach
     void restoreTestJson() {
         restoreFile(copy, template);
         System.out.println("Restoring :: Write back template json\n");
     }
 
+    @Test
+    public void testGetCurrentAccountAmount() {
+        log.info("Testing :: get current account amount");
+        double amount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
+        assertEquals(1000.0, amount);
+    }
+
+    @Test
+    public void testGetCurrentAccountRate() {
+        log.info("Testing :: get current account rate");
+        Double rate = (Double) currentAccountDao.getAttribute("currentAccountRate");
+        assertEquals(0.3, rate);
+    }
+
+    @Test
+    public void testSetCurrentAccountAmount() {
+        log.info("Testing :: set current account amount");
+        currentAccountDao.setAttribute("currentAccountAmount", 2000.0);
+        assertEquals(2000.0, (Double) currentAccountDao.getAttribute("currentAccountAmount"));
+    }
+
+    @Test
+    public void testSetCurrentAccountRate() {
+        log.info("Testing :: set current account rate");
+        currentAccountDao.setAttribute("currentAccountRate", 0.4);
+        assertEquals(0.4, (Double) currentAccountDao.getAttribute("currentAccountRate"));
+    }
 }

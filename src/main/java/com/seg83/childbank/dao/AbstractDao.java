@@ -6,6 +6,7 @@ import java.util.List;
 
 
 public abstract class AbstractDao {
+    AbstractDao parentDao;
     /**
      * Load the JSONObject from the local storage json file or from upper JSONObject
      *
@@ -16,7 +17,7 @@ public abstract class AbstractDao {
      */
     abstract JSONObject load();
 
-    abstract void save(JSONObject jsobj);
+//    abstract void save(JSONObject jsobj);
 
 
     /**

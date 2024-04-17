@@ -11,17 +11,17 @@
       "depositAccountBills": [
         //  Bill.java
         {
-          "depositAccountBillId": "1",
-          "depositAccountBillAmount": "100",
-          "depositAccountBillRate": "0.5",
+          "depositAccountBillId": 1,
+          "depositAccountBillAmount": 100.0,
+          "depositAccountBillRate": 0.5,
           "depositAccountBillExpireDate": "2020-01-01",
         },
       ],
     },
     "currentAccount": {
       //  CurrentAccount.java
-      "currentAccountAmount": "1000",
-      "currentAccountRate": "0.3",
+      "currentAccountAmount": 1000.0,
+      "currentAccountRate": 0.3,
     },
   },
 }

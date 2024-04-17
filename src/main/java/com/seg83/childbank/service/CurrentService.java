@@ -15,7 +15,7 @@ public class CurrentService {
         this.currentAccountDao = currentAccountDao;
     }
 
-    public String checkCurrentAccountBalance() {
+    /*public String checkCurrentAccountBalance() {
         log.info("Checking Current Account Balance");
         return currentAccountDao.getCurrentAccountAmount();
     }
@@ -34,5 +34,5 @@ public class CurrentService {
         double newAmount = currentAmount - amount;
         currentAccountDao.setCurrentAccountAmount(String.valueOf(newAmount));
         log.info("Withdraw current {} now {} -> {}", amount, currentAmount, newAmount);
-    }
+    }*/
 }

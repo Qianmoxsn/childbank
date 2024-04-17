@@ -23,9 +23,9 @@ public class TestCurrentService {
     @Autowired
     private CurrentService currentService;
 
-    @Test
+/*    @Test
     public void testCheckCurrentAccountBalance() {
         assertEquals("1000", currentService.checkCurrentAccountBalance()); ;
-    }
+    }*/
 
 }

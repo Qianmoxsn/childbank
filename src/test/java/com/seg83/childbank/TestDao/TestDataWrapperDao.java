@@ -4,8 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import com.seg83.childbank.dao.DataWrapperDao;
 import com.seg83.childbank.entity.Account;
 import com.seg83.childbank.entity.Admin;
-import com.seg83.childbank.entity.CurrentAccount;
-import com.seg83.childbank.entity.DepositAccount;
+import com.seg83.childbank.entity.DataWrapper;
 import com.seg83.childbank.gui.SwingApp;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
@@ -18,7 +17,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.nio.file.Path;
 
 import static com.seg83.childbank.utils.FileDuplicator.restoreFile;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @SpringBootTest
 @Slf4j
@@ -45,45 +45,40 @@ public class TestDataWrapperDao {
     }
 
     @Test
-    void testLoadJsonFile() throws Exception {
+    void testLoadJsonFile() {
+        log.info("Testing :: Load Data in JSON format");
         System.out.println(dataWrapperDao.loadJsonFile());
     }
 
     @Test
-    void testSaveJsonFile1() throws Exception {
-        JSONObject testJson = new JSONObject();
-        testJson.put("key", "val");
-        dataWrapperDao.saveJsonFile(testJson,"test");
+    void testSaveJsonFile() {
+        log.info("Testing :: Save Data to JSON file");
+        DataWrapper testData = new DataWrapper();
+        dataWrapperDao.saveJsonFile(testData);
         System.out.println(dataWrapperDao.loadJsonFile().toJSONString());
 
-        assertTrue(dataWrapperDao.loadJsonFile().toJSONString().contains("\"test\":{\"key\":\"val\"}"));
+        JSONObject target = new JSONObject();
+
+        assertInstanceOf(JSONObject.class, dataWrapperDao.load());
+        assertEquals(target, dataWrapperDao.load());
     }
 
     @Test
-    void testSaveJsonFile2() throws Exception {
-        JSONObject testJson = new JSONObject();
-        testJson.put("adminPassword", "123456");
-        dataWrapperDao.saveJsonFile(testJson,"admin");
-        System.out.println(dataWrapperDao.loadJsonFile().toJSONString());
-
-        assertTrue(dataWrapperDao.loadJsonFile().toJSONString().contains("\"admin\":{\"adminPassword\":\"123456\"}"));
-        assertFalse(dataWrapperDao.loadJsonFile().toJSONString().contains("114514"));
-    }
-    @Test
-    void getAttrAdmin(){
+    void getAttrAdmin() {
+        log.info("Testing :: getAttribute Admin");
         Admin target = new Admin("114514");
-        Admin admin =(Admin) dataWrapperDao.getAttribute("admin");
-        log.info("Admin Data: {}", admin);
+        Admin admin = (Admin) dataWrapperDao.getAttribute("admin");
+
         assertEquals(target, admin);
     }
 
     @Test
-    void getAttrAccount(){
+    void getAttrAccount() {
+        log.info("Testing :: getAttribute Account");
         Account account = (Account) dataWrapperDao.getAttribute("account");
         System.out.println(account);
+
         assertInstanceOf(Account.class, account);
         // TODO: test more about the account
     }
-
-
 }

@@ -2,14 +2,17 @@ package com.seg83.childbank.dao;
 
 import com.alibaba.fastjson2.JSONObject;
 import com.seg83.childbank.entity.Account;
+import com.seg83.childbank.entity.CurrentAccount;
+import com.seg83.childbank.entity.DepositAccount;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @Slf4j
-public class AccountDao {
+public class AccountDao extends AbstractDao {
     private final DataWrapperDao dataWrapperDao;
 
     @Autowired
@@ -17,28 +20,71 @@ public class AccountDao {
         this.dataWrapperDao = dataWrapperDao;
     }
 
-    public Account getAccount() {
-//        Account account = dataWrapperDao.loadJsonFile().getObject("account", Account.class);
-        JSONObject accountJson = dataWrapperDao.loadJsonFile().getJSONObject("account");
-        Account account = accountJson.toJavaObject(Account.class);
-
-        log.info("Request account data");
-        log.info("Get Account data: {}", account);
+    @Override
+    public JSONObject load() {
+        log.info("Request account data in JSON format");
+        JSONObject account = dataWrapperDao.load().getJSONObject("account");
+        log.debug("Get account data {}", account);
         return account;
     }
 
-    public JSONObject getAccountJson() {
-        JSONObject jsonObject = dataWrapperDao.loadJsonFile().getJSONObject("account");
-        log.info("Request account data in JSON object");
-        log.info("Get Account data in JSON object: {}", jsonObject);
-        return jsonObject;
+    @Override
+    public void setAttribute(String attrname, Object value) {
+        Account modifiedAccount;
+        switch (attrname) {
+            case "depositAccount" -> {
+                log.info("Setting depositAccount to {}", value);
+                modifiedAccount = this.setDepositAccount((DepositAccount) value);
+            }
+            case "currentAccount" -> {
+                log.info("Setting depositAccount to {}", value);
+                modifiedAccount = this.setCurrentAccount((CurrentAccount) value);
+            }
+            default -> throw new RuntimeException("Invalid attribute name");
+        }
+        dataWrapperDao.setAttribute("account", modifiedAccount);
     }
 
-    public void setAccountJson(JSONObject childAccountJson, String childName) {
-        JSONObject accountJson = this.getAccountJson();
-        accountJson.put(childName, childAccountJson);
-        dataWrapperDao.saveJsonFile(accountJson, "account");
+    private Account setDepositAccount(DepositAccount value) {
+        Account account = this.load().toJavaObject(Account.class);
+        account.setDepositAccount(value);
+        return account;
     }
 
+    private Account setCurrentAccount(CurrentAccount value) {
+        Account account = this.load().toJavaObject(Account.class);
+        account.setCurrentAccount(value);
+        return account;
+    }
 
+    @Override
+    public Object getAttribute(String attrname) {
+        return switch (attrname) {
+            case "depositAccount" ->  this.getDepositAccount();
+            case "currentAccount" -> this.getCurrentAccount();
+            default -> throw new RuntimeException("Invalid attribute name");
+        };
+    }
+
+    private CurrentAccount getCurrentAccount() {
+        log.info("Request currentAccount");
+        CurrentAccount currentAccount = this.load().getJSONObject("currentAccount").toJavaObject(CurrentAccount.class);
+        log.debug("Get currentAccount {}", currentAccount);
+        return currentAccount;
+    }
+
+    private DepositAccount getDepositAccount() {
+        log.info("Request depositAccount");
+        DepositAccount depositAccount = this.load().getJSONObject("depositAccount").toJavaObject(DepositAccount.class);
+        log.debug("Get depositAccount {}", depositAccount);
+        return depositAccount;
+    }
+
+    @Override
+    public List<Object> getAllAttributes() {
+        log.info("Request all attributes of account");
+        List<Object> objectList = List.of(getAttribute("depositAccount"), getAttribute("currentAccount"));
+        log.debug("Get all attributes of account {}", objectList);
+        return objectList;
+    }
 }
