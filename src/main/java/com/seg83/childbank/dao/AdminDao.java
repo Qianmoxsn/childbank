@@ -1,13 +1,15 @@
 package com.seg83.childbank.dao;
 
-import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
-import com.seg83.childbank.entity.Admin;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
-public class AdminDao {
+@Slf4j
+public class AdminDao extends AbstractDao {
     private final DataWrapperDao dataWrapperDao;
 
     @Autowired
@@ -15,24 +17,59 @@ public class AdminDao {
         this.dataWrapperDao = dataWrapperDao;
     }
 
-    public Admin getAdmin() {
-        JSONObject jsonData = dataWrapperDao.loadJsonFile();
-        return jsonData.getObject("admin", Admin.class);
-    }
-    public String getAdminPassword() {
-        JSONObject jsonData = dataWrapperDao.loadJsonFile();
-        return jsonData.getJSONObject("admin").getString("adminPassword");
+    // TODO: 返回json
+    // TODO: 打log
+
+    @Override
+    public JSONObject load() {
+        log.info("Request admin data in JSON format");
+        JSONObject admin = dataWrapperDao.load().getJSONObject("admin");
+        log.debug("Get admin data {}", admin);
+        return admin;
     }
 
-    public void setAdminPassword(Admin admin) {
-        JSONObject jsonData = dataWrapperDao.loadJsonFile();
-        jsonData.put("admin", JSON.parseObject(JSON.toJSONString(admin)));
-        dataWrapperDao.saveJsonFile(jsonData);
+    @Override
+    public void save(JSONObject jsobj) {
+
     }
 
-    public void setAdminPassword(String password) {
-        JSONObject jsonData = dataWrapperDao.loadJsonFile();
-        jsonData.getJSONObject("admin").put("adminPassword", password);
-        dataWrapperDao.saveJsonFile(jsonData);
+    @Override
+    public void setAttribute(String attrname, Object value) {
+        switch (attrname) {
+            case "adminPassword" -> {
+                log.info("Setting admin password to {}", value);
+                this.setAdminPassword((String) value);
+            }
+            default -> throw new RuntimeException("Invalid attribute name");
+        }
+
     }
+
+    @Override
+    public Object getAttribute(String attrname) {
+        switch (attrname) {
+            case "adminPassword" -> {
+                log.info("Request adminPassword");
+                String adminPassword = this.load().getString("adminPassword");
+                log.debug("Get adminPassword {}", adminPassword);
+                return adminPassword;
+            }
+            default -> throw new RuntimeException("Invalid attribute name");
+        }
+    }
+
+    @Override
+    public List<Object> getAllAttributes() {
+        log.info("Request all attributes of admin");
+        List<Object> objectList = List.of(getAttribute("adminPassword"));
+        log.debug("Get all attributes of admin {}", objectList);
+        return objectList;
+    }
+
+    private JSONObject setAdminPassword(String password) {
+        JSONObject adminJson = this.load();
+        adminJson.put("adminPassword", password);
+        return adminJson;
+    }
+
 }

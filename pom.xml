@@ -55,6 +55,13 @@
             <version>7.0.3</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/io.jsondb/jsondb-core -->
+        <dependency>
+            <groupId>io.jsondb</groupId>
+            <artifactId>jsondb-core</artifactId>
+            <version>1.0.106</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>

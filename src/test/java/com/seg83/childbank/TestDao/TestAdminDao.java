@@ -1,8 +1,10 @@
 package com.seg83.childbank.TestDao;
 
+import com.alibaba.fastjson2.JSONObject;
 import com.seg83.childbank.dao.AdminDao;
-import com.seg83.childbank.entity.Admin;
+import com.seg83.childbank.dao.DataWrapperDao;
 import com.seg83.childbank.gui.SwingApp;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -16,12 +18,17 @@ import static com.seg83.childbank.utils.FileDuplicator.restoreFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
+@Slf4j
 public class TestAdminDao {
     private static final Path template = Path.of("src/main/resources/data_template.json5");
     private static final Path copy = Path.of("src/test/temp/data_template_test.json5");
 
     @MockBean
     private SwingApp swingApp; //avoid the GUI
+    @Autowired
+    private AdminDao adminDao;
+    @Autowired
+    private DataWrapperDao dataWrapperDao;
 
     @BeforeAll
     static void setup() {
@@ -30,50 +37,51 @@ public class TestAdminDao {
         restoreFile(template, copy);
     }
 
-    @Autowired
-    private AdminDao adminDao;
-
+    @AfterEach
+    void restoreTestJson() {
+        restoreFile(copy, template);
+        log.info("Restoring :: Write back template json\n");
+    }
 
     @Test
-    void testGetAdmin() {
-        System.out.println("Testing :: getAdmin");
-        Admin admin = adminDao.getAdmin();
+    void testLoad() {
+        log.info("Testing :: Load Admin Data in JSON format");
+        JSONObject admin = adminDao.load();
+        log.info("Admin Data: {}", admin);
 
-        Admin targetadmin = new Admin("114514");
-        assertEquals(targetadmin, admin);
+        JSONObject target = new JSONObject();
+        target.put("adminPassword", "114514");
+
+        assertEquals(target, admin);
     }
 
     @Test
     void testGetAdminPassword() {
-        System.out.println("Testing :: getAdminPassword");
-        String password = adminDao.getAdminPassword();
+        log.info("Testing :: getAdminPassword");
+        String password = (String) adminDao.getAttribute("adminPassword");
+        log.info("Admin Password: {}",password);
 
-        assertEquals("114514", password);
+        assertEquals("114514", passwor d);
     }
 
-    @Test
-    void testSetAdminPassword() {
-        System.out.println("Testing :: changeAdminPassword(Admin)");
-        Admin admin = new Admin("1919810");
-        adminDao.setAdminPassword(admin);
-
-        Admin targetadmin = new Admin("1919810");
-        assertEquals(targetadmin, adminDao.getAdmin());
-    }
 
     @Test
     void testSetAdminPasswordString() {
-        System.out.println("Testing :: changeAdminPassword(String)");
-        adminDao.setAdminPassword("123456");
+        log.info("Testing :: changeAdminPassword(String)");
+        adminDao.setAttribute("adminPassword", "123456");
+        String target = "123456";
+        log.info("Admin Password: {}", adminDao.getAttribute("adminPassword"));
 
-        Admin targetadmin = new Admin("123456");
-        assertEquals(targetadmin, adminDao.getAdmin());
-    }
-
-    @AfterEach
-    void restoreTestJson() {
-        restoreFile(copy, template);
-        System.out.println("Restoring :: Write back template json\n");
+        assertEquals(target, adminDao.getAttribute("adminPassword"));
 
     }
 }
+
+A{
+    int a1;
+    B b1;
+}
+B b{
+int b1;
+int b2;
+    }

@@ -38,4 +38,9 @@ public class TestAccountDao {
         assertTrue(jsonObject.containsKey("currentAccount"));
         assertTrue(jsonObject.containsKey("depositAccount"));
     }
+
+    @Test
+    public void getAccount(){
+        accountDao.getAccount();
+    }
 }
