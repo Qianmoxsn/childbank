@@ -15,24 +15,30 @@ public class CurrentService {
         this.currentAccountDao = currentAccountDao;
     }
 
-    /*public String checkCurrentAccountBalance() {
+    public Double checkCurrentAccountBalance() {
         log.info("Checking Current Account Balance");
-        return currentAccountDao.getCurrentAccountAmount();
+        return (Double) currentAccountDao.getAttribute("currentAccountAmount");
     }
 
     // TODO: 越界检测
     public void depositCurrentAccount(int amount) {
-        double currentAmount = Double.parseDouble(currentAccountDao.getCurrentAccountAmount());
+        double currentAmount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
         double newAmount = currentAmount + amount;
-        currentAccountDao.setCurrentAccountAmount(String.valueOf(newAmount));
+        currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Deposit current {} now {} -> {}", amount, currentAmount, newAmount);
     }
 
     // TODO: 越界检测
     public void withdrawCurrentAccount(int amount) {
-        double currentAmount = Double.parseDouble(currentAccountDao.getCurrentAccountAmount());
+        double currentAmount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
         double newAmount = currentAmount - amount;
-        currentAccountDao.setCurrentAccountAmount(String.valueOf(newAmount));
+        currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Withdraw current {} now {} -> {}", amount, currentAmount, newAmount);
-    }*/
+    }
+
+    public String toUiContent() {
+        double balance =(Double) currentAccountDao.getAttribute("currentAccountAmount");
+        // 保留2位小数，首部拼接“$”
+        return "$" + String.format("%.2f", balance);
+    }
 }
