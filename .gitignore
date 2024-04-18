@@ -34,3 +34,4 @@ build/
 
 ### test temp files ###
 /src/test/temp/
+.DS_Store
