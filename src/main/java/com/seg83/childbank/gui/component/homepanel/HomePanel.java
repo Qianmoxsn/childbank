@@ -3,7 +3,11 @@ package com.seg83.childbank.gui.component.homepanel;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.seg83.childbank.gui.component.currentpop.DepositPop;
 import com.seg83.childbank.service.CurrentService;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +21,13 @@ import java.awt.event.ActionListener;
 import java.util.Locale;
 
 @Component
+@Slf4j
 public class HomePanel {
+    @Autowired
+    CurrentService currentService;
+    @Autowired
+    DepositPop depositPop;
+
     private JPanel rootHomePanel;
     private JButton quickDepositButton;
     private JButton quickWithdrawalButton;
@@ -27,22 +37,20 @@ public class HomePanel {
     private JPanel currPanel;
     private JLabel currLabel;
 
-
-    @Autowired
-    CurrentService currentService;
-
     public HomePanel() {
         quickDepositButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentService.depositCurrentAccount(200);
+                log.debug("quickDepositButton clicked");
+                depositPop.init();
+//                currentService.depositCurrentAccount(200);
                 updateCurrentBallance();
             }
         });
         quickWithdrawalButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentService.withdrawCurrentAccount(100);
+//                currentService.withdrawCurrentAccount(100);
                 updateCurrentBallance();
             }
         });
