@@ -14,11 +14,6 @@ import java.awt.*;
 public class MainFrame extends JFrame {
     private HomePanel homePanel;
 
-    @Autowired
-    private void setHomePanel(HomePanel homePanel) {
-        this.homePanel = homePanel;
-    }
-
     public MainFrame() throws HeadlessException {
         setTitle("ChildBank");
         setSize(600, 400);
@@ -27,9 +22,16 @@ public class MainFrame extends JFrame {
         log.info("Create MainFrame");
     }
 
+    @Autowired
+    private void setHomePanel(HomePanel homePanel) {
+        this.homePanel = homePanel;
+    }
+
     @PostConstruct
     public void init() {
         homePanel.$$$getRootComponent$$$().updateUI();
+        homePanel.updateCurrentBallance();
+
         setContentPane(this.homePanel.$$$getRootComponent$$$());
         log.info("Create homePanel in MainFrame");
     }
