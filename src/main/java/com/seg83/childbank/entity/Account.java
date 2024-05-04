@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Account {
-
+    @JSONField(name = "accountPassword")
+    private String accountPassword;
 
     @JSONField(name = "depositAccount")
     private DepositAccount depositAccount;

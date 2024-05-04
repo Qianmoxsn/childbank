@@ -6,6 +6,7 @@
   },
   "account": {
     //  Account.java
+    "accountPassword": "123456",
     "depositAccount": {
       //  DepositAccount.java
       "depositAccountBills": [
@@ -23,5 +24,33 @@
       "currentAccountAmount": 1000.0,
       "currentAccountRate": 0.3,
     },
+  },
+  "history": {
+    "historyActions": [
+      {
+        "historyId": 1,
+        "historyDateTime": "2019-01-01 00:00:00",
+        "historyAmount": 100.0,
+        "historyType": "current deposit",
+      },
+      {
+        "historyId": 2,
+        "historyDateTime": "2019-01-02 00:12:34",
+        "historyAmount": 200.0,
+        "historyType": "current withdraw",
+      },
+      {
+        "historyId": 3,
+        "historyDateTime": "2019-01-03 12:34:56",
+        "historyAmount": 300.0,
+        "historyType": "deposit deposit",
+      },
+      {
+        "historyId": 4,
+        "historyDateTime": "2019-01-04 23:45:56",
+        "historyAmount": 400.0,
+        "historyType": "deposit withdraw",
+      }
+    ]
   },
 }
