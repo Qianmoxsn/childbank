@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -35,5 +36,11 @@ public class HistoryService {
             data[i][3] = historyActionsDao.getAttribute("historyAmount", i + 1);
         }
         return data;
+    }
+
+    public void createOperationHistory(double amount, String type){
+        Date datetime = new Date();
+        log.info("Creating Operation History @ {} for {}", datetime, type);
+        historyActionsDao.createHistoryAction(datetime, amount, type);
     }
 }

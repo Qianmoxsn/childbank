@@ -9,10 +9,12 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CurrentService {
     private final CurrentAccountDao currentAccountDao;
+    private final HistoryService historyService;
 
     @Autowired
-    public CurrentService(CurrentAccountDao currentAccountDao) {
+    public CurrentService(CurrentAccountDao currentAccountDao, HistoryService historyService) {
         this.currentAccountDao = currentAccountDao;
+        this.historyService = historyService;
     }
 
     public Double checkCurrentAccountBalance() {
@@ -26,6 +28,8 @@ public class CurrentService {
         double newAmount = currentAmount + amount;
         currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Deposit current {} now {} -> {}", amount, currentAmount, newAmount);
+        // Create a history
+        historyService.createOperationHistory(amount, "current deposit");
     }
 
     // TODO: 越界检测
@@ -34,6 +38,8 @@ public class CurrentService {
         double newAmount = currentAmount - amount;
         currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Withdraw current {} now {} -> {}", amount, currentAmount, newAmount);
+        // Create a history
+        historyService.createOperationHistory(amount, "current withdraw");
     }
 
     public String toUiContent() {
