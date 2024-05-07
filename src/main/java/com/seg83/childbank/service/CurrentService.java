@@ -37,7 +37,7 @@ public class CurrentService {
     }
 
     public String toUiContent() {
-        double balance =(Double) currentAccountDao.getAttribute("currentAccountAmount");
+        double balance = (Double) currentAccountDao.getAttribute("currentAccountAmount");
         // 保留2位小数，首部拼接“$”
         return "$" + String.format("%.2f", balance);
     }

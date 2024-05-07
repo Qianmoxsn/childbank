@@ -7,13 +7,14 @@ import java.util.List;
 
 public abstract class AbstractDao {
     AbstractDao parentDao;
+
     /**
      * Load the JSONObject from the local storage json file or from upper JSONObject
      *
      * <p>Example: return loadJsonFile(); //Load the whole Json Object from a file</p>
      * <p>Example: return dataWrapperDao.load().getJSONObject("admin"); //from upper JSONObject</p>
-     * @return a JSONObject that contains all attributes of the object
      *
+     * @return a JSONObject that contains all attributes of the object
      */
     abstract JSONObject load();
 
