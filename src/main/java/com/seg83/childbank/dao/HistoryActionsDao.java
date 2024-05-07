@@ -85,7 +85,7 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     public void createHistoryAction(Date datetime, double amount, String type) {
         log.info("Create history action with date time {}, amount {}, type {}", datetime, amount, type);
-        HistoryActions newHistoryAction = new HistoryActions(this.ElementCount+1, this.convert.DateToString(datetime), amount, type);
+        HistoryActions newHistoryAction = new HistoryActions(this.ElementCount + 1, this.convert.DateToString(datetime), amount, type);
         this.ElementCount++;
         log.debug("History action created {}", newHistoryAction);
 
