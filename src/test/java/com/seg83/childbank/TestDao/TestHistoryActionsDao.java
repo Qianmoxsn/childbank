@@ -41,13 +41,6 @@ class TestHistoryActionsDao {
         System.out.println("Restoring :: Write back template json\n");
     }
 
-    @Test
-    void load() {
-    }
-
-    @Test
-    void setAttribute() {
-    }
 
     @Test
     void getHistoryActionDatetime() {
@@ -62,6 +55,32 @@ class TestHistoryActionsDao {
     }
 
     @Test
-    void getAllAttributes() {
+    void getHistoryActionAmount() {
+        log.info("Testing :: get history action amount");
+        long historyId = 1;
+        double amount = (Double) historyActionsDao.getAttribute("historyAmount", historyId);
+        assertEquals(100.0, amount);
+    }
+
+    @Test
+    void getHistoryActionType() {
+        log.info("Testing :: get history action type");
+        long historyId = 1;
+        String type = (String) historyActionsDao.getAttribute("historyType", historyId);
+        assertEquals("current deposit", type);
+    }
+
+    @Test
+    void createHistoryAction() {
+        log.info("Testing :: create history action");
+        Date datetime = new Date();
+        //ms = 0
+        datetime.setTime(0);
+        double amount = 100.0;
+        String type = "current deposit";
+        historyActionsDao.createHistoryAction(datetime, amount, type);
+        assertEquals(datetime, historyActionsDao.getAttribute("historyDateTime", 5));
+        assertEquals(amount, historyActionsDao.getAttribute("historyAmount", 5));
+        assertEquals(type, historyActionsDao.getAttribute("historyType", 5));
     }
 }

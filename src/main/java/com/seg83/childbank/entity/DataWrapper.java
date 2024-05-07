@@ -11,4 +11,7 @@ public class DataWrapper {
 
     @JSONField(name = "account")
     private Account account;
+
+    @JSONField(name = "history")
+    private History history;
 }

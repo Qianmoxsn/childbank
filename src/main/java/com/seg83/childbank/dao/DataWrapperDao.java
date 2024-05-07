@@ -6,6 +6,7 @@ import com.alibaba.fastjson2.JSONWriter;
 import com.seg83.childbank.entity.Account;
 import com.seg83.childbank.entity.Admin;
 import com.seg83.childbank.entity.DataWrapper;
+import com.seg83.childbank.entity.History;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
@@ -57,6 +58,7 @@ public class DataWrapperDao extends AbstractDao {
         switch (attrname) {
             case "admin" -> modifiedDataWrapper = this.setAdmin((Admin) value);
             case "account" -> modifiedDataWrapper = this.setAccount((Account) value);
+            case "history" -> modifiedDataWrapper = this.setHistory((History) value);
             default -> throw new RuntimeException("Invalid attribute name");
         }
         this.saveJsonFile(modifiedDataWrapper);
@@ -71,6 +73,12 @@ public class DataWrapperDao extends AbstractDao {
     private DataWrapper setAdmin(Admin value) {
         DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
         dataWrapper.setAdmin(value);
+        return dataWrapper;
+    }
+
+    private DataWrapper setHistory(History value) {
+        DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
+        dataWrapper.setHistory(value);
         return dataWrapper;
     }
 

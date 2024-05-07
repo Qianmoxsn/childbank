@@ -20,4 +20,10 @@ public class StringDateConvert {
         }
         return null;
     }
+
+    public String DateToString(Date date) {
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
+        return dateFormat.format(date);
+    }
 }

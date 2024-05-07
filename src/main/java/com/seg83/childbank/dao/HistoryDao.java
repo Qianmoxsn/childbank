@@ -34,16 +34,17 @@ public class HistoryDao extends AbstractDao {
         switch (attrname) {
             case "historyActions" -> {
                 log.info("Setting historyActions to {}", value);
-                modifiedHistory = this.setHistoryActions(value);
+                modifiedHistory = this.setHistoryActions((List<HistoryActions>) value);
             }
             default -> throw new RuntimeException("Invalid attribute name");
         }
+        this.dataWrapperDao.setAttribute("history", modifiedHistory);
     }
 
     //TODO: need tests
-    private History setHistoryActions(Object value) {
+    private History setHistoryActions(List<HistoryActions> value) {
         History history = this.load().toJavaObject(History.class);
-        history.setHistoryActions((List<HistoryActions>) value);
+        history.setHistoryActions(value);
         return history;
     }
 
