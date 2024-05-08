@@ -49,7 +49,7 @@ public class HistoryDao extends AbstractDao {
     }
 
     @Override
-    Object getAttribute(String attrname) {
+    public Object getAttribute(String attrname) {
         return switch (attrname) {
             case "historyActions" -> this.getHistoryActions();
             default -> throw new RuntimeException("Invalid attribute name");
@@ -66,7 +66,7 @@ public class HistoryDao extends AbstractDao {
     //TODO: need tests
     private List<HistoryActions> getHistoryActions() {
         log.info("Getting historyActions");
-        List<HistoryActions> historyActions = this.load().getJSONObject("historyActions").toJavaObject(List.class);
+        List<HistoryActions> historyActions = this.load().getJSONArray("historyActions").toJavaList(HistoryActions.class);
         log.debug("Get historyActions {}", historyActions);
         return historyActions;
     }

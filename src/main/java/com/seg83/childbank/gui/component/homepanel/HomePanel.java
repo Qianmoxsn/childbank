@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import com.seg83.childbank.gui.component.currentpop.DepositPop;
+import com.seg83.childbank.gui.component.currentpop.HistoryPop;
 import com.seg83.childbank.gui.component.currentpop.WithdrawPop;
 import com.seg83.childbank.service.CurrentService;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,8 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Locale;
 
 @Component
@@ -26,6 +29,8 @@ public class HomePanel {
     DepositPop depositPop;
     @Autowired
     WithdrawPop withdrawPop;
+    @Autowired
+    HistoryPop historyPop;
 
     private JPanel rootHomePanel;
     private JButton quickDepositButton;
@@ -35,6 +40,7 @@ public class HomePanel {
     private JButton systemSettingsButton;
     private JPanel currPanel;
     private JLabel currLabel;
+    private JButton operationHistoryButton;
 
     public HomePanel() {
         quickDepositButton.addActionListener(e -> {
@@ -47,6 +53,10 @@ public class HomePanel {
             log.debug("quickWithdrawalButton clicked");
             withdrawPop.init();
             updateCurrentBallance();
+        });
+        operationHistoryButton.addActionListener(e -> {
+            log.debug("operationHistoryButton clicked");
+            historyPop.init();
         });
     }
 
@@ -124,13 +134,13 @@ public class HomePanel {
         final Spacer spacer4 = new Spacer();
         panel5.add(spacer4, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JPanel panel6 = new JPanel();
-        panel6.setLayout(new GridLayoutManager(5, 1, new Insets(0, 0, 0, 0), -1, -1));
+        panel6.setLayout(new GridLayoutManager(7, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel4.add(panel6, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         quickDepositButton = new JButton();
         quickDepositButton.setText("Quick deposit");
         panel6.add(quickDepositButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 10), null, 0, false));
         final Spacer spacer5 = new Spacer();
-        panel6.add(spacer5, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel6.add(spacer5, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         quickWithdrawalButton = new JButton();
         quickWithdrawalButton.setText("Quick withdrawal");
         panel6.add(quickWithdrawalButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 10), null, 0, false));
@@ -138,6 +148,11 @@ public class HomePanel {
         panel6.add(spacer6, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final Spacer spacer7 = new Spacer();
         panel6.add(spacer7, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        operationHistoryButton = new JButton();
+        operationHistoryButton.setText("Operation history");
+        panel6.add(operationHistoryButton, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final Spacer spacer8 = new Spacer();
+        panel6.add(spacer8, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
     }
 
     /**
