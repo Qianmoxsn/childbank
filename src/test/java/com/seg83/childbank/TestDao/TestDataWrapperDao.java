@@ -14,27 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.seg83.childbank.utils.FileDuplicator.restoreFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 @SpringBootTest
 @Slf4j
 public class TestDataWrapperDao {
-    /**
-     * The path to the template JSON file used for testing.
-     */
-    private static final Path template = Path.of("src/main/resources/data_template.json5");
-    /**
-     * The path where the template file is copied for testing purposes.
-     */
-    private static final Path copy = Path.of("src/test/temp/data_template_test.json5");
-    /**
-     * A mocked instance of SwingApp to avoid GUI interactions during testing.
-     */
-
     @MockBean
     private SwingApp swingApp; //avoid the GUI
     /**
@@ -50,8 +38,6 @@ public class TestDataWrapperDao {
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
-        // copy the test json file to the copy
-        restoreFile(template, copy);
     }
     /**
      * Restores the template JSON file after each test to ensure consistency.
@@ -59,8 +45,12 @@ public class TestDataWrapperDao {
 
     @AfterEach
     void restoreTestJson() {
-        restoreFile(copy, template);
-        System.out.println("Restoring :: Write back template json\n");
+        try {
+            Files.deleteIfExists(Path.of("data.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Remove :: test data json\n");
     }
     /**
      * Tests the loadJsonFile method of DataWrapperDao.
@@ -97,7 +87,7 @@ public class TestDataWrapperDao {
     @Test
     void getAttrAdmin() {
         log.info("Testing :: getAttribute Admin");
-        Admin target = new Admin("114514");
+        Admin target = new Admin("114514", true);
         Admin admin = (Admin) dataWrapperDao.getAttribute("admin");
 
         assertEquals(target, admin);

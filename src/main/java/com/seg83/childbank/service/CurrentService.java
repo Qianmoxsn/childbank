@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class CurrentService {
     private final CurrentAccountDao currentAccountDao;
+    private final HistoryService historyService;
 
     /**
      * Constructs a new CurrentService with the specified CurrentAccountDao.
@@ -19,8 +20,9 @@ public class CurrentService {
      * @param currentAccountDao The data access object for the current account.
      */
     @Autowired
-    public CurrentService(CurrentAccountDao currentAccountDao) {
+    public CurrentService(CurrentAccountDao currentAccountDao, HistoryService historyService) {
         this.currentAccountDao = currentAccountDao;
+        this.historyService = historyService;
     }
 
     /**
@@ -44,6 +46,8 @@ public class CurrentService {
         double newAmount = currentAmount + amount;
         currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Deposit current {} now {} -> {}", amount, currentAmount, newAmount);
+        // Create a history
+        historyService.createOperationHistory(amount, "current deposit");
     }
 
     // TODO: Overflow detection
@@ -57,6 +61,8 @@ public class CurrentService {
         double newAmount = currentAmount - amount;
         currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Withdraw current {} now {} -> {}", amount, currentAmount, newAmount);
+        // Create a history
+        historyService.createOperationHistory(amount, "current withdraw");
     }
 
     /**

@@ -11,26 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static com.seg83.childbank.utils.FileDuplicator.restoreFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
 public class TestAdminDao {
-    /**
-     * Path to the data template file used for testing.
-     */
-    private static final Path template = Path.of("src/main/resources/data_template.json5");
-    /**
-     * Path to the temporary copy of the data template file used for testing
-     */
-    private static final Path copy = Path.of("src/test/temp/data_template_test.json5");
-    /**
-     * Mocked {@link SwingApp} to avoid GUI interactions during testing.
-     */
-
     @MockBean
     private SwingApp swingApp; //avoid the GUI
     /**
@@ -48,8 +36,6 @@ public class TestAdminDao {
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
-        // copy the test json file to the copy
-        restoreFile(template, copy);
     }
 
     /**
@@ -58,8 +44,12 @@ public class TestAdminDao {
 
     @AfterEach
     void restoreTestJson() {
-        restoreFile(copy, template);
-        log.info("Restoring :: Write back template json\n");
+        try {
+            Files.deleteIfExists(Path.of("data.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Remove :: test data json\n");
     }
 
     /**
@@ -74,6 +64,7 @@ public class TestAdminDao {
 
         JSONObject target = new JSONObject();
         target.put("adminPassword", "114514");
+        target.put("firstLogin", true);
 
         assertEquals(target, admin);
     }

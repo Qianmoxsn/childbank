@@ -4,6 +4,7 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
+import com.seg83.childbank.service.SetupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 @Component
 @Slf4j
@@ -21,31 +20,67 @@ public class SetupPanel {
     @Autowired
     private ApplicationEventPublisher publisher;
 
+    @Autowired
+    private SetupService setupService;
+
     private JTabbedPane tabbedPane1;
     private JPanel rootPanel;
     private JPasswordField passwordField1;
     private JPasswordField passwordField2;
-    private JButton button1;
-    private JButton button2;
+    private JButton btnAdmin;
+    private JButton btnTrade;
     private JPasswordField passwordField3;
     private JPasswordField passwordField4;
     private JButton startButton;
+    private JTextPane welcomeToTheVirtualTextPane;
 
     public SetupPanel() {
-        button1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        btnAdmin.addActionListener(e -> {
+            log.info("Admin button clicked");
+            int state = setupService.checkPass(new String(passwordField1.getPassword()), new String(passwordField2.getPassword()));
+            switch (state) {
+                case -1 -> {
+                    log.error("password length illegal");
+                    //Error Window
+                    JOptionPane.showMessageDialog(null, "password length illegal", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                case -2 -> {
+                    log.error("Admin password not match");
+                    //Error Window
+                    JOptionPane.showMessageDialog(null, "Tow Password not match", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                default -> {
+                    setupService.setPassAdmin(new String(passwordField1.getPassword()));
+                    log.info("Admin password set");
+                    JOptionPane.showMessageDialog(null, "Admin Password Set", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         });
-        button2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
+        btnTrade.addActionListener(e -> {
+            log.info("Trade button clicked");
+            int state = setupService.checkPass(new String(passwordField3.getPassword()), new String(passwordField4.getPassword()));
+            switch (state) {
+                case -1 -> {
+                    log.error("password length illegal");
+                    //Error Window
+                    JOptionPane.showMessageDialog(null, "password length illegal", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                case -2 -> {
+                    log.error("Trade password not match");
+                    //Error Window
+                    JOptionPane.showMessageDialog(null, "Tow Password not match", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                default -> {
+                    setupService.setPassAccount(new String(passwordField3.getPassword()));
+                    log.info("Trade password set");
+                    JOptionPane.showMessageDialog(null, "Trade Password Set", "Success", JOptionPane.INFORMATION_MESSAGE);
+                }
             }
         });
         startButton.addActionListener(e -> {
             log.info("Start button clicked");
+            // Remove First Login Flag
+            setupService.setFirstLogin();
             // Switch to home panel
             publisher.publishEvent(new PanelSwitchEvent(this, "home"));
         });
@@ -75,6 +110,13 @@ public class SetupPanel {
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane1.addTab("Introduction", panel1);
         panel1.setBorder(BorderFactory.createTitledBorder(null, "Intro", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel1.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        welcomeToTheVirtualTextPane = new JTextPane();
+        welcomeToTheVirtualTextPane.setBackground(new Color(-1118482));
+        welcomeToTheVirtualTextPane.setEditable(false);
+        welcomeToTheVirtualTextPane.setText("Welcome to the Virtual Bank Application for Kids, designed to be a secure and educational tool that grows with your child on their financial literacy journey. In this application, all deposits require a parental permission password to ensure security, while withdrawals can be managed independently by children within preset limits using their transaction password. Parents have the ability to assign tasks and set rewards, allowing them to oversee task completion and reward achievements directly through the app. Additionally, the app includes robust security settings for managing password changes and account resets. A dedicated section for app functionalities and contact information is available for help and support. Our Virtual Bank Application for Kids is more than just a tool; it is a rich and supportive environment aimed at nurturing financially savvy children. We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids!  Now, let's set two passwords for admin and kids first!");
+        scrollPane1.setViewportView(welcomeToTheVirtualTextPane);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(8, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane1.addTab("AdminPassword", panel2);
@@ -93,9 +135,9 @@ public class SetupPanel {
         panel2.add(label2, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         passwordField2 = new JPasswordField();
         panel2.add(passwordField2, new GridConstraints(4, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        button1 = new JButton();
-        button1.setText("Save");
-        panel2.add(button1, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        btnAdmin = new JButton();
+        btnAdmin.setText("Save");
+        panel2.add(btnAdmin, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer3 = new Spacer();
         panel2.add(spacer3, new GridConstraints(5, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
@@ -112,9 +154,9 @@ public class SetupPanel {
         final JLabel label4 = new JLabel();
         label4.setText("Confirm the Trade Password");
         panel3.add(label4, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        button2 = new JButton();
-        button2.setText("Save");
-        panel3.add(button2, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        btnTrade = new JButton();
+        btnTrade.setText("Save");
+        panel3.add(btnTrade, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         passwordField3 = new JPasswordField();
         panel3.add(passwordField3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         passwordField4 = new JPasswordField();

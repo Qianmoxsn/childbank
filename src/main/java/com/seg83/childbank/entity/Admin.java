@@ -13,4 +13,7 @@ public class Admin {
     @JSONField(name = "adminPassword")
     private String adminPassword;
 
+    @JSONField(name = "firstLogin")
+    private boolean firstLogin;
+
 }

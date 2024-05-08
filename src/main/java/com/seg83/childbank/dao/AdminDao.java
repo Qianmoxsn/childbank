@@ -60,6 +60,10 @@ public class AdminDao extends AbstractDao {
                 log.info("Setting admin password to {}", value);
                 modifiedAdmin = this.setAdminPassword((String) value);
             }
+            case "firstLogin" -> {
+                log.info("Setting first login to {}", value);
+                modifiedAdmin = this.setFirstLogin((boolean) value);
+            }
             default -> throw new RuntimeException("Invalid attribute name");
         }
         dataWrapperDao.setAttribute("admin", modifiedAdmin);
@@ -78,16 +82,22 @@ public class AdminDao extends AbstractDao {
         return admin;
     }
 
+    private Admin setFirstLogin(boolean firstLogin) {
+        Admin admin = this.load().toJavaObject(Admin.class);
+        admin.setFirstLogin(firstLogin);
+        return admin;
+    }
+
     /**
      * Private method for setting the administrator's password
      *
      * @return Specifies the administrator object after the password is changed
      */
-
     @Override
     public Object getAttribute(String attrname) {
         return switch (attrname) {
             case "adminPassword" -> this.getAdminPassword();
+            case "firstLogin" -> this.getFirstLogin();
             default -> throw new RuntimeException("Invalid attribute name");
         };
     }
@@ -105,11 +115,17 @@ public class AdminDao extends AbstractDao {
         return adminPassword;
     }
 
+    private boolean getFirstLogin() {
+        log.info("Request firstLogin");
+        boolean firstLogin = this.load().getBoolean("firstLogin");
+        log.debug("Get firstLogin {}", firstLogin);
+        return firstLogin;
+    }
+    
     /**
      * Private method to get the administrator's password
      * @return Administrator password
      */
-
     @Override
     public List<Object> getAllAttributes() {
         log.info("Request all attributes of admin");

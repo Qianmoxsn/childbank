@@ -10,19 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.seg83.childbank.utils.FileDuplicator.restoreFile;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
 class TestHistoryActionsDao {
-    private static final Path template = Path.of("src/main/resources/data_template.json5");
-    private static final Path copy = Path.of("src/test/temp/data_template_test.json5");
-
     @MockBean
     private SwingApp swingApp; //avoid the GUI
     @Autowired
@@ -35,8 +32,6 @@ class TestHistoryActionsDao {
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
-        // copy the test json file to the copy
-        restoreFile(template, copy);
     }
     /**
      * Restores the template JSON file after each test to ensure consistency between tests.
@@ -44,8 +39,12 @@ class TestHistoryActionsDao {
 
     @AfterEach
     void restoreTestJson() {
-        restoreFile(copy, template);
-        System.out.println("Restoring :: Write back template json\n");
+        try {
+            Files.deleteIfExists(Path.of("data.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println("Remove :: test data json\n");
     }
     /**
      * Tests the retrieval of the datetime attribute for a specific history action.

@@ -9,11 +9,17 @@ import com.seg83.childbank.entity.DataWrapper;
 import com.seg83.childbank.entity.History;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Repository;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 /**
@@ -26,6 +32,7 @@ public class DataWrapperDao extends AbstractDao {
      * The file path where the JSON data is stored
      */
 
+    private final Resource jsonTemplatePath;
     private final Path jsonFilePath;
 
     /**
@@ -33,8 +40,25 @@ public class DataWrapperDao extends AbstractDao {
      * @param jsonFilePath the path to the JSON file
      */
 
-    public DataWrapperDao(@Value("${json.template-path}") Path jsonFilePath) {
-        this.jsonFilePath = jsonFilePath;
+    public DataWrapperDao(@Value("${json.template-path}") String jsonTemplatePath,
+                          @Value("${json.data-path}") String jsonDataPath) {
+        Resource tempResource = null;
+        Path tempPath = null;
+        try {
+            tempResource = new ClassPathResource(jsonTemplatePath);
+        } catch (Exception e) {
+            log.error("Failed to load internal JSON template:{}", jsonTemplatePath);
+            throw new RuntimeException("Failed to load internal JSON template: " + e);
+        }
+        try {
+            tempPath = Paths.get(System.getProperty("user.dir"), jsonDataPath);
+        } catch (InvalidPathException e) {
+            log.error("Invalid path for external JSON file: {}", jsonDataPath);
+            throw new RuntimeException("Invalid path for external JSON file: " + e);
+        }
+
+        this.jsonTemplatePath = tempResource;
+        this.jsonFilePath = tempPath;
     }
 
     /**
@@ -45,12 +69,23 @@ public class DataWrapperDao extends AbstractDao {
 
     public JSONObject loadJsonFile() {
         try {
-            String json = new String(Files.readAllBytes(jsonFilePath));
-            return JSON.parseObject(json);
+            // Read from external when exist and non-empty
+            if (Files.exists(jsonFilePath) && Files.size(jsonFilePath) > 0){
+                String json = new String(Files.readAllBytes(jsonFilePath), StandardCharsets.UTF_8);
+                return JSONObject.parseObject(json);
+            } else if (jsonTemplatePath.exists()) {
+                // 从内部资源读取
+                try (InputStream is = jsonTemplatePath.getInputStream()) {
+                    String json = new String(is.readAllBytes(), StandardCharsets.UTF_8);
+                    return JSONObject.parseObject(json);
+                }
+            }
         } catch (IOException e) {
             log.error("Failed to load JSON file", e);
             throw new RuntimeException("Failed to load JSON file", e);
         }
+        log.error("JSON file not found, both external and internal");
+        throw new RuntimeException("JSON file not found, both external and internal");
     }
 
     /**
@@ -61,7 +96,7 @@ public class DataWrapperDao extends AbstractDao {
     public void saveJsonFile(DataWrapper dataWrapper) {
         try {
             String json = JSON.toJSONString(dataWrapper, JSONWriter.Feature.PrettyFormat);
-            Files.write(jsonFilePath, json.getBytes());
+            Files.write(jsonFilePath, json.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             log.error("Failed to save JSON file", e);
             throw new RuntimeException("Failed to save JSON file", e);
