@@ -1,9 +1,6 @@
 spring:
   application:
     name: child-bank
-  config:
-    activate:
-      on-profile: gui
 
 json:
   template-path: data_template.json5
@@ -12,6 +9,3 @@ json:
 logging:
   level:
     com.seg83.childbank: DEBUG
-
-gui:
-  enabled: true
