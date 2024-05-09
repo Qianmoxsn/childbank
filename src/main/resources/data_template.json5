@@ -3,7 +3,7 @@
   "admin": {
     //  Admin.java
     "adminPassword": "114514",
-    "fistLogin": true,
+    "firstLogin": true,
   },
   "account": {
     //  Account.java
