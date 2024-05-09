@@ -80,6 +80,8 @@ public class SetupPanel {
         });
         startButton.addActionListener(e -> {
             log.info("Start button clicked");
+            // Remove First Login Flag
+            setupService.setFirstLogin();
             // Switch to home panel
             publisher.publishEvent(new PanelSwitchEvent(this, "home"));
         });

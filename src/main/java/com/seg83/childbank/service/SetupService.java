@@ -39,4 +39,14 @@ public class SetupService {
         log.info("Setting account password");
         accountDao.setAttribute("accountPassword", pass);
     }
+
+    public boolean checkFirstLogin() {
+        log.info("Checking if first login");
+        return (boolean) adminDao.getAttribute("firstLogin");
+    }
+
+    public void setFirstLogin() {
+        log.info("Setting first login");
+        adminDao.setAttribute("firstLogin", false);
+    }
 }
