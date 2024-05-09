@@ -23,6 +23,7 @@ public class WelcomePanel {
 
     private JButton setupButton;
     private JPanel rootPanel;
+    private JTextPane weInviteYouToTextPane;
 
     public WelcomePanel() {
         setupButton.addActionListener(e -> {
@@ -54,13 +55,13 @@ public class WelcomePanel {
         Font label1Font = this.$$$getFont$$$(null, -1, 22, label1.getFont());
         if (label1Font != null) label1.setFont(label1Font);
         label1.setText("Welcome Page");
-        rootPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Welcome intro");
-        rootPanel.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        rootPanel.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(152, 195), null, 0, false));
         setupButton = new JButton();
         setupButton.setText("> Setup >");
         rootPanel.add(setupButton, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        weInviteYouToTextPane = new JTextPane();
+        weInviteYouToTextPane.setText("We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids!       ");
+        rootPanel.add(weInviteYouToTextPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
     }
 
     /**
