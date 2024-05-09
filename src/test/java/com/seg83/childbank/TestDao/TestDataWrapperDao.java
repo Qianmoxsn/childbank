@@ -65,7 +65,7 @@ public class TestDataWrapperDao {
     @Test
     void getAttrAdmin() {
         log.info("Testing :: getAttribute Admin");
-        Admin target = new Admin("114514");
+        Admin target = new Admin("114514", true);
         Admin admin = (Admin) dataWrapperDao.getAttribute("admin");
 
         assertEquals(target, admin);
