@@ -4,6 +4,7 @@ import com.seg83.childbank.gui.component.homepanel.HomePanel;
 import com.seg83.childbank.gui.component.welcome.SetupPanel;
 import com.seg83.childbank.gui.component.welcome.WelcomePanel;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
+import com.seg83.childbank.service.SetupService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class MainFrame extends JFrame {
     private HomePanel homePanel;
     private WelcomePanel welcomePanel;
     private SetupPanel setupPanel;
+    private SetupService setupService;
 
     public MainFrame() throws HeadlessException {
         setTitle("ChildBank");
@@ -29,16 +31,18 @@ public class MainFrame extends JFrame {
     }
 
     @Autowired
-    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel) {
+    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService) {
         this.homePanel = homePanel;
         this.welcomePanel = welcomePanel;
         this.setupPanel = setupPanel;
+        this.setupService = setupService;
     }
 
     @PostConstruct
     public void init() {
-        if (true) {
+        if (setupService.checkFirstLogin()) {
             initWelcomePanel();
+            setupService.setFirstLogin();
         } else {
             initHomePanel();
         }
