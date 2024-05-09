@@ -29,7 +29,17 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
-    - name: Headless::Build with Maven(Include Testing)
+    - name: Headless::Install Maven Dependencies
+      uses: coactions/setup-xvfb@v1.0.1
+      with:
+        run: mvn -B install --file pom.xml
+
+    - name: Headless::Maven Test
+      uses: coactions/setup-xvfb@v1.0.1
+      with:
+        run: mvn -B test --file pom.xml
+
+    - name: Headless::Maven Package
       uses: coactions/setup-xvfb@v1.0.1
       with:
         run: mvn -B package --file pom.xml
