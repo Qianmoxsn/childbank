@@ -131,5 +131,4 @@ public class HistoryPop extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
-
 }
