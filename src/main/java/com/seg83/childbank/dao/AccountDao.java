@@ -1,5 +1,4 @@
 package com.seg83.childbank.dao;
-
 import com.alibaba.fastjson2.JSONObject;
 import com.seg83.childbank.entity.Account;
 import com.seg83.childbank.entity.CurrentAccount;
@@ -10,16 +9,36 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The AccountDao class is a data access object (dao) that interacts with account data.
+ * It provides ways to load, set up, and get information about your account.
+ *
+ * @author Your Name / Organization
+ * @version 1.0
+ */
+
 @Repository
 @Slf4j
 public class AccountDao extends AbstractDao {
+    /**
+     * DataWrapperDao instance for data encapsulation and unencapsulation.
+     */
     private final DataWrapperDao dataWrapperDao;
+
+    /**
+     * Constructor that initializes the DataWrapperDao instance by dependency injection
+     * @param dataWrapperDao
+     */
 
     @Autowired
     public AccountDao(DataWrapperDao dataWrapperDao) {
         this.dataWrapperDao = dataWrapperDao;
     }
 
+    /**
+     * Load the account data and convert it to a JSON object.
+     * @return JSON object
+     */
     @Override
     public JSONObject load() {
         log.info("Request account data in JSON format");
@@ -28,6 +47,11 @@ public class AccountDao extends AbstractDao {
         return account;
     }
 
+    /**
+     * Set a property value for an account
+     * @param attrname the name of the attribute
+     * @param value    the value of the attribute
+     */
     @Override
     public void setAttribute(String attrname, Object value) {
         Account modifiedAccount;
@@ -49,6 +73,12 @@ public class AccountDao extends AbstractDao {
         dataWrapperDao.setAttribute("account", modifiedAccount);
     }
 
+    /**
+     * Private method to set the password of the account
+     * @param value New password
+     * @return Updated account object
+     */
+
     //TODO: need tests
     private Account setAccountPassword(String value) {
         Account account = this.load().toJavaObject(Account.class);
@@ -56,17 +86,35 @@ public class AccountDao extends AbstractDao {
         return account;
     }
 
+    /**
+     * Private method for setting up a fixed deposit account for an account
+     * @param value new fixed deposit account
+     * @return Updated account object
+     */
+
     private Account setDepositAccount(DepositAccount value) {
         Account account = this.load().toJavaObject(Account.class);
         account.setDepositAccount(value);
         return account;
     }
 
+    /**
+     * Private method for setting up a checking account for an account
+     * @param value New checking account
+     * @return Updated account object
+     */
+
     private Account setCurrentAccount(CurrentAccount value) {
         Account account = this.load().toJavaObject(Account.class);
         account.setCurrentAccount(value);
         return account;
     }
+
+    /**
+     * Gets an attribute value for an account
+     * @param attrname the name of the attribute
+     * @return attribute value
+     */
 
     @Override
     public Object getAttribute(String attrname) {
@@ -78,6 +126,11 @@ public class AccountDao extends AbstractDao {
         };
     }
 
+    /**
+     * Private method for obtaining the password of the account
+     * @return AccountPassword
+     */
+
     //TODO: need tests
     private String getAccountPassword() {
         log.info("Request accountPassword");
@@ -86,12 +139,22 @@ public class AccountDao extends AbstractDao {
         return accountPassword;
     }
 
+    /**
+     * Private method for obtaining the account's current deposit account
+     * @return Current deposit account
+     */
+
     private CurrentAccount getCurrentAccount() {
         log.info("Request currentAccount");
         CurrentAccount currentAccount = this.load().getJSONObject("currentAccount").toJavaObject(CurrentAccount.class);
         log.debug("Get currentAccount {}", currentAccount);
         return currentAccount;
     }
+
+    /**
+     * Private method for obtaining a fixed deposit account of the account
+     * @return Time deposit account
+     */
 
     private DepositAccount getDepositAccount() {
         log.info("Request depositAccount");
@@ -100,6 +163,11 @@ public class AccountDao extends AbstractDao {
         return depositAccount;
     }
 
+    /**
+     * Gets all attribute values for the account
+     * @return contains a list of all property values
+     */
+
     @Override
     public List<Object> getAllAttributes() {
         log.info("Request all attributes of account");
@@ -107,4 +175,7 @@ public class AccountDao extends AbstractDao {
         log.debug("Get all attributes of account {}", objectList);
         return objectList;
     }
+    /**
+     *
+     */
 }
