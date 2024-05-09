@@ -3,6 +3,7 @@ package com.seg83.childbank;
 import com.seg83.childbank.gui.SwingApp;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.WebApplicationType;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -13,6 +14,9 @@ public class ChildbankApplication {
     @Autowired
     private SwingApp swingApp;
 
+    @Value("${gui.enabled:true}")
+    private boolean guiEnabled;
+
     public static void main(String[] args) {
         SpringApplicationBuilder builder = new SpringApplicationBuilder(ChildbankApplication.class)
                 .headless(false)
@@ -22,7 +26,9 @@ public class ChildbankApplication {
 
     @PostConstruct
     public void initUI() {
-        swingApp.createUI();
+        if (guiEnabled) {
+            swingApp.createUI();
+        }
     }
 
 }
