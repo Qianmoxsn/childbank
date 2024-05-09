@@ -29,11 +29,10 @@ jobs:
         distribution: 'temurin'
         cache: maven
     
-    - name: Run headless test
+    - name: Headless::Build with Maven(Include Testing)
       uses: coactions/setup-xvfb@v1.0.1
-    
-    - name: Build with Maven（Include Testing）
-      run: mvn -B package --file pom.xml
+      with:
+        run: mvn -B package --file pom.xml
 
     # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
     - name: Update dependency graph
