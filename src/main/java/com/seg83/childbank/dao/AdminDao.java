@@ -133,7 +133,4 @@ public class AdminDao extends AbstractDao {
         log.debug("Get all attributes of admin {}", objectList);
         return objectList;
     }
-    /**
-     *
-     */
 }

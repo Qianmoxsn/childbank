@@ -39,7 +39,6 @@ public class DataWrapperDao extends AbstractDao {
      * Constructs a new DataWrapperDao with the specified JSON file path
      * @param jsonFilePath the path to the JSON file
      */
-
     public DataWrapperDao(@Value("${json.template-path}") String jsonTemplatePath,
                           @Value("${json.data-path}") String jsonDataPath) {
         Resource tempResource = null;
