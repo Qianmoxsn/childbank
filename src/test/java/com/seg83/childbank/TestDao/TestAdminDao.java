@@ -48,6 +48,7 @@ public class TestAdminDao {
 
         JSONObject target = new JSONObject();
         target.put("adminPassword", "114514");
+        target.put("firstLogin", true);
 
         assertEquals(target, admin);
     }
