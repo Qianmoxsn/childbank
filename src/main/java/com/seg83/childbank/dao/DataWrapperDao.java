@@ -33,6 +33,9 @@ public class DataWrapperDao extends AbstractDao {
      */
 
     private final Resource jsonTemplatePath;
+    /**
+     * ...
+     */
     private final Path jsonFilePath;
 
     /**
