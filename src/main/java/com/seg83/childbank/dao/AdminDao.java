@@ -8,15 +8,34 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * The AdminDao class is a data access object (DAO) that handles administrator-related data operations
+ * It extends the AbstractDao class and uses the DataWrapperDao class to load, set, and get administrator properties
+ */
 @Repository
 @Slf4j
 public class AdminDao extends AbstractDao {
+    /**
+     * An example of DataWrapperDao for data encapsulation and unencapsulation operations
+     */
     private final DataWrapperDao dataWrapperDao;
+
+    /**
+     * Constructor that receives an instance of DataWrapperDao for subsequent data operations
+     *
+     * @param dataWrapperDao Instance of DataWrapperDao
+     */
 
     @Autowired
     public AdminDao(DataWrapperDao dataWrapperDao) {
         this.dataWrapperDao = dataWrapperDao;
     }
+
+    /**
+     * Load the administrator data and encapsulate it as a JSONObject object
+     *
+     * @return The JSONObject object that contains the administrator data
+     */
 
     @Override
     public JSONObject load() {
@@ -25,6 +44,13 @@ public class AdminDao extends AbstractDao {
         log.debug("Get admin data {}", admin);
         return admin;
     }
+
+    /**
+     * Sets the value of a property for the administrator
+     *
+     * @param attrname the name of the attribute
+     * @param value    the value of the attribute
+     */
 
     @Override
     public void setAttribute(String attrname, Object value) {
@@ -39,11 +65,24 @@ public class AdminDao extends AbstractDao {
         dataWrapperDao.setAttribute("admin", modifiedAdmin);
     }
 
+    /**
+     * Gets the administrator's property value based on the property name.
+     *
+     * @param password
+     * @return attribute value
+     */
+
     private Admin setAdminPassword(String password) {
         Admin admin = this.load().toJavaObject(Admin.class);
         admin.setAdminPassword(password);
         return admin;
     }
+
+    /**
+     * Private method for setting the administrator's password
+     *
+     * @return Specifies the administrator object after the password is changed
+     */
 
     @Override
     public Object getAttribute(String attrname) {
@@ -53,12 +92,23 @@ public class AdminDao extends AbstractDao {
         };
     }
 
+    /**
+     * Gets all of the administrator's property values and returns them as a list
+     *
+     * @return contains a list of all property values for the administrator
+     */
+
     private String getAdminPassword() {
         log.info("Request adminPassword");
         String adminPassword = this.load().getString("adminPassword");
         log.debug("Get adminPassword {}", adminPassword);
         return adminPassword;
     }
+
+    /**
+     * Private method to get the administrator's password
+     * @return Administrator password
+     */
 
     @Override
     public List<Object> getAllAttributes() {
@@ -67,4 +117,7 @@ public class AdminDao extends AbstractDao {
         log.debug("Get all attributes of admin {}", objectList);
         return objectList;
     }
+    /**
+     *
+     */
 }

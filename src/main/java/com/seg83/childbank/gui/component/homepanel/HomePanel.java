@@ -17,6 +17,9 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
 
+/**
+ * This class represents the HomePanel component of the GUI.
+ */
 @Component
 @Slf4j
 public class HomePanel {
@@ -36,6 +39,10 @@ public class HomePanel {
     private JPanel currPanel;
     private JLabel currLabel;
 
+    /**
+     * Constructor for HomePanel class.
+     * Initializes action listeners for buttons.
+     */
     public HomePanel() {
         quickDepositButton.addActionListener(e -> {
             log.debug("quickDepositButton clicked");
@@ -50,6 +57,9 @@ public class HomePanel {
         });
     }
 
+    /**
+     * Updates the current balance displayed on the UI.
+     */
     public void updateCurrentBallance() {
         String newBalance = currentService.toUiContent(); // 获取格式化后的余额字符串
         currLabel.setText(newBalance);
@@ -70,6 +80,9 @@ public class HomePanel {
      * DO NOT edit this method OR call it in your code!
      *
      * @noinspection ALL
+     */
+    /**
+     * This method initializes the UI components of the HomePanel.
      */
     private void $$$setupUI$$$() {
         rootHomePanel = new JPanel();
@@ -143,6 +156,15 @@ public class HomePanel {
     /**
      * @noinspection ALL
      */
+    /**
+     * This method retrieves a font with the specified name, style, and size, falling back to the current font if necessary.
+     *
+     * @param fontName     the name of the font
+     * @param style        the style of the font (e.g., Font.PLAIN, Font.BOLD, Font.ITALIC)
+     * @param size         the size of the font
+     * @param currentFont  the current font to use as fallback
+     * @return             the retrieved font
+     */
     private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
         if (currentFont == null) return null;
         String resultName;
@@ -162,11 +184,18 @@ public class HomePanel {
         return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
+
     /**
      * @noinspection ALL
+     */
+    /**
+     * Retrieves the root component of the HomePanel.
+     *
+     * @return the root component of the HomePanel
      */
     public JComponent $$$getRootComponent$$$() {
         return rootHomePanel;
     }
+
 
 }

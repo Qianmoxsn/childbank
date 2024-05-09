@@ -9,15 +9,32 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Represents the Data Access Object for History related operations
+ */
 @Repository
 @Slf4j
 public class HistoryDao extends AbstractDao {
+    /**
+     * The DataWrapperDao used for accessing the underlying data store
+     */
     private final DataWrapperDao dataWrapperDao;
+
+    /**
+     * Constructs a new HistoryDao with the provided DataWrapperDao
+     * @param dataWrapperDao the DataWrapperDao for accessing the data store
+     */
 
     @Autowired
     public HistoryDao(DataWrapperDao dataWrapperDao) {
         this.dataWrapperDao = dataWrapperDao;
     }
+
+    /**
+     * Loads the history data in JSON format
+     * @return a JSONObject containing the history data
+     */
+
 
     @Override
     JSONObject load() {
@@ -26,6 +43,12 @@ public class HistoryDao extends AbstractDao {
         log.debug("Get history data {}", history);
         return history;
     }
+
+    /**
+     * Sets the specified attribute of the history data
+     * @param attrname the name of the attribute
+     * @param value    the value of the attribute
+     */
 
     //TODO: implement
     @Override
@@ -41,12 +64,24 @@ public class HistoryDao extends AbstractDao {
         this.dataWrapperDao.setAttribute("history", modifiedHistory);
     }
 
+    /**
+     * Helper method to set the historyActions attribute of the history data
+     * @param value the new list of HistoryActions
+     * @return the modified History object
+     */
+
     //TODO: need tests
     private History setHistoryActions(List<HistoryActions> value) {
         History history = this.load().toJavaObject(History.class);
         history.setHistoryActions(value);
         return history;
     }
+
+    /**
+     * Gets the value of the specified attribute from the history data
+     * @param attrname the name of the attribute to get
+     * @return the value of the attribute
+     */
 
     @Override
     Object getAttribute(String attrname) {
@@ -55,6 +90,11 @@ public class HistoryDao extends AbstractDao {
             default -> throw new RuntimeException("Invalid attribute name");
         };
     }
+
+    /**
+     * Helper method to get the historyActions attribute from the history data
+     * @return the list of HistoryActions
+     */
 
 //    public Object getAttribute(String attrname, int historyId) {
 //        return switch (attrname) {
@@ -70,6 +110,11 @@ public class HistoryDao extends AbstractDao {
         log.debug("Get historyActions {}", historyActions);
         return historyActions;
     }
+
+    /**
+     * Placeholder method for retrieving all attributes of the history data
+     * @return null
+     */
 
     //TODO: implement
     @Override

@@ -14,17 +14,29 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 
+/**
+ * A JDialog component that facilitates depositing money into a current account
+ * It includes fields for entering the amount and password, and buttons for OK and Cancel actions
+ */
 @Component
 @Slf4j
 public class DepositPop extends JDialog {
+    /**
+     * The CurrentService instance used for depositing money into a current account
+     * This field is autowired by Spring
+     */
     @Autowired
     CurrentService currentService;
-
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField textField1;
     private JPasswordField passwordField1;
+
+    /**
+     * Constructs a new DepositPop dialog
+     * Initializes the UI components, sets up event listeners, and defines default behaviors
+     */
 
     public DepositPop() {
         $$$setupUI$$$();
@@ -56,6 +68,12 @@ public class DepositPop extends JDialog {
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * Handles the OK button click event
+     * Validates the amount and password entered by the user, deposits the amount into the current account
+     * and then disposes of the dialog
+     */
+
     //TODO: 密码验证
     private void onOK() {
         // get the amount and password
@@ -76,10 +94,19 @@ public class DepositPop extends JDialog {
         dispose();
     }
 
+    /**
+     * Handles the Cancel button click event and the window closing event
+     * Disposes of the dialog
+     */
+
     private void onCancel() {
         // 必要时在此处添加您的代码
         dispose();
     }
+
+    /**
+     * Initializes the DepositPop dialog by packing it, centering it on the screen, and making it visible
+     */
 
     public void init() {
         log.debug("Initializing DepositePop dialog");
@@ -87,6 +114,9 @@ public class DepositPop extends JDialog {
         setLocationRelativeTo(null);  // null 使窗口居中于屏幕
         this.setVisible(true);
     }
+    /**
+     * Generated method by IntelliJ IDEA GUI Designer to set up the UI components
+     */
 
 
     /**
