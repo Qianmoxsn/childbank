@@ -3,6 +3,8 @@ package com.seg83.childbank.gui.component.currentpop;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.seg83.childbank.dao.AccountDao;
+import com.seg83.childbank.dao.AdminDao;
 import com.seg83.childbank.service.CurrentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ import java.util.Arrays;
 public class DepositPop extends JDialog {
     @Autowired
     CurrentService currentService;
+
+    @Autowired
+    AdminDao adminDao;
 
     private JPanel contentPane;
     private JButton buttonOK;
@@ -56,12 +61,12 @@ public class DepositPop extends JDialog {
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    //TODO: 密码验证
     private void onOK() {
         // get the amount and password
         String amount = textField1.getText();
         int amountInt;
-        String password = Arrays.toString(passwordField1.getPassword());
+        char[] pass = passwordField1.getPassword();
+        String password = new String(pass);
         log.debug("Amount: {}, Password: {}", amount, password);
 
         // ammount should be a integer
@@ -72,8 +77,16 @@ public class DepositPop extends JDialog {
             JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        currentService.depositCurrentAccount(amountInt);
-        dispose();
+
+
+        String target = (String) adminDao.getAttribute("adminPassword");
+        boolean check = password.equals(target);
+        if (!check) {
+            JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            currentService.depositCurrentAccount(amountInt);
+            dispose();
+        }
     }
 
     private void onCancel() {

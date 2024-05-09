@@ -3,6 +3,8 @@ package com.seg83.childbank.gui.component.currentpop;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
+import com.seg83.childbank.dao.AccountDao;
+import com.seg83.childbank.dao.AdminDao;
 import com.seg83.childbank.service.CurrentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ import java.util.Arrays;
 public class WithdrawPop extends JDialog {
     @Autowired
     CurrentService currentService;
+
+    @Autowired
+    AccountDao accountDao;
 
     private JPanel contentPane;
     private JButton buttonOK;
@@ -54,13 +59,13 @@ public class WithdrawPop extends JDialog {
         // 遇到 ESCAPE 时调用 onCancel()
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-
-    //TODO: 密码验证
+    
     private void onOK() {
         // get the amount and password
         String amount = textField1.getText();
         int amountInt;
-        String password = Arrays.toString(passwordField1.getPassword());
+        char[] pass = passwordField1.getPassword();
+        String password = new String(pass);
         log.debug("Amount: {}, Password: {}", amount, password);
 
         // ammount should be a integer
@@ -71,8 +76,15 @@ public class WithdrawPop extends JDialog {
             JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        currentService.withdrawCurrentAccount(amountInt);
-        dispose();
+
+        String target = (String) accountDao.getAttribute("accountPassword");
+        boolean check = password.equals(target);
+        if (!check) {
+            JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            currentService.withdrawCurrentAccount(amountInt);
+            dispose();
+        }
     }
 
     private void onCancel() {
