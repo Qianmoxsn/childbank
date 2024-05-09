@@ -42,7 +42,6 @@ public class MainFrame extends JFrame {
     public void init() {
         if (setupService.checkFirstLogin()) {
             initWelcomePanel();
-            setupService.setFirstLogin();
         } else {
             initHomePanel();
         }
