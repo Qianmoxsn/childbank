@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 @Component
 @Slf4j
@@ -34,6 +32,7 @@ public class SetupPanel {
     private JPasswordField passwordField3;
     private JPasswordField passwordField4;
     private JButton startButton;
+    private JTextPane welcomeToTheVirtualTextPane;
 
     public SetupPanel() {
         btnAdmin.addActionListener(e -> {
@@ -111,6 +110,13 @@ public class SetupPanel {
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane1.addTab("Introduction", panel1);
         panel1.setBorder(BorderFactory.createTitledBorder(null, "Intro", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel1.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        welcomeToTheVirtualTextPane = new JTextPane();
+        welcomeToTheVirtualTextPane.setBackground(new Color(-1118482));
+        welcomeToTheVirtualTextPane.setEditable(false);
+        welcomeToTheVirtualTextPane.setText("Welcome to the Virtual Bank Application for Kids, designed to be a secure and educational tool that grows with your child on their financial literacy journey. In this application, all deposits require a parental permission password to ensure security, while withdrawals can be managed independently by children within preset limits using their transaction password. Parents have the ability to assign tasks and set rewards, allowing them to oversee task completion and reward achievements directly through the app. Additionally, the app includes robust security settings for managing password changes and account resets. A dedicated section for app functionalities and contact information is available for help and support. Our Virtual Bank Application for Kids is more than just a tool; it is a rich and supportive environment aimed at nurturing financially savvy children. We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids!  Now, let's set two passwords for admin and kids first!");
+        scrollPane1.setViewportView(welcomeToTheVirtualTextPane);
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(8, 1, new Insets(0, 0, 0, 0), -1, -1));
         tabbedPane1.addTab("AdminPassword", panel2);
