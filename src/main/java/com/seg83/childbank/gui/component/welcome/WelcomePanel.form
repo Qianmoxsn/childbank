@@ -34,7 +34,9 @@
           </grid>
         </constraints>
         <properties>
-          <text value="We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids!       "/>
+          <background color="-1118482"/>
+          <editable value="false"/>
+          <text value="We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids! "/>
         </properties>
       </component>
     </children>
