@@ -82,6 +82,12 @@ public class AdminDao extends AbstractDao {
         return admin;
     }
 
+    /**
+     * Sets the password for the admin account
+     * @param firstLogin
+     * @return The updated Admin object with the new password set
+     */
+
     private Admin setFirstLogin(boolean firstLogin) {
         Admin admin = this.load().toJavaObject(Admin.class);
         admin.setFirstLogin(firstLogin);
@@ -114,6 +120,11 @@ public class AdminDao extends AbstractDao {
         log.debug("Get adminPassword {}", adminPassword);
         return adminPassword;
     }
+    /**
+     * Retrieves the password for the admin account.
+     *
+     * @return The password for the admin account.
+     */
 
     private boolean getFirstLogin() {
         log.info("Request firstLogin");
