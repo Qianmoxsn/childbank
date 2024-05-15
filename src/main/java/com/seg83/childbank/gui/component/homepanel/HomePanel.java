@@ -16,8 +16,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.text.StyleContext;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Locale;
 
 /**
@@ -90,9 +88,6 @@ public class HomePanel {
      * DO NOT edit this method OR call it in your code!
      *
      * @noinspection ALL
-     */
-    /**
-     * This method initializes the UI components of the HomePanel.
      */
     private void $$$setupUI$$$() {
         rootHomePanel = new JPanel();
@@ -171,15 +166,6 @@ public class HomePanel {
     /**
      * @noinspection ALL
      */
-    /**
-     * This method retrieves a font with the specified name, style, and size, falling back to the current font if necessary.
-     *
-     * @param fontName     the name of the font
-     * @param style        the style of the font (e.g., Font.PLAIN, Font.BOLD, Font.ITALIC)
-     * @param size         the size of the font
-     * @param currentFont  the current font to use as fallback
-     * @return             the retrieved font
-     */
     private Font $$$getFont$$$(String fontName, int style, int size, Font currentFont) {
         if (currentFont == null) return null;
         String resultName;
@@ -199,18 +185,11 @@ public class HomePanel {
         return fontWithFallback instanceof FontUIResource ? fontWithFallback : new FontUIResource(fontWithFallback);
     }
 
-
     /**
      * @noinspection ALL
-     */
-    /**
-     * Retrieves the root component of the HomePanel.
-     *
-     * @return the root component of the HomePanel
      */
     public JComponent $$$getRootComponent$$$() {
         return rootHomePanel;
     }
-
 
 }

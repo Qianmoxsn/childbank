@@ -16,7 +16,8 @@ public class InterestService {
     @Autowired
     private CurrentAccountDao currentAccountDao;
 
-    @Autowired CurrentService currentService;
+    @Autowired
+    CurrentService currentService;
 
     @Autowired
     private HistoryActionsDao historyActionsDao;
@@ -42,7 +43,7 @@ public class InterestService {
         currentService.payDailyCurrentInterest(interest);
     }
 
-    public void calculateCurrentInterest(){
+    public void calculateCurrentInterest() {
         // Check days not paid the interest
         Date lastInterestDate = convert.StringToDate((String) currentAccountDao.getAttribute("lastInterestDate"));
         Date currentDate = new Date();
