@@ -92,7 +92,7 @@ public class TestCurrentAccountDao {
     @Test
     public void testGetLastInterestDate() {
         log.info("Testing :: get last interest date");
-        assertEquals("2024-05-14 12:34:56", (String) currentAccountDao.getAttribute("lastInterestDate"));
+        assertEquals("2024-05-01 12:34:56", (String) currentAccountDao.getAttribute("lastInterestDate"));
     }
 
     @Test
