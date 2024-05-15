@@ -4,6 +4,7 @@ import com.seg83.childbank.gui.component.homepanel.HomePanel;
 import com.seg83.childbank.gui.component.welcome.SetupPanel;
 import com.seg83.childbank.gui.component.welcome.WelcomePanel;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
+import com.seg83.childbank.service.InterestService;
 import com.seg83.childbank.service.SetupService;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ public class MainFrame extends JFrame {
     private WelcomePanel welcomePanel;
     private SetupPanel setupPanel;
     private SetupService setupService;
+    private InterestService interestService;
 
     public MainFrame() throws HeadlessException {
         setTitle("ChildBank");
@@ -31,11 +33,12 @@ public class MainFrame extends JFrame {
     }
 
     @Autowired
-    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService) {
+    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService) {
         this.homePanel = homePanel;
         this.welcomePanel = welcomePanel;
         this.setupPanel = setupPanel;
         this.setupService = setupService;
+        this.interestService = interestService;
     }
 
     @PostConstruct
@@ -81,6 +84,7 @@ public class MainFrame extends JFrame {
 
     private void initHomePanel() {
         homePanel.$$$getRootComponent$$$().updateUI();
+        interestService.calculateCurrentInterest();
         homePanel.updateCurrentBallance();
 
         setContentPane(this.homePanel.$$$getRootComponent$$$());

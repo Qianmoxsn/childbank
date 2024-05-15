@@ -24,6 +24,7 @@
       //  CurrentAccount.java
       "currentAccountAmount": 1000.0,
       "currentAccountRate": 0.3,
+      "lastInterestDate": "2024-05-01 12:34:56",
     },
   },
   "history": {

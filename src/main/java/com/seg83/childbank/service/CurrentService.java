@@ -50,6 +50,15 @@ public class CurrentService {
         historyService.createOperationHistory(amount, "current deposit");
     }
 
+    public void payDailyCurrentInterest(double amount){
+        double currentAmount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
+        double newAmount = currentAmount + amount;
+        currentAccountDao.setAttribute("currentAccountAmount", newAmount);
+        log.info("Deposit current {} now {} -> {}", amount, currentAmount, newAmount);
+        // Create a history
+        historyService.createOperationHistory(amount, "daily interest");
+    }
+
     // TODO: Overflow detection
     /**
      * Withdraws an amount from the current account.

@@ -88,4 +88,17 @@ public class TestCurrentAccountDao {
         currentAccountDao.setAttribute("currentAccountRate", 0.4);
         assertEquals(0.4, (Double) currentAccountDao.getAttribute("currentAccountRate"));
     }
+
+    @Test
+    public void testGetLastInterestDate() {
+        log.info("Testing :: get last interest date");
+        assertEquals("2024-05-14 12:34:56", (String) currentAccountDao.getAttribute("lastInterestDate"));
+    }
+
+    @Test
+    public void testSetLastInterestDate() {
+        log.info("Testing :: set last interest date");
+        currentAccountDao.setAttribute("lastInterestDate", "2021-01-01 11:11:11");
+        assertEquals("2021-01-01 11:11:11", (String) currentAccountDao.getAttribute("lastInterestDate"));
+    }
 }
