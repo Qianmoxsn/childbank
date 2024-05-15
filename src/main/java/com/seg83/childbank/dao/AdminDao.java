@@ -25,7 +25,6 @@ public class AdminDao extends AbstractDao {
      *
      * @param dataWrapperDao Instance of DataWrapperDao
      */
-
     @Autowired
     public AdminDao(DataWrapperDao dataWrapperDao) {
         this.dataWrapperDao = dataWrapperDao;
@@ -36,7 +35,6 @@ public class AdminDao extends AbstractDao {
      *
      * @return The JSONObject object that contains the administrator data
      */
-
     @Override
     public JSONObject load() {
         log.info("Request admin data in JSON format");
@@ -51,7 +49,6 @@ public class AdminDao extends AbstractDao {
      * @param attrname the name of the attribute
      * @param value    the value of the attribute
      */
-
     @Override
     public void setAttribute(String attrname, Object value) {
         Admin modifiedAdmin;
@@ -72,10 +69,9 @@ public class AdminDao extends AbstractDao {
     /**
      * Gets the administrator's property value based on the property name.
      *
-     * @param password
+     * @param password the administrator's password
      * @return attribute value
      */
-
     private Admin setAdminPassword(String password) {
         Admin admin = this.load().toJavaObject(Admin.class);
         admin.setAdminPassword(password);
@@ -103,11 +99,10 @@ public class AdminDao extends AbstractDao {
     }
 
     /**
-     * Gets all of the administrator's property values and returns them as a list
+     * Private method to get the administrator's password
      *
-     * @return contains a list of all property values for the administrator
+     * @return Administrator password
      */
-
     private String getAdminPassword() {
         log.info("Request adminPassword");
         String adminPassword = this.load().getString("adminPassword");
@@ -121,10 +116,11 @@ public class AdminDao extends AbstractDao {
         log.debug("Get firstLogin {}", firstLogin);
         return firstLogin;
     }
-    
+
     /**
-     * Private method to get the administrator's password
-     * @return Administrator password
+     * Gets all the administrator's property values and returns them as a list
+     *
+     * @return contains a list of all property values for the administrator
      */
     @Override
     public List<Object> getAllAttributes() {

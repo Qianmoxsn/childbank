@@ -22,9 +22,9 @@ public class CurrentAccountDao extends AbstractDao {
 
     /**
      * Constructs a new CurrentAccountDao with the given AccountDao instance
+     *
      * @param accountDao The AccountDao to use for accessing account data
      */
-
     @Autowired
     public CurrentAccountDao(AccountDao accountDao) {
         this.accountDao = accountDao;
@@ -32,9 +32,9 @@ public class CurrentAccountDao extends AbstractDao {
 
     /**
      * Loads the current account data as a JSON object
+     *
      * @return The current account data as a JSONObject
      */
-
     @Override
     public JSONObject load() {
         log.info("Request current account data in JSON format");
@@ -45,10 +45,10 @@ public class CurrentAccountDao extends AbstractDao {
 
     /**
      * Sets an attribute of the current account
+     *
      * @param attrname the name of the attribute
      * @param value    the value of the attribute
      */
-
     @Override
     public void setAttribute(String attrname, Object value) {
         CurrentAccount modifiedCurrentAccount;
@@ -61,6 +61,10 @@ public class CurrentAccountDao extends AbstractDao {
                 log.info("Setting current account rate to {}", value);
                 modifiedCurrentAccount = this.setCurrentAccountRate((Double) value);
             }
+            case "lastInterestDate" -> {
+                log.info("Setting last interest date to {}", value);
+                modifiedCurrentAccount = this.setLastInterestDate((String) value);
+            }
             default -> throw new RuntimeException("Invalid attribute name");
         }
         accountDao.setAttribute("currentAccount", modifiedCurrentAccount);
@@ -68,10 +72,10 @@ public class CurrentAccountDao extends AbstractDao {
 
     /**
      * Sets the current account amount
+     *
      * @param value The new account amount
      * @return The modified CurrentAccount instance
      */
-
     private CurrentAccount setCurrentAccountAmount(Double value) {
         CurrentAccount currentAccount = this.load().toJavaObject(CurrentAccount.class);
         currentAccount.setCurrentAccountAmount(value);
@@ -80,36 +84,44 @@ public class CurrentAccountDao extends AbstractDao {
 
     /**
      * Sets the current account rate
+     *
      * @param value The new account rate
      * @return The modified CurrentAccount instance
      */
-
     private CurrentAccount setCurrentAccountRate(Double value) {
         CurrentAccount currentAccount = this.load().toJavaObject(CurrentAccount.class);
         currentAccount.setCurrentAccountRate(value);
         return currentAccount;
     }
 
+
+    private CurrentAccount setLastInterestDate(String value) {
+        CurrentAccount currentAccount = this.load().toJavaObject(CurrentAccount.class);
+        currentAccount.setLastInterestDate(value);
+        return currentAccount;
+    }
+
     /**
      * Gets an attribute of the current account
+     *
      * @param attrname the name of the attribute to get
      * @return The value of the attribute
      */
-
     @Override
     public Object getAttribute(String attrname) {
         return switch (attrname) {
             case "currentAccountAmount" -> this.getCurrentAccountAmount();
             case "currentAccountRate" -> this.getCurrentAccountRate();
+            case "lastInterestDate" -> this.getLastInterestDate();
             default -> throw new RuntimeException("Invalid attribute name");
         };
     }
 
     /**
      * Gets the current account amount
+     *
      * @return The current account amount
      */
-
     private double getCurrentAccountAmount() {
         log.info("Request current account amount");
         double currentAccountAmount = this.load().getDouble("currentAccountAmount");
@@ -119,9 +131,9 @@ public class CurrentAccountDao extends AbstractDao {
 
     /**
      * Gets the current account rate
+     *
      * @return The current account rate
      */
-
     private double getCurrentAccountRate() {
         log.info("Request current account rate");
         double currentAccountRate = this.load().getDouble("currentAccountRate");
@@ -129,11 +141,18 @@ public class CurrentAccountDao extends AbstractDao {
         return currentAccountRate;
     }
 
+    private String getLastInterestDate() {
+        log.info("Request last interest date");
+        String lastInterestDate = this.load().getString("lastInterestDate");
+        log.debug("Get last interest date: {}", lastInterestDate);
+        return lastInterestDate;
+    }
+
     /**
      * Gets all attributes of the current account as a list of objects
+     *
      * @return A list containing all attributes of the current account
      */
-
     @Override
     public List<Object> getAllAttributes() {
         log.info("Request all attributes of current account");

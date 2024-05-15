@@ -1,6 +1,7 @@
 package com.seg83.childbank.gui.event;
 
 import org.springframework.context.ApplicationEvent;
+
 /**
  * The PanelSwitchEvent class represents an event indicating a panel switch.
  */

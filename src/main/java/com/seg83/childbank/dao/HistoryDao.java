@@ -22,9 +22,9 @@ public class HistoryDao extends AbstractDao {
 
     /**
      * Constructs a new HistoryDao with the provided DataWrapperDao
+     *
      * @param dataWrapperDao the DataWrapperDao for accessing the data store
      */
-
     @Autowired
     public HistoryDao(DataWrapperDao dataWrapperDao) {
         this.dataWrapperDao = dataWrapperDao;
@@ -32,10 +32,9 @@ public class HistoryDao extends AbstractDao {
 
     /**
      * Loads the history data in JSON format
+     *
      * @return a JSONObject containing the history data
      */
-
-
     @Override
     JSONObject load() {
         log.info("Request history data in JSON format");
@@ -46,10 +45,10 @@ public class HistoryDao extends AbstractDao {
 
     /**
      * Sets the specified attribute of the history data
+     *
      * @param attrname the name of the attribute
      * @param value    the value of the attribute
      */
-
     //TODO: implement
     @Override
     void setAttribute(String attrname, Object value) {
@@ -66,10 +65,10 @@ public class HistoryDao extends AbstractDao {
 
     /**
      * Helper method to set the historyActions attribute of the history data
+     *
      * @param value the new list of HistoryActions
      * @return the modified History object
      */
-
     //TODO: need tests
     private History setHistoryActions(List<HistoryActions> value) {
         History history = this.load().toJavaObject(History.class);
@@ -79,10 +78,10 @@ public class HistoryDao extends AbstractDao {
 
     /**
      * Gets the value of the specified attribute from the history data
+     *
      * @param attrname the name of the attribute to get
      * @return the value of the attribute
      */
-
     @Override
     public Object getAttribute(String attrname) {
         return switch (attrname) {
@@ -93,16 +92,9 @@ public class HistoryDao extends AbstractDao {
 
     /**
      * Helper method to get the historyActions attribute from the history data
+     *
      * @return the list of HistoryActions
      */
-
-//    public Object getAttribute(String attrname, int historyId) {
-//        return switch (attrname) {
-//            case "historyActions" -> this.getHistoryActions(historyId);
-//            default -> throw new RuntimeException("Invalid attribute name");
-//        };
-//    }
-
     //TODO: need tests
     private List<HistoryActions> getHistoryActions() {
         log.info("Getting historyActions");
@@ -113,9 +105,9 @@ public class HistoryDao extends AbstractDao {
 
     /**
      * Placeholder method for retrieving all attributes of the history data
+     *
      * @return null
      */
-
     //TODO: implement
     @Override
     List<Object> getAllAttributes() {

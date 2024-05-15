@@ -38,7 +38,7 @@ public class HistoryService {
         return data;
     }
 
-    public void createOperationHistory(double amount, String type){
+    public void createOperationHistory(double amount, String type) {
         Date datetime = new Date();
         log.info("Creating Operation History @ {} for {}", datetime, type);
         historyActionsDao.createHistoryAction(datetime, amount, type);

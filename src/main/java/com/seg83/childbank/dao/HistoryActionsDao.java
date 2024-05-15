@@ -31,10 +31,10 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Constructs a new HistoryActionsDao with the given HistoryDao and StringDateConvert instances
+     *
      * @param historyDao The HistoryDao instance to use
-     * @param convert The StringDateConvert utility instance
+     * @param convert    The StringDateConvert utility instance
      */
-
     @Autowired
     public HistoryActionsDao(HistoryDao historyDao, StringDateConvert convert) {
         this.historyDao = historyDao;
@@ -44,9 +44,9 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Loads the history actions data in JSON format
+     *
      * @return A JSONArray containing the history actions data
      */
-
     @Override
     JSONArray load() {
         log.info("Request history actions data in JSON format");
@@ -59,7 +59,6 @@ public class HistoryActionsDao extends AbstractArrayDao {
     /**
      * Retrieves the count of elements in the history actions array
      */
-
     @Override
     void getElementCount() {
         log.info("Request history actions count");
@@ -69,10 +68,10 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Gets a HistoryActions object by its history ID
+     *
      * @param historyId the id of the object The ID of the history action to retrieve
      * @return The HistoryActions object with the specified ID
      */
-
     @Override
     HistoryActions getElementById(long historyId) {
         log.info("Request historyAction with id {}", historyId);
@@ -88,11 +87,11 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Sets an attribute of a history action by its history ID
-     * @param attrname the name of the attribute to set
-     * @param value    The new value for the attribute
-     * @param historyId       the id of the history action
+     *
+     * @param attrname  the name of the attribute to set
+     * @param value     The new value for the attribute
+     * @param historyId the id of the history action
      */
-
     @Override
     void setAttribute(String attrname, Object value, long historyId) {
         switch (attrname) {
@@ -114,40 +113,40 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Sets the history date time for a history action
+     *
      * @param historyId The ID of the history action
-     * @param value The new date time value
+     * @param value     The new date time value
      */
-
     private void setHistoryDateTime(long historyId, Date value) {
 
     }
 
     /**
      * Sets the history amount for a history action
+     *
      * @param historyId The ID of the history action
-     * @param value The new amount value
+     * @param value     The new amount value
      */
-
     private void setHistoryAmount(long historyId, double value) {
 
     }
 
     /**
      * Sets the history type for a history action
+     *
      * @param historyId The ID of the history action
-     * @param value The new type value
+     * @param value     The new type value
      */
-
     private void setHistoryType(long historyId, String value) {
     }
 
     /**
      * Creates a new history action and adds it to the history actions array
+     *
      * @param datetime The date and time of the history action
      * @param amount   The amount associated with the history action
-     * @param type The type of the history action
+     * @param type     The type of the history action
      */
-
     public void createHistoryAction(Date datetime, double amount, String type) {
         log.info("Create history action with date time {}, amount {}, type {}", datetime, amount, type);
         HistoryActions newHistoryAction = new HistoryActions(this.ElementCount + 1, this.convert.DateToString(datetime), amount, type);
@@ -162,12 +161,12 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Gets an attribute of a history action by its history ID
-     * @param attrname the name of the attribute to retrieve
-     * @param historyId       the id of the element
+     *
+     * @param attrname  the name of the attribute to retrieve
+     * @param historyId the id of the element
      * @return The value of the attribute
      * @throws RuntimeException If the history ID is out of range or an invalid attribute name is provided
      */
-
     @Override
     public Object getAttribute(String attrname, long historyId) {
         if (historyId < 0 || historyId > this.ElementCount) {
@@ -183,10 +182,10 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Gets the history date time for a history action
+     *
      * @param historyId The ID of the history action
      * @return The date and time of the history action
      */
-
     private Object getHistoryDateTime(long historyId) {
         log.info("Request history date time for history id {}", historyId);
         Date historyDateTime = this.convert.StringToDate(this.getElementById(historyId).getHistoryDateTime());
@@ -196,10 +195,10 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Gets the history amount for a history action
+     *
      * @param historyId The ID of the history action
      * @return The amount associated with the history action
      */
-
     private Object getHistoryAmount(long historyId) {
         log.info("Request history amount for history id {}", historyId);
         double historyAmount = this.getElementById(historyId).getHistoryAmount();
@@ -209,10 +208,10 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Gets the history type for a history action
+     *
      * @param historyId The ID of the history action
      * @return The type of the history action
      */
-
     private Object getHistoryType(long historyId) {
         log.info("Request history type for history id {}", historyId);
         String historyType = this.getElementById(historyId).getHistoryType();
@@ -222,9 +221,9 @@ public class HistoryActionsDao extends AbstractArrayDao {
 
     /**
      * Gets all attributes of all history actions
+     *
      * @return A list containing all attributes of all history actions
      */
-
     //TODO: Implement this method
     @Override
     List<Object> getAllAttributes() {

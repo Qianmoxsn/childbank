@@ -12,4 +12,7 @@ public class CurrentAccount {
 
     @JSONField(name = "currentAccountRate")
     private double currentAccountRate;
+
+    @JSONField(name = "lastInterestDate")
+    private String lastInterestDate;
 }
