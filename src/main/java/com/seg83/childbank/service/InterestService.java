@@ -61,5 +61,8 @@ public class InterestService {
         for (int i = 0; i < diffDays; i++) {
             dailyCurrentInterest();
         }
+
+        // Update the last interest date
+        currentAccountDao.setAttribute("lastInterestDate", convert.DateToString(currentDate));
     }
 }
