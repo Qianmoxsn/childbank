@@ -36,12 +36,13 @@ public class HomePanel {
     private JPanel rootHomePanel;
     private JButton quickDepositButton;
     private JButton quickWithdrawalButton;
-    private JButton depositAndWithdrawalSettlementButton;
+    private JButton currentDepositAndWithdrawalButton;
     private JButton tasksAndRewardsButton;
     private JButton systemSettingsButton;
     private JPanel currPanel;
     private JLabel currLabel;
     private JButton operationHistoryButton;
+    private JButton fixedDepositAndWithdrawalButton;
 
     /**
      * Constructor for HomePanel class.
@@ -124,9 +125,9 @@ public class HomePanel {
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridLayoutManager(7, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel4.add(panel5, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        depositAndWithdrawalSettlementButton = new JButton();
-        depositAndWithdrawalSettlementButton.setText("Deposit and withdrawal settlement");
-        panel5.add(depositAndWithdrawalSettlementButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        currentDepositAndWithdrawalButton = new JButton();
+        currentDepositAndWithdrawalButton.setText("Deposit and withdrawal settlement");
+        panel5.add(currentDepositAndWithdrawalButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         panel5.add(spacer1, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         tasksAndRewardsButton = new JButton();
