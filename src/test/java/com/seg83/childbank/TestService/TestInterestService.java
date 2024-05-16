@@ -87,6 +87,9 @@ public class TestInterestService {
         // Check the current account balance
         assertEquals(102.01, currentAccountDao.getAttribute("currentAccountAmount"));
 
+        // Check lastInterestDate
+        assertEquals(convert.DateToString(currentDate), currentAccountDao.getAttribute("lastInterestDate"));
+
         // Check history(contains HistoryActions(historyId=6, historyAmount=1.01, historyType=daily interest))
         assertEquals(1.01, historyActionsDao.getAttribute("historyAmount", 6));
         assertEquals("daily interest", historyActionsDao.getAttribute("historyType", 6));
