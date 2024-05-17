@@ -28,7 +28,7 @@ public class WelcomePanel {
     public WelcomePanel() {
         setupButton.addActionListener(e -> {
             log.info("Setup button clicked");
-            // Switch to setup panel
+            // Switch to Setup panel
             publisher.publishEvent(new PanelSwitchEvent(this, "setup"));
         });
     }

@@ -83,4 +83,9 @@ public class SetupService {
         log.info("Setting first login");
         adminDao.setAttribute("firstLogin", false);
     }
+
+    public void resetFirstLogin() {
+        log.info("Resetting first login");
+        adminDao.setAttribute("firstLogin", true);
+    }
 }
