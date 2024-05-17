@@ -1,6 +1,8 @@
 package com.seg83.childbank.gui.component;
 
+import com.seg83.childbank.gui.component.fixedpanel.FixedAccountPanel;
 import com.seg83.childbank.gui.component.homepanel.HomePanel;
+import com.seg83.childbank.gui.component.settingpanel.SettingsPanel;
 import com.seg83.childbank.gui.component.welcome.SetupPanel;
 import com.seg83.childbank.gui.component.welcome.WelcomePanel;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
@@ -21,6 +23,9 @@ public class MainFrame extends JFrame {
     private HomePanel homePanel;
     private WelcomePanel welcomePanel;
     private SetupPanel setupPanel;
+    private SettingsPanel settingsPanel;
+    private FixedAccountPanel fixedAccountPanel;
+
     private SetupService setupService;
     private InterestService interestService;
 
@@ -33,12 +38,15 @@ public class MainFrame extends JFrame {
     }
 
     @Autowired
-    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService) {
+    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
+                           SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel) {
         this.homePanel = homePanel;
         this.welcomePanel = welcomePanel;
         this.setupPanel = setupPanel;
         this.setupService = setupService;
         this.interestService = interestService;
+        this.settingsPanel = settingsPanel;
+        this.fixedAccountPanel = fixedAccountPanel;
     }
 
     @PostConstruct
@@ -53,14 +61,11 @@ public class MainFrame extends JFrame {
     @EventListener
     public void onPanelSwitch(PanelSwitchEvent event) {
         switch (event.getPanelName()) {
-            case "setup":
-                initSetupPanel();
-                break;
-            case "home":
-                initHomePanel();
-                break;
-            default:
-                break;
+            case "setup" -> initSetupPanel();
+            case "home" -> initHomePanel();
+            case "setting" -> initSettingsPanel();
+            case "fixed" -> initFixedAccountPanel();
+            default -> throw new IllegalArgumentException("Unknown panel name: " + event.getPanelName());
         }
     }
 
@@ -92,5 +97,23 @@ public class MainFrame extends JFrame {
         revalidate();
         repaint();
         log.info("Create homePanel in MainFrame");
+    }
+
+    private void initSettingsPanel() {
+        settingsPanel.$$$getRootComponent$$$().updateUI();
+        setContentPane(this.settingsPanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create settingPanel in MainFrame");
+    }
+
+    private void initFixedAccountPanel() {
+        fixedAccountPanel.$$$getRootComponent$$$().updateUI();
+        setContentPane(this.fixedAccountPanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create fixedAccountPanel in MainFrame");
     }
 }

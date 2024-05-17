@@ -1,4 +1,4 @@
-package com.seg83.childbank.gui.component.currentpop;
+package com.seg83.childbank.gui.component.homepanel.homepop;
 
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;

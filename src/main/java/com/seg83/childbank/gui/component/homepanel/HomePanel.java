@@ -3,12 +3,14 @@ package com.seg83.childbank.gui.component.homepanel;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.seg83.childbank.gui.component.currentpop.DepositPop;
-import com.seg83.childbank.gui.component.currentpop.HistoryPop;
-import com.seg83.childbank.gui.component.currentpop.WithdrawPop;
+import com.seg83.childbank.gui.component.homepanel.homepop.DepositPop;
+import com.seg83.childbank.gui.component.homepanel.homepop.HistoryPop;
+import com.seg83.childbank.gui.component.homepanel.homepop.WithdrawPop;
+import com.seg83.childbank.gui.event.PanelSwitchEvent;
 import com.seg83.childbank.service.CurrentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
@@ -32,11 +34,13 @@ public class HomePanel {
     WithdrawPop withdrawPop;
     @Autowired
     HistoryPop historyPop;
+    @Autowired
+    private ApplicationEventPublisher publisher;
 
     private JPanel rootHomePanel;
     private JButton quickDepositButton;
     private JButton quickWithdrawalButton;
-    private JButton currentDepositAndWithdrawalButton;
+    private JButton currentAccountOperationButton;
     private JButton tasksAndRewardsButton;
     private JButton systemSettingsButton;
     private JPanel currPanel;
@@ -63,6 +67,14 @@ public class HomePanel {
         operationHistoryButton.addActionListener(e -> {
             log.debug("operationHistoryButton clicked");
             historyPop.init();
+        });
+        systemSettingsButton.addActionListener(e -> {
+            log.debug("systemSettingsButton clicked");
+            publisher.publishEvent(new PanelSwitchEvent(this, "setting"));
+        });
+        fixedDepositAndWithdrawalButton.addActionListener(e -> {
+            log.debug("fixedDepositAndWithdrawalButton clicked");
+            publisher.publishEvent(new PanelSwitchEvent(this, "fixed"));
         });
     }
 
@@ -125,9 +137,9 @@ public class HomePanel {
         final JPanel panel5 = new JPanel();
         panel5.setLayout(new GridLayoutManager(9, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel4.add(panel5, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        currentDepositAndWithdrawalButton = new JButton();
-        currentDepositAndWithdrawalButton.setText("Current Deposit and withdrawal");
-        panel5.add(currentDepositAndWithdrawalButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        currentAccountOperationButton = new JButton();
+        currentAccountOperationButton.setText("Current Account Operation");
+        panel5.add(currentAccountOperationButton, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer1 = new Spacer();
         panel5.add(spacer1, new GridConstraints(8, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         tasksAndRewardsButton = new JButton();
@@ -141,7 +153,7 @@ public class HomePanel {
         final Spacer spacer3 = new Spacer();
         panel5.add(spacer3, new GridConstraints(6, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         fixedDepositAndWithdrawalButton = new JButton();
-        fixedDepositAndWithdrawalButton.setText("Fixed Deposit and withdrawal");
+        fixedDepositAndWithdrawalButton.setText("Fixed Account Operation");
         panel5.add(fixedDepositAndWithdrawalButton, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final Spacer spacer4 = new Spacer();
         panel5.add(spacer4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));

@@ -90,12 +90,12 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="aad9e" class="javax.swing.JButton" binding="currentDepositAndWithdrawalButton" default-binding="true">
+              <component id="aad9e" class="javax.swing.JButton" binding="currentAccountOperationButton" default-binding="true">
                 <constraints>
                   <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Current Deposit and withdrawal"/>
+                  <text value="Current Account Operation"/>
                 </properties>
               </component>
               <vspacer id="eb08b">
@@ -134,7 +134,7 @@
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Fixed Deposit and withdrawal"/>
+                  <text value="Fixed Account Operation"/>
                 </properties>
               </component>
               <vspacer id="5cf5f">
