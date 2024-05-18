@@ -23,22 +23,22 @@ import java.nio.file.Paths;
 import java.util.List;
 
 /**
- * DataWrapperDao class that handles the data operations related to DataWrapper entity
+ * DataWrapperDao class that handles the data operations related to DataWrapper entity.
  */
 @Repository
 @Slf4j
 public class DataWrapperDao extends AbstractDao {
     /**
-     * The file path where the JSON data is stored
+     * The file path where the JSON data is stored.
      */
-
     private final Resource jsonTemplatePath;
     private final Path jsonFilePath;
 
     /**
-     * Constructs a new DataWrapperDao with the specified JSON file path
+     * Constructs a new DataWrapperDao with the specified JSON file path.
      *
-     * @param jsonFilePath the path to the JSON file
+     * @param jsonTemplatePath the path to the JSON template file.
+     * @param jsonDataPath     the path to the JSON data file.
      */
     public DataWrapperDao(@Value("${json.template-path}") String jsonTemplatePath,
                           @Value("${json.data-path}") String jsonDataPath) {
@@ -62,9 +62,9 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Loads the JSON file and returns its content as a JSONObject
+     * Loads the JSON file and returns its content as a JSONObject.
      *
-     * @return the JSONObject representing the content of the JSON file
+     * @return the JSONObject representing the content of the JSON file.
      */
     public JSONObject loadJsonFile() {
         try {
@@ -73,7 +73,7 @@ public class DataWrapperDao extends AbstractDao {
                 String json = new String(Files.readAllBytes(jsonFilePath), StandardCharsets.UTF_8);
                 return JSONObject.parseObject(json);
             } else if (jsonTemplatePath.exists()) {
-                // 从内部资源读取
+                // Read from internal resource
                 try (InputStream is = jsonTemplatePath.getInputStream()) {
                     String json = new String(is.readAllBytes(), StandardCharsets.UTF_8);
                     return JSONObject.parseObject(json);
@@ -88,9 +88,9 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * the JSONObject representing the content of the JSON file
+     * Saves the DataWrapper object to the JSON file.
      *
-     * @param dataWrapper the DataWrapper object to save
+     * @param dataWrapper the DataWrapper object to save.
      */
     public void saveJsonFile(DataWrapper dataWrapper) {
         try {
@@ -103,7 +103,9 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * @return
+     * Loads the data from the JSON file and returns it as a JSONObject.
+     *
+     * @return the JSONObject representing the data.
      */
     @Override
     public JSONObject load() {
@@ -111,10 +113,10 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Sets the specified attribute of the DataWrapper object and saves it to the JSON file
+     * Sets the specified attribute of the DataWrapper object and saves it to the JSON file.
      *
-     * @param attrname the name of the attribute to set
-     * @param value    the value of the attribute
+     * @param attrname the name of the attribute to set.
+     * @param value    the value of the attribute.
      */
     @Override
     public void setAttribute(String attrname, Object value) {
@@ -129,10 +131,10 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Sets the account attribute of the DataWrapper object
+     * Sets the account attribute of the DataWrapper object.
      *
-     * @param value the new Account object to set
-     * @return the modified DataWrapper object
+     * @param value the new Account object to set.
+     * @return the modified DataWrapper object.
      */
     private DataWrapper setAccount(Account value) {
         DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
@@ -141,10 +143,10 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Sets the admin attribute of the DataWrapper object
+     * Sets the admin attribute of the DataWrapper object.
      *
-     * @param value the new Admin object to set
-     * @return the modified DataWrapper object
+     * @param value the new Admin object to set.
+     * @return the modified DataWrapper object.
      */
     private DataWrapper setAdmin(Admin value) {
         DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
@@ -153,10 +155,10 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Sets the history attribute of the DataWrapper object
+     * Sets the history attribute of the DataWrapper object.
      *
-     * @param value the new History object to set
-     * @return the modified DataWrapper object
+     * @param value the new History object to set.
+     * @return the modified DataWrapper object.
      */
     private DataWrapper setHistory(History value) {
         DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
@@ -165,10 +167,10 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Sets the history for the DataWrapper object
+     * Retrieves the specified attribute of the DataWrapper object.
      *
-     * @param attrname the name of the attribute
-     * @return The updated DataWrapper object with the new history value
+     * @param attrname the name of the attribute to retrieve.
+     * @return the value of the specified attribute.
      */
     @Override
     public Object getAttribute(String attrname) {
@@ -180,9 +182,9 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Retrieves the admin attribute from the DataWrapper object
+     * Retrieves the admin attribute from the DataWrapper object.
      *
-     * @return the Admin object representing the admin attribute
+     * @return the Admin object representing the admin attribute.
      */
     private Admin getAdmin() {
         log.info("Request admin data in JSON format");
@@ -192,9 +194,9 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Retrieves the account attribute from the DataWrapper object
+     * Retrieves the account attribute from the DataWrapper object.
      *
-     * @return the Account object representing the account attribute
+     * @return the Account object representing the account attribute.
      */
     private Account getAccount() {
         log.info("Request account data in JSON format");
@@ -204,9 +206,9 @@ public class DataWrapperDao extends AbstractDao {
     }
 
     /**
-     * Retrieves the account data and converts it to an Account object
+     * Retrieves all attributes of the DataWrapper object and returns them as a list.
      *
-     * @return An Account object representing the account data loaded from storage
+     * @return a list containing all attributes of the DataWrapper object.
      */
     @Override
     public List<Object> getAllAttributes() {
