@@ -2,10 +2,7 @@ package com.seg83.childbank.service;
 
 import com.seg83.childbank.dao.AccountDao;
 import com.seg83.childbank.dao.DepositAccountBillDao;
-import com.seg83.childbank.dao.HistoryActionsDao;
-import com.seg83.childbank.dao.HistoryDao;
 import com.seg83.childbank.entity.DepositAccountBill;
-import com.seg83.childbank.entity.HistoryActions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
