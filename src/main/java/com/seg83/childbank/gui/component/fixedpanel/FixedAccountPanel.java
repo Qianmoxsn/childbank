@@ -11,10 +11,12 @@ import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 
 /**
- * Represents a dialog window for System Settings.
+ * Panel of Deposit Account
  */
 @Component
 @Slf4j
@@ -28,10 +30,46 @@ public class FixedAccountPanel {
     private JTable table1;
 
     public FixedAccountPanel() {
+        $$$setupUI$$$();
+        createTable();
         backButton.addActionListener(e -> {
             log.info("Back Home button clicked");
             publisher.publishEvent(new PanelSwitchEvent(this, "home"));
         });
+    }
+
+    private void createTable() {
+        // TODO: use actual data
+//        Object[][] data = historyService.generateHistoryList();
+        Object[][] data =  new Object[][]{
+                {1, "2021-12-31", 0.03, 1000},
+                {2, "2022-12-31", 0.03, 2000},
+                {3, "2023-12-31", 0.03, 3000},
+                {4, "2024-12-31", 0.03, 4000},
+                {5, "2025-12-31", 0.03, 5000},
+                {6, "2026-12-31", 0.03, 6000},
+                {7, "2027-12-31", 0.03, 7000},
+                {8, "2028-12-31", 0.03, 8000},
+                {9, "2029-12-31", 0.03, 9000},
+                {10, "2030-12-31", 0.03, 10000},
+        };
+
+        String[] columnNames = {"Id", "ExpireTime", "Rate", "Amount"};
+
+        table1.setModel(new DefaultTableModel(data, columnNames));
+        table1.setFillsViewportHeight(true);
+        table1.setFillsViewportHeight(true);
+        table1.setRowHeight(30);
+        table1.setRowMargin(5);
+        table1.setRowSelectionAllowed(true);
+        table1.setColumnSelectionAllowed(true);
+        table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        // 设置列宽
+        TableColumnModel columnModel = table1.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(25);  // ID 列
+        columnModel.getColumn(1).setPreferredWidth(200); // DateTime 列
+        columnModel.getColumn(2).setPreferredWidth(80); // Type 列
+        columnModel.getColumn(3).setPreferredWidth(80);  // Amount 列
     }
 
     {
