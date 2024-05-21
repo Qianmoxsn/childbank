@@ -30,6 +30,7 @@ public class SettingsPanel {
     private JPanel panel1;
     private JButton backHomeButton;
     private JButton resetSoftwareButton;
+    private JTextPane welcomeToTheVirtualTextPane;
 
     public SettingsPanel() {
         backHomeButton.addActionListener(e -> {
@@ -71,23 +72,24 @@ public class SettingsPanel {
         panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel2.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
         panel1.add(panel2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel2.setBorder(BorderFactory.createTitledBorder(null, "System Settings", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
         backHomeButton = new JButton();
         backHomeButton.setText("< Back Home");
         panel2.add(backHomeButton, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(78, 46), null, 0, false));
         final Spacer spacer1 = new Spacer();
-        panel2.add(spacer1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, new Dimension(14, 46), null, 0, false));
-        final Spacer spacer2 = new Spacer();
-        panel2.add(spacer2, new GridConstraints(1, 0, 3, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(11, 224), null, 0, false));
-        final Spacer spacer3 = new Spacer();
-        panel2.add(spacer3, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
-        final Spacer spacer4 = new Spacer();
-        panel2.add(spacer4, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        panel2.add(spacer1, new GridConstraints(1, 0, 2, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_VERTICAL, 1, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(11, 224), null, 0, false));
+        welcomeToTheVirtualTextPane = new JTextPane();
+        welcomeToTheVirtualTextPane.setBackground(new Color(-1118482));
+        welcomeToTheVirtualTextPane.setEditable(false);
+        welcomeToTheVirtualTextPane.setText("Welcome to the Virtual Bank Application for Kids, designed to be a secure and educational tool that grows with your child on their financial literacy journey. In this application, all deposits require a parental permission password to ensure security, while withdrawals can be managed independently by children within preset limits using their transaction password. Parents have the ability to assign tasks and set rewards, allowing them to oversee task completion and reward achievements directly through the app. Additionally, the app includes robust security settings for managing password changes and account resets. A dedicated section for app functionalities and contact information is available for help and support. Our Virtual Bank Application for Kids is more than just a tool; it is a rich and supportive environment aimed at nurturing financially savvy children. We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids! ");
+        panel2.add(welcomeToTheVirtualTextPane, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         resetSoftwareButton = new JButton();
         resetSoftwareButton.setText("Reset Software");
-        panel2.add(resetSoftwareButton, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(0, 50), null, 0, false));
+        panel2.add(resetSoftwareButton, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(0, 50), null, 0, false));
+        final Spacer spacer2 = new Spacer();
+        panel2.add(spacer2, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
     }
 
     /**
