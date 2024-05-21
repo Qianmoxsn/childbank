@@ -55,4 +55,8 @@
       }
     ]
   },
+  "goal": {
+    //  Goal.java
+    "goalAmount": 2000.0,
+  },
 }

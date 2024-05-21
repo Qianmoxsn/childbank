@@ -3,10 +3,7 @@ package com.seg83.childbank.dao;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.alibaba.fastjson2.JSONWriter;
-import com.seg83.childbank.entity.Account;
-import com.seg83.childbank.entity.Admin;
-import com.seg83.childbank.entity.DataWrapper;
-import com.seg83.childbank.entity.History;
+import com.seg83.childbank.entity.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
@@ -124,6 +121,7 @@ public class DataWrapperDao extends AbstractDao {
             case "admin" -> modifiedDataWrapper = this.setAdmin((Admin) value);
             case "account" -> modifiedDataWrapper = this.setAccount((Account) value);
             case "history" -> modifiedDataWrapper = this.setHistory((History) value);
+            case "goal" -> modifiedDataWrapper = this.setGoal((Goal) value);
             default -> throw new RuntimeException("Invalid attribute name");
         }
         this.saveJsonFile(modifiedDataWrapper);
@@ -162,6 +160,18 @@ public class DataWrapperDao extends AbstractDao {
     private DataWrapper setHistory(History value) {
         DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
         dataWrapper.setHistory(value);
+        return dataWrapper;
+    }
+
+    /**
+     * Sets the goal attribute of the DataWrapper object
+     *
+     * @param value the new Goal object to set
+     * @return the modified DataWrapper object
+     */
+    private DataWrapper setGoal(Goal value) {
+        DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
+        dataWrapper.setGoal(value);
         return dataWrapper;
     }
 
