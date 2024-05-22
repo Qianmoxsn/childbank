@@ -1,10 +1,12 @@
 package com.seg83.childbank.entity;
 
 import com.alibaba.fastjson2.annotation.JSONField;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-public class DepositAccountBill {
+@AllArgsConstructor
+public class DepositAccountBills {
     @JSONField(name = "depositAccountBillId")
     private long depositAccountBillId;
 
