@@ -3,26 +3,31 @@ package com.seg83.childbank.gui.component.homepanel.homepop;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
-import com.seg83.childbank.service.HistoryService;
+import com.seg83.childbank.dao.AdminDao;
+import com.seg83.childbank.service.GoalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.*;
 
 @Component
 @Slf4j
 public class GoalAlterationPop extends JDialog {
+    @Autowired
+    private AdminDao adminDao;
+    @Autowired
+    private GoalService goalService;
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextField textField1;
     private JPasswordField passwordField1;
+    private JLabel goalDisplay;
 
     public GoalAlterationPop() {
         setContentPane(contentPane);
@@ -50,16 +55,35 @@ public class GoalAlterationPop extends JDialog {
         });
 
         // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
     private void onOK() {
-        // add your code here
-        dispose();
+        // check admin password, if correct, update goal
+        // else, show error dialog
+        String newGoal = textField1.getText();
+        double doubleGoal;
+        String password = new String(passwordField1.getPassword());
+        log.debug("New goal {}, password {}", newGoal, password);
+
+        // newGoal should be a Integer
+        try {
+            doubleGoal = Double.parseDouble(newGoal);
+        } catch (NumberFormatException e) {
+            log.error("Invalid goal: {}", newGoal);
+            JOptionPane.showMessageDialog(this, "Invalid goal: " + newGoal, "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String passtarget = (String) adminDao.getAttribute("adminPassword");
+        boolean passcheck = password.equals(passtarget);  // check password
+
+        if (!passcheck) {
+            JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            goalService.modifyGoal(doubleGoal);
+            dispose();
+        }
     }
 
     private void onCancel() {
@@ -69,6 +93,10 @@ public class GoalAlterationPop extends JDialog {
 
     public void init() {
         log.debug("Initializing GoalPop dialog");
+
+        log.info("Load current goal");
+        String goal = goalService.toUiContent("goal");
+        goalDisplay.setText(goal);
         this.pack();  // 使用已经存在的this引用而不是创建新的实例
         setLocationRelativeTo(null);  // null 使窗口居中于屏幕
         this.setVisible(true);
@@ -127,9 +155,9 @@ public class GoalAlterationPop extends JDialog {
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel3.add(panel4, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(24, 45), null, 0, false));
-        final JLabel label4 = new JLabel();
-        label4.setText("$520");
-        panel4.add(label4, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        goalDisplay = new JLabel();
+        goalDisplay.setText("$520");
+        panel4.add(goalDisplay, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**

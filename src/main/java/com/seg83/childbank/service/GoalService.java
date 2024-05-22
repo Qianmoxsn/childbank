@@ -42,9 +42,13 @@ public class GoalService {
         }
     }
 
-    // TODO: Implement with ui
-    public void toUiContent() {
-        log.info("Goal amount: {}", this.goalAmount);
-        log.info("Total amount: {}", this.totalAmount);
+    public String toUiContent(String param) {
+        this.calcGoal();
+        return switch (param) {
+            // remain 2 decimal places
+            case "goal" -> "$" + String.format("%.2f", this.goalAmount);
+            case "total" -> "$" + String.format("%.2f", this.totalAmount);
+            default -> "Invalid parameter";
+        };
     }
 }

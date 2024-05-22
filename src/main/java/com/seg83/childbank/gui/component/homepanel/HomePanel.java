@@ -9,6 +9,7 @@ import com.seg83.childbank.gui.component.homepanel.homepop.HistoryPop;
 import com.seg83.childbank.gui.component.homepanel.homepop.WithdrawPop;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
 import com.seg83.childbank.service.CurrentService;
+import com.seg83.childbank.service.GoalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -29,6 +30,8 @@ import java.util.Locale;
 public class HomePanel {
     @Autowired
     CurrentService currentService;
+    @Autowired
+    GoalService goalService;
     @Autowired
     DepositPop depositPop;
     @Autowired
@@ -51,6 +54,7 @@ public class HomePanel {
     private JButton operationHistoryButton;
     private JButton fixedDepositAndWithdrawalButton;
     private JButton goalAlterationButton;
+    private JLabel displayGoal;
 
     /**
      * Constructor for HomePanel class.
@@ -74,6 +78,7 @@ public class HomePanel {
         goalAlterationButton.addActionListener(e -> {
             log.debug("goalAlterationButton clicked");
             goalAlterationPop.init();
+            updateGoal();
         });
         systemSettingsButton.addActionListener(e -> {
             log.debug("systemSettingsButton clicked");
@@ -89,8 +94,16 @@ public class HomePanel {
      * Updates the current balance displayed on the UI.
      */
     public void updateCurrentBallance() {
+        updateGoal();
         String newBalance = currentService.toUiContent(); // 获取格式化后的余额字符串
         currLabel.setText(newBalance);
+        rootHomePanel.revalidate();
+        rootHomePanel.repaint();
+    }
+
+    public void updateGoal() {
+        String str = goalService.toUiContent("total") + "/" + goalService.toUiContent("goal");
+        displayGoal.setText(str);
         rootHomePanel.revalidate();
         rootHomePanel.repaint();
     }
@@ -117,9 +130,9 @@ public class HomePanel {
         panel1.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         rootHomePanel.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         panel1.setBorder(BorderFactory.createTitledBorder(null, "Goal", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label1 = new JLabel();
-        label1.setText("$1734/$2000");
-        panel1.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        displayGoal = new JLabel();
+        displayGoal.setText("$1734/$2000");
+        panel1.add(displayGoal, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel2 = new JPanel();
         panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
         rootHomePanel.add(panel2, new GridConstraints(0, 0, 1, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
@@ -134,9 +147,9 @@ public class HomePanel {
         panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel2.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel3.setBorder(BorderFactory.createTitledBorder(null, "Fixed Balance", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label2 = new JLabel();
-        label2.setText("$500");
-        panel3.add(label2, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JLabel label1 = new JLabel();
+        label1.setText("$500");
+        panel3.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         rootHomePanel.add(panel4, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
