@@ -1,8 +1,7 @@
 package com.seg83.childbank.dao;
 
 import com.alibaba.fastjson2.JSONArray;
-import com.seg83.childbank.entity.DepositAccountBill;
-import com.seg83.childbank.utils.StringDateConvert;
+import com.seg83.childbank.entity.DepositAccountBills;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,24 +10,22 @@ import java.util.List;
 
 @Repository
 @Slf4j
-public class DepositAccountBillDao extends AbstractArrayDao {
-    private final AccountDao accountDao;
-    private final StringDateConvert convert;
-    long ElementCount;
+public class DepositAccountBillsDao extends AbstractArrayDao {
+    private final DepositAccountDao depositAccountDao;
+    public long ElementCount;
 
     @Autowired
-    public DepositAccountBillDao(AccountDao accountDao, StringDateConvert convert) {
-        this.accountDao = accountDao;
-        this.convert = convert;
+    public DepositAccountBillsDao(DepositAccountDao depositAccountDao) {
+        this.depositAccountDao = depositAccountDao;
         this.getElementCount();
     }
 
     @Override
     JSONArray load() {
         log.info("Request deposit account data in JSON format");
-        JSONArray depositAccount = accountDao.load().getJSONArray("depositAccount");
-        log.debug("Get deposit account data {}", depositAccount);
-        return depositAccount;
+        JSONArray depositAccountBills = depositAccountDao.load().getJSONArray("depositAccountBills");
+        log.debug("Get deposit account data {}", depositAccountBills);
+        return depositAccountBills;
     }
 
     @Override
@@ -39,12 +36,12 @@ public class DepositAccountBillDao extends AbstractArrayDao {
     }
 
     @Override
-    DepositAccountBill getElementById(long depositAccountBillId) {
-        log.info("Request DepositAccountBill with id {}", depositAccountBillId);
-        List<DepositAccountBill> depositAccountBill = this.load().toJavaList(DepositAccountBill.class);
-        for (DepositAccountBill bill : depositAccountBill) {
+    DepositAccountBills getElementById(long depositAccountBillId) {
+        log.info("Request depositAccountBill with id {}", depositAccountBillId);
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        for (DepositAccountBills bill : depositAccountBills) {
             if (bill.getDepositAccountBillId() == depositAccountBillId) {
-                log.debug("Get bill {}", bill);
+                log.debug("Get depositAccountBills {}", bill);
                 return bill;
             }
         }
@@ -71,45 +68,45 @@ public class DepositAccountBillDao extends AbstractArrayDao {
     }
 
     private void setDepositAccountBillAmount(long depositAccountBillId, double value) {
-        DepositAccountBill bill = this.getElementById(depositAccountBillId);
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
         bill.setDepositAccountBillAmount(value);
         updateAccountBill(bill);
     }
 
     private void setDepositAccountBillRate(long depositAccountBillId, double value) {
-        DepositAccountBill bill = this.getElementById(depositAccountBillId);
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
         bill.setDepositAccountBillRate(value);
         updateAccountBill(bill);
     }
 
     private void setDepositAccountBillExpireDate(long depositAccountBillId, String value) {
-        DepositAccountBill bill = this.getElementById(depositAccountBillId);
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
         bill.setDepositAccountBillExpireDate(value);
         updateAccountBill(bill);
     }
 
-    private void updateAccountBill(DepositAccountBill bill) {
-        List<DepositAccountBill> depositAccountBill = this.load().toJavaList(DepositAccountBill.class);
-        for (int i = 0; i < depositAccountBill.size(); i++) {
-            if (depositAccountBill.get(i).getDepositAccountBillId() == bill.getDepositAccountBillId()) {
-                depositAccountBill.set(i, bill);
+    private void updateAccountBill(DepositAccountBills bill) {
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        for (int i = 0; i < depositAccountBills.size(); i++) {
+            if (depositAccountBills.get(i).getDepositAccountBillId() == bill.getDepositAccountBillId()) {
+                depositAccountBills.set(i, bill);
                 break;
             }
         }
-        log.debug("Update DepositAccountBill Array {}", depositAccountBill);
-        this.accountDao.setAttribute("depositAccount", depositAccountBill);
+        log.debug("Update DepositAccountBill Array {}", depositAccountBills);
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
     }
 
     public void createDepositAccountBill(double amount, double rate, String expireDate) {
         log.info("Create DepositAccountBill with date amount {}, rate {}, expireDate {}", amount, rate, expireDate);
-        DepositAccountBill newDepositAccountBill = new DepositAccountBill(this.ElementCount + 1, amount, rate, expireDate);
+        DepositAccountBills newDepositAccountBills = new DepositAccountBills(this.ElementCount + 1, amount, rate, expireDate);
         this.ElementCount++;
-        log.debug("DepositAccountBill created {}", newDepositAccountBill);
+        log.debug("DepositAccountBill created {}", newDepositAccountBills);
 
-        List<DepositAccountBill> depositAccountBill = this.load().toJavaList(DepositAccountBill.class);
-        depositAccountBill.add(newDepositAccountBill);
-        log.debug("Set DepositAccountBill Array {}", depositAccountBill);
-        this.accountDao.setAttribute("depositAccount", depositAccountBill);
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.add(newDepositAccountBills);
+        log.debug("Set DepositAccountBill Array {}", depositAccountBills);
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
     }
 
     @Override
@@ -126,23 +123,23 @@ public class DepositAccountBillDao extends AbstractArrayDao {
     }
 
     private Object getDepositAccountBillAmount(long depositAccountBillId) {
-        DepositAccountBill bill = this.getElementById(depositAccountBillId);
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillAmount();
     }
 
     private Object getDepositAccountBillRate(long depositAccountBillId) {
-        DepositAccountBill bill = this.getElementById(depositAccountBillId);
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillRate();
     }
 
     private Object getDepositAccountBillExpireDate(long depositAccountBillId) {
-        DepositAccountBill bill = this.getElementById(depositAccountBillId);
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillExpireDate();
     }
 
     @Override
     List<Object> getAllAttributes() {
-        List<DepositAccountBill> depositAccountBills = this.load().toJavaList(DepositAccountBill.class);
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
         return List.copyOf(depositAccountBills);
     }
 }

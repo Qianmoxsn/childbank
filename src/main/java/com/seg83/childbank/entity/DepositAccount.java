@@ -10,6 +10,6 @@ public class DepositAccount {
 
 
     @JSONField(name = "depositAccountBills")
-    private List<DepositAccountBill> depositAccountBills;
+    private List<DepositAccountBills> depositAccountBills;
 
 }

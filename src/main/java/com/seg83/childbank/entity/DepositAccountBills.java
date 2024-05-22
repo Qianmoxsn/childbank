@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class DepositAccountBill {
+public class DepositAccountBills {
     @JSONField(name = "depositAccountBillId")
     private long depositAccountBillId;
 
