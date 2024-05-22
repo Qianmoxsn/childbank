@@ -47,6 +47,7 @@ public class HomePanel {
     private JLabel currLabel;
     private JButton operationHistoryButton;
     private JButton fixedDepositAndWithdrawalButton;
+    private JButton goalAlterationButton;
 
     /**
      * Constructor for HomePanel class.
