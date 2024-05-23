@@ -87,6 +87,32 @@ public class TestCurrentService {
         assertEquals(101.1, currentService.checkCurrentAccountBalance());
     }
 
+    @Test
+    void withdrawWithOverflow() {
+        // Set the current account amount
+        currentAccountDao.setAttribute("currentAccountAmount", 100.0);
+
+        // Withdraw an amount that would cause an overflow
+        try {
+            currentService.withdrawCurrentAccount(200);
+        } catch (RuntimeException e) {
+            // Check that the exception was thrown
+            assertEquals("No enough balance to withdraw.", e.getMessage());
+        }
+
+        // Check the current account balance
+        assertEquals(100.0, currentService.checkCurrentAccountBalance());
+    }
+
+    @Test
+    void testModifyCurrentAccountRate() {
+        // Set the current account rate
+        currentService.modifyCurrentAccountRate(1.1);
+
+        // Check the current account rate
+        assertEquals(1.1, currentAccountDao.getAttribute("currentAccountRate"));
+    }
+
     /**
      * Tests the toUiContent method, which converts the current account balance to a formatted string.
      */

@@ -35,8 +35,6 @@ public class CurrentService {
         return (Double) currentAccountDao.getAttribute("currentAccountAmount");
     }
 
-    // TODO: Overflow detection
-
     /**
      * Deposits an amount into the current account.
      *
@@ -60,8 +58,6 @@ public class CurrentService {
         historyService.createOperationHistory(amount, "daily interest");
     }
 
-    // TODO: Overflow detection
-
     /**
      * Withdraws an amount from the current account.
      *
@@ -70,10 +66,21 @@ public class CurrentService {
     public void withdrawCurrentAccount(int amount) {
         double currentAmount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
         double newAmount = currentAmount - amount;
+        // overflow detection
+        if (newAmount < 0) {
+            log.error("Withdraw current {} failed, not enough balance", amount);
+            throw new RuntimeException("No enough balance to withdraw.");
+        }
         currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Withdraw current {} now {} -> {}", amount, currentAmount, newAmount);
         // Create a history
         historyService.createOperationHistory(amount, "current withdraw");
+    }
+
+    public void modifyCurrentAccountRate(double amount) {
+        log.info("Modify Current Account Rate to {}", amount);
+        currentAccountDao.setAttribute("currentAccountRate", amount);
+        log.debug("Current Account Rate is now {}", currentAccountDao.getAttribute("currentAccountRate"));
     }
 
     /**
