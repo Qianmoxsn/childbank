@@ -134,6 +134,7 @@ public class MainFrame extends JFrame {
         revalidate();
         repaint();
         log.info("Create currentAccountPanel in MainFrame");
+    }
       
     private void initTaskPanel() {
         taskPanel.createTable();
