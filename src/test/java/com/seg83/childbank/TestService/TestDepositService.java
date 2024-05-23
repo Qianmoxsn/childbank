@@ -1,7 +1,10 @@
 package com.seg83.childbank.TestService;
 
 import com.seg83.childbank.dao.DepositAccountBillsDao;
+import com.seg83.childbank.service.CurrentService;
 import com.seg83.childbank.service.DepositService;
+import com.seg83.childbank.service.HistoryService;
+import com.seg83.childbank.utils.StringDateConvert;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -12,8 +15,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
@@ -22,6 +27,12 @@ class TestDepositService {
     private DepositService depositService;
     @Autowired
     private DepositAccountBillsDao depositAccountBillsDao;
+    @Autowired
+    private CurrentService currentService;
+    @Autowired
+    private HistoryService historyService;
+    @Autowired
+    private StringDateConvert stringDateConvert;
 
     @BeforeAll
     static void setup() {
@@ -50,7 +61,7 @@ class TestDepositService {
     void createDepositAccountBill() {
         long initialElementCount = depositAccountBillsDao.ElementCount;
 
-        depositService.createDepositAccountBill(100, 0.1, "2024-08-03");
+        depositService.createDepositAccountBill(100, 0.1, "2023-08-03", "2024-08-03");
 
         long newElementCount = depositAccountBillsDao.ElementCount;
         assertEquals(initialElementCount + 1, newElementCount, "Element count should have incremented by 1");
@@ -63,8 +74,60 @@ class TestDepositService {
         assertNotNull(rate, "Deposit account bill rate should not be null");
         assertEquals(0.1, rate, "Deposit account bill rate should be 0.1");
 
+        Object effectiveDate = depositAccountBillsDao.getAttribute("depositAccountBillEffectiveDate", newElementCount);
+        assertNotNull(effectiveDate, "Deposit account bill effective date should not be null");
+        assertEquals("2023-08-03", effectiveDate, "Deposit account bill effective date should be '2023-08-03'");
+
         Object expireDate = depositAccountBillsDao.getAttribute("depositAccountBillExpireDate", newElementCount);
         assertNotNull(expireDate, "Deposit account bill expire date should not be null");
         assertEquals("2024-08-03", expireDate, "Deposit account bill expire date should be '2024-08-03'");
+    }
+
+    @Test
+    void depositFixAccount() {
+        double initialBalance = currentService.checkCurrentAccountBalance();
+
+        depositService.depositFixAccount(100, 0.1, "2023-08-03", "2024-08-03");
+
+        double newBalance = currentService.checkCurrentAccountBalance();
+        assertEquals(initialBalance - 100, newBalance, "Current account balance should be decreased by 100");
+
+        long newElementCount = depositAccountBillsDao.ElementCount;
+        assertEquals(2, newElementCount);
+
+        Object amount = depositAccountBillsDao.getAttribute("depositAccountBillAmount", newElementCount);
+        assertNotNull(amount, "Deposit account bill amount should not be null");
+        assertEquals(100.0, amount, "Deposit account bill amount should be 100.0");
+    }
+
+    @Test
+    void processMaturedDeposits() {
+        double initialBalance = currentService.checkCurrentAccountBalance();
+
+        // 创建一个已到期的定期存款账单
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        assertEquals(initialBalance, currentService.checkCurrentAccountBalance());
+
+        depositService.processMaturedDeposits();
+
+        double newBalance = currentService.checkCurrentAccountBalance();
+        double expectedInterest = 200 * 0.1 * 272 / 365; // Assuming the deposit has been active for 273 days
+        double expectedBalance = initialBalance + 200 + expectedInterest;
+        assertEquals(expectedBalance, newBalance, 0.01, "Current account balance should include principal and interest");
+
+        List<Object> bills = depositAccountBillsDao.getAllAttributes();
+        assertFalse(bills.isEmpty(), "There should be no deposit account bills after processing matured deposits");
+    }
+
+    @Test
+    void testCalculateDaysBetween() {
+        long days = stringDateConvert.calculateDaysBetween("2023-08-03", "2024-05-01");
+        assertEquals(272, days, "Days between 2023-08-03 and 2024-05-01 should be 273");
+
+        days = stringDateConvert.calculateDaysBetween("2023-01-01", "2023-12-31");
+        assertEquals(364, days, "Days between 2023-01-01 and 2023-12-31 should be 364"); // 2023 is not a leap year
+
+        days = stringDateConvert.calculateDaysBetween("2020-01-01", "2020-12-31");
+        assertEquals(365, days, "Days between 2020-01-01 and 2020-12-31 should be 365"); // 2020 is a leap year
     }
 }

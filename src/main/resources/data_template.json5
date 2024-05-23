@@ -14,9 +14,10 @@
         //  Bill.java
         {
           "depositAccountBillId": 1,
-          "depositAccountBillAmount": 100.0,
+          "depositAccountBillAmount": 0.0,
           "depositAccountBillRate": 0.5,
-          "depositAccountBillExpireDate": "2020-01-01",
+          "depositAccountBillEffectiveDate": "2019-01-01",
+          "depositAccountBillExpireDate": "2025-01-01",
         },
       ],
     },

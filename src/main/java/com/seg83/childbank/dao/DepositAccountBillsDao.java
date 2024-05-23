@@ -63,6 +63,10 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
                 log.info("Set depositAccountBillExpireDate to {}", value);
                 this.setDepositAccountBillExpireDate(depositAccountBillId, (String) value);
             }
+            case "depositAccountBillEffectiveDate" -> {
+                log.info("Set depositAccountBillEffectiveDate to {} ", value);
+                this.setDepositAccountBillEffectiveDate(depositAccountBillId, (String) value);
+            }
             default -> throw new RuntimeException("Invalid attribute name");
         }
     }
@@ -85,6 +89,12 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         updateAccountBill(bill);
     }
 
+    private void setDepositAccountBillEffectiveDate(long depositAccountBillId, String value) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        bill.setDepositAccountBillEffectiveDate(value);
+        updateAccountBill(bill);
+    }
+
     private void updateAccountBill(DepositAccountBills bill) {
         List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
         for (int i = 0; i < depositAccountBills.size(); i++) {
@@ -97,9 +107,11 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
     }
 
-    public void createDepositAccountBill(double amount, double rate, String expireDate) {
-        log.info("Create DepositAccountBill with date amount {}, rate {}, expireDate {}", amount, rate, expireDate);
-        DepositAccountBills newDepositAccountBills = new DepositAccountBills(this.ElementCount + 1, amount, rate, expireDate);
+    // 这里我不明白为什么this.ElementCount 初始就是1
+    public void createDepositAccountBill(double amount, double rate, String effectiveDate, String expireDate) {
+        log.info("Create DepositAccountBill with date amount {}, rate {}, effectiveDate {}, expireDate {}", amount, rate, effectiveDate, expireDate);
+        DepositAccountBills newDepositAccountBills = new DepositAccountBills(this.ElementCount + 1, amount, rate, effectiveDate, expireDate);
+        log.debug("this.ElementCount = {}", this.ElementCount);
         this.ElementCount++;
         log.debug("DepositAccountBill created {}", newDepositAccountBills);
 
@@ -107,6 +119,15 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         depositAccountBills.add(newDepositAccountBills);
         log.debug("Set DepositAccountBill Array {}", depositAccountBills);
         this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+    }
+
+    public void deleteDepositAccountBill(long depositAccountBillId) {
+        log.info("Delete DepositAccountBill with id {}", depositAccountBillId);
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.removeIf(bill -> bill.getDepositAccountBillId() == depositAccountBillId);
+        log.debug("Set DepositAccountBill Array after deletion {}", depositAccountBills);
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+        this.ElementCount--;
     }
 
     @Override
@@ -117,6 +138,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         return switch (attrname) {
             case "depositAccountBillAmount" -> this.getDepositAccountBillAmount(depositAccountBillId);
             case "depositAccountBillRate" -> this.getDepositAccountBillRate(depositAccountBillId);
+            case "depositAccountBillEffectiveDate" -> this.getDepositAccountBillEffectiveDate(depositAccountBillId);
             case "depositAccountBillExpireDate" -> this.getDepositAccountBillExpireDate(depositAccountBillId);
             default -> throw new RuntimeException("Invalid attribute name");
         };
@@ -132,14 +154,29 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         return bill.getDepositAccountBillRate();
     }
 
+    private Object getDepositAccountBillEffectiveDate(long depositAccountBillId) {
+        DepositAccountBills bills = this.getElementById(depositAccountBillId);
+        return bills.getDepositAccountBillEffectiveDate();
+    }
+
     private Object getDepositAccountBillExpireDate(long depositAccountBillId) {
         DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillExpireDate();
     }
 
     @Override
-    List<Object> getAllAttributes() {
+    public List<Object> getAllAttributes() {
         List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
         return List.copyOf(depositAccountBills);
     }
+
+    public void deleteAllDepositAccountBills() {
+        log.info("Deleting all deposit account bills");
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.clear();
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+        this.ElementCount = 0;
+    }
+
+
 }
