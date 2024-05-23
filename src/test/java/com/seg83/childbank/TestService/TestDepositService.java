@@ -8,6 +8,7 @@ import com.seg83.childbank.utils.StringDateConvert;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,7 +19,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @Slf4j
@@ -39,6 +39,14 @@ class TestDepositService {
         System.setProperty("java.awt.headless", "false");
     }
 
+    @BeforeEach
+    void setUp() {
+        // 删除所有现有的存款账单
+        depositAccountBillsDao.deleteAllDepositAccountBills();
+        // 创建初始测试数据
+        depositService.createDepositAccountBill(100.0, 0.5, "2019-01-01", "2025-01-01");
+    }
+
     @AfterEach
     void restoreTestJson() {
         try {
@@ -51,6 +59,9 @@ class TestDepositService {
 
     @Test
     void generateDepositList() {
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
         Object[][] depositList = depositService.generateDepositList();
         assertNotNull(depositList, "Deposit list should not be null");
         assertTrue(depositList.length > 0, "Deposit list should not be empty");
@@ -122,7 +133,7 @@ class TestDepositService {
     @Test
     void testCalculateDaysBetween() {
         long days = stringDateConvert.calculateDaysBetween("2023-08-03", "2024-05-01");
-        assertEquals(272, days, "Days between 2023-08-03 and 2024-05-01 should be 273");
+        assertEquals(272, days, "Days between 2023-08-03 and 2024-05-01 should be 272");
 
         days = stringDateConvert.calculateDaysBetween("2023-01-01", "2023-12-31");
         assertEquals(364, days, "Days between 2023-01-01 and 2023-12-31 should be 364"); // 2023 is not a leap year
