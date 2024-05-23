@@ -76,15 +76,26 @@ public class CurrentService {
         historyService.createOperationHistory(amount, "current withdraw");
     }
 
+    public void modifyInterestRate(double rate) {
+        currentAccountDao.setAttribute("currentAccountRate", rate);
+        log.info("Set interest rate to {}", rate);
+    }
+
     /**
      * Formats the balance of the current account for display.
      *
      * @return The formatted balance of the current account.
      */
-    public String toUiContent() {
+    public String amountToUiContent() {
         double balance = (Double) currentAccountDao.getAttribute("currentAccountAmount");
         // Format to 2 decimal places and prepend "$"
         return "$" + String.format("%.2f", balance);
+    }
+
+    public String rateToUiContent(){
+        double rate = (Double) currentAccountDao.getAttribute("currentAccountRate");
+        // Format to 2 decimal places and tail "%"
+        return String.format("%.2f", rate) + "%";
     }
 }
 

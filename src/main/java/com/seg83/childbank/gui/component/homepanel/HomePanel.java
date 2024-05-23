@@ -88,6 +88,10 @@ public class HomePanel {
             log.debug("fixedDepositAndWithdrawalButton clicked");
             publisher.publishEvent(new PanelSwitchEvent(this, "fixed"));
         });
+        currentAccountOperationButton.addActionListener(e -> {
+            log.debug("currentAccountOperationButton clicked");
+            publisher.publishEvent(new PanelSwitchEvent(this, "current"));
+        });
     }
 
     /**
@@ -95,7 +99,7 @@ public class HomePanel {
      */
     public void updateCurrentBallance() {
         updateGoal();
-        String newBalance = currentService.toUiContent(); // 获取格式化后的余额字符串
+        String newBalance = currentService.amountToUiContent(); // 获取格式化后的余额字符串
         currLabel.setText(newBalance);
         rootHomePanel.revalidate();
         rootHomePanel.repaint();
