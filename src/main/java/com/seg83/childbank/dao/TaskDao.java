@@ -43,8 +43,15 @@ public class TaskDao extends AbstractDao {
     }
 
     @Override
-    Object getAttribute(String attrname) {
-        return null;
+    public Object getAttribute(String attrname) {
+        return switch (attrname) {
+            case "taskList" -> this.getTaskList();
+            default -> throw new RuntimeException("Invalid attribute name");
+        };
+    }
+
+    private List<TaskList> getTaskList() {
+        return this.load().toJavaObject(Task.class).getTaskList();
     }
 
     @Override
