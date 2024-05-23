@@ -92,6 +92,10 @@ public class HomePanel {
             log.debug("currentAccountOperationButton clicked");
             publisher.publishEvent(new PanelSwitchEvent(this, "current"));
         });
+        tasksAndRewardsButton.addActionListener(e -> {
+            log.debug("tasksAndRewardsButton clicked");
+            publisher.publishEvent(new PanelSwitchEvent(this, "task"));
+        });
     }
 
     /**
