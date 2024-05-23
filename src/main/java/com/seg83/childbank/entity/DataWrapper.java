@@ -17,4 +17,7 @@ public class DataWrapper {
 
     @JSONField(name = "goal")
     private Goal goal;
+
+    @JSONField(name = "task")
+    private Task task;
 }
