@@ -88,6 +88,14 @@ public class HomePanel {
             log.debug("fixedDepositAndWithdrawalButton clicked");
             publisher.publishEvent(new PanelSwitchEvent(this, "fixed"));
         });
+        currentAccountOperationButton.addActionListener(e -> {
+            log.debug("currentAccountOperationButton clicked");
+            publisher.publishEvent(new PanelSwitchEvent(this, "current"));
+        });
+        tasksAndRewardsButton.addActionListener(e -> {
+            log.debug("tasksAndRewardsButton clicked");
+            publisher.publishEvent(new PanelSwitchEvent(this, "task"));
+        });
     }
 
     /**

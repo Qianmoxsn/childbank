@@ -3,6 +3,7 @@ package com.seg83.childbank.gui.component;
 import com.seg83.childbank.gui.component.fixedpanel.FixedAccountPanel;
 import com.seg83.childbank.gui.component.homepanel.HomePanel;
 import com.seg83.childbank.gui.component.settingpanel.SettingsPanel;
+import com.seg83.childbank.gui.component.taskpanel.TaskPanel;
 import com.seg83.childbank.gui.component.welcome.SetupPanel;
 import com.seg83.childbank.gui.component.welcome.WelcomePanel;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
@@ -25,6 +26,7 @@ public class MainFrame extends JFrame {
     private SetupPanel setupPanel;
     private SettingsPanel settingsPanel;
     private FixedAccountPanel fixedAccountPanel;
+    private TaskPanel taskPanel;
 
     private SetupService setupService;
     private InterestService interestService;
@@ -39,7 +41,7 @@ public class MainFrame extends JFrame {
 
     @Autowired
     private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
-                           SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel) {
+                           SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, TaskPanel taskPanel) {
         this.homePanel = homePanel;
         this.welcomePanel = welcomePanel;
         this.setupPanel = setupPanel;
@@ -47,6 +49,7 @@ public class MainFrame extends JFrame {
         this.interestService = interestService;
         this.settingsPanel = settingsPanel;
         this.fixedAccountPanel = fixedAccountPanel;
+        this.taskPanel = taskPanel;
     }
 
     @PostConstruct
@@ -65,6 +68,7 @@ public class MainFrame extends JFrame {
             case "home" -> initHomePanel();
             case "setting" -> initSettingsPanel();
             case "fixed" -> initFixedAccountPanel();
+            case "task" -> initTaskPanel();
             default -> throw new IllegalArgumentException("Unknown panel name: " + event.getPanelName());
         }
     }
@@ -116,5 +120,15 @@ public class MainFrame extends JFrame {
         revalidate();
         repaint();
         log.info("Create fixedAccountPanel in MainFrame");
+    }
+
+    private void initTaskPanel() {
+        taskPanel.createTable();
+        taskPanel.$$$getRootComponent$$$().updateUI();
+        setContentPane(this.taskPanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create taskPanel in MainFrame");
     }
 }
