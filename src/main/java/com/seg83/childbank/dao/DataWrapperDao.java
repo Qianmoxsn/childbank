@@ -122,6 +122,7 @@ public class DataWrapperDao extends AbstractDao {
             case "account" -> modifiedDataWrapper = this.setAccount((Account) value);
             case "history" -> modifiedDataWrapper = this.setHistory((History) value);
             case "goal" -> modifiedDataWrapper = this.setGoal((Goal) value);
+            case "task" -> modifiedDataWrapper = this.setTask((Task) value);
             default -> throw new RuntimeException("Invalid attribute name");
         }
         this.saveJsonFile(modifiedDataWrapper);
@@ -172,6 +173,12 @@ public class DataWrapperDao extends AbstractDao {
     private DataWrapper setGoal(Goal value) {
         DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
         dataWrapper.setGoal(value);
+        return dataWrapper;
+    }
+
+    private DataWrapper setTask(Task value) {
+        DataWrapper dataWrapper = this.load().toJavaObject(DataWrapper.class);
+        dataWrapper.setTask(value);
         return dataWrapper;
     }
 
