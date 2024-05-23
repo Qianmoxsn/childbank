@@ -18,9 +18,6 @@ public class CurrentAccountPanel {
     private JButton backHomeButton;
     private JButton depositButton;
     private JButton withdrawalButton;
-    private JButton transactionHistoryButton;
     private JButton settingButton;
-    private JButton settingButton1;
-    private JButton settingButton2;
     private JButton transferToFixedButton;
 }
