@@ -91,7 +91,7 @@ public class TestCurrentService {
      * Tests the toUiContent method, which converts the current account balance to a formatted string.
      */
     @Test
-    void testToUiContent() {
-        assertEquals("$1000.00", currentService.toUiContent());
+    void testAmountToUiContent() {
+        assertEquals("$1000.00", currentService.amountToUiContent());
     }
 }
