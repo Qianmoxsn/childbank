@@ -59,4 +59,20 @@
     //  Goal.java
     "goalAmount": 2000.0,
   },
+  "task": {
+    "taskList": [
+      {
+        "taskId": 1,
+        "taskName": "task1",
+        "taskDescription": "task1 description",
+        "taskStatus": true,
+      },
+      {
+        "taskId": 2,
+        "taskName": "task2",
+        "taskDescription": "task2 description",
+        "taskStatus": false,
+      },
+    ],
+  },
 }
