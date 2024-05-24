@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.seg83</groupId>
     <artifactId>childbank</artifactId>
-    <version>0519-M3-SNAPSHOT</version>
+    <version>0523-M4-SNAPSHOT</version>
     <name>childbank</name>
     <description>childbank</description>
     <properties>
