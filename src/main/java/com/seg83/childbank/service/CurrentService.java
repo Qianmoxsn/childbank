@@ -42,7 +42,7 @@ public class CurrentService {
      *
      * @param amount The amount to deposit.
      */
-    public void depositCurrentAccount(int amount) {
+    public void depositCurrentAccount(double amount) {
         double currentAmount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
         double newAmount = currentAmount + amount;
         currentAccountDao.setAttribute("currentAccountAmount", newAmount);
@@ -98,4 +98,3 @@ public class CurrentService {
         return String.format("%.2f", rate) + "%";
     }
 }
-

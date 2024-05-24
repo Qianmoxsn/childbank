@@ -4,6 +4,8 @@ import org.springframework.stereotype.Component;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 /**
@@ -40,5 +42,18 @@ public class StringDateConvert {
         String pattern = "yyyy-MM-dd HH:mm:ss";
         SimpleDateFormat dateFormat = new SimpleDateFormat(pattern);
         return dateFormat.format(date);
+    }
+
+    /**
+     * Calculates the number of days between two dates represented as strings.
+     *
+     * @param startDate The start date string in the format "yyyy-MM-dd".
+     * @param endDate The end date string in the format "yyyy-MM-dd".
+     * @return The number of days between the start date and end date.
+     */
+    public long calculateDaysBetween(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE);
+        LocalDate end = LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE);
+        return java.time.temporal.ChronoUnit.DAYS.between(start, end);
     }
 }

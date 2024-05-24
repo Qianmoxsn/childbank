@@ -16,6 +16,9 @@ public class DepositAccountBills {
     @JSONField(name = "depositAccountBillRate")
     private double depositAccountBillRate;
 
+    @JSONField(name = "depositAccountBillEffectiveDate")
+    private String depositAccountBillEffectiveDate;
+
     @JSONField(name = "depositAccountBillExpireDate")
     private String depositAccountBillExpireDate;
 }

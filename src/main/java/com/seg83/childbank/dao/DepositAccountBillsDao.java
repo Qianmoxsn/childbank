@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+
 @Repository
 @Slf4j
 public class DepositAccountBillsDao extends AbstractArrayDao {
@@ -17,7 +18,15 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
     @Autowired
     public DepositAccountBillsDao(DepositAccountDao depositAccountDao) {
         this.depositAccountDao = depositAccountDao;
+        // 修正 ElementCount 初始化
         this.getElementCount();
+    }
+
+    @Override
+    void getElementCount() {
+        log.info("Request deposit account count");
+        this.ElementCount = this.load().size();
+        log.debug("Get deposit account count {}", this.ElementCount);
     }
 
     @Override
@@ -26,13 +35,6 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         JSONArray depositAccountBills = depositAccountDao.load().getJSONArray("depositAccountBills");
         log.debug("Get deposit account data {}", depositAccountBills);
         return depositAccountBills;
-    }
-
-    @Override
-    void getElementCount() {
-        log.info("Request deposit account count");
-        this.ElementCount = this.load().size();
-        log.debug("Get deposit account count {}", this.ElementCount);
     }
 
     @Override
@@ -63,6 +65,10 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
                 log.info("Set depositAccountBillExpireDate to {}", value);
                 this.setDepositAccountBillExpireDate(depositAccountBillId, (String) value);
             }
+            case "depositAccountBillEffectiveDate" -> {
+                log.info("Set depositAccountBillEffectiveDate to {} ", value);
+                this.setDepositAccountBillEffectiveDate(depositAccountBillId, (String) value);
+            }
             default -> throw new RuntimeException("Invalid attribute name");
         }
     }
@@ -85,6 +91,12 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         updateAccountBill(bill);
     }
 
+    private void setDepositAccountBillEffectiveDate(long depositAccountBillId, String value) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        bill.setDepositAccountBillEffectiveDate(value);
+        updateAccountBill(bill);
+    }
+
     private void updateAccountBill(DepositAccountBills bill) {
         List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
         for (int i = 0; i < depositAccountBills.size(); i++) {
@@ -97,16 +109,26 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
     }
 
-    public void createDepositAccountBill(double amount, double rate, String expireDate) {
-        log.info("Create DepositAccountBill with date amount {}, rate {}, expireDate {}", amount, rate, expireDate);
-        DepositAccountBills newDepositAccountBills = new DepositAccountBills(this.ElementCount + 1, amount, rate, expireDate);
-        this.ElementCount++;
+    public void createDepositAccountBill(double amount, double rate, String effectiveDate, String expireDate) {
+        log.info("Create DepositAccountBill with date amount {}, rate {}, effectiveDate {}, expireDate {}", amount, rate, effectiveDate, expireDate);
+        DepositAccountBills newDepositAccountBills = new DepositAccountBills(this.ElementCount + 1, amount, rate, effectiveDate, expireDate);
+        log.debug("this.ElementCount = {}", this.ElementCount);
         log.debug("DepositAccountBill created {}", newDepositAccountBills);
 
         List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
         depositAccountBills.add(newDepositAccountBills);
+        this.ElementCount = depositAccountBills.size(); // 更新 ElementCount
         log.debug("Set DepositAccountBill Array {}", depositAccountBills);
         this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+    }
+
+    public void deleteDepositAccountBill(long depositAccountBillId) {
+        log.info("Delete DepositAccountBill with id {}", depositAccountBillId);
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.removeIf(bill -> bill.getDepositAccountBillId() == depositAccountBillId);
+        log.debug("Set DepositAccountBill Array after deletion {}", depositAccountBills);
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+        this.ElementCount = depositAccountBills.size(); // 更新 ElementCount
     }
 
     @Override
@@ -117,6 +139,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         return switch (attrname) {
             case "depositAccountBillAmount" -> this.getDepositAccountBillAmount(depositAccountBillId);
             case "depositAccountBillRate" -> this.getDepositAccountBillRate(depositAccountBillId);
+            case "depositAccountBillEffectiveDate" -> this.getDepositAccountBillEffectiveDate(depositAccountBillId);
             case "depositAccountBillExpireDate" -> this.getDepositAccountBillExpireDate(depositAccountBillId);
             default -> throw new RuntimeException("Invalid attribute name");
         };
@@ -132,14 +155,27 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         return bill.getDepositAccountBillRate();
     }
 
+    private Object getDepositAccountBillEffectiveDate(long depositAccountBillId) {
+        DepositAccountBills bills = this.getElementById(depositAccountBillId);
+        return bills.getDepositAccountBillEffectiveDate();
+    }
+
     private Object getDepositAccountBillExpireDate(long depositAccountBillId) {
         DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillExpireDate();
     }
 
     @Override
-    List<Object> getAllAttributes() {
+    public List<Object> getAllAttributes() {
         List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
         return List.copyOf(depositAccountBills);
+    }
+
+    public void deleteAllDepositAccountBills() {
+        log.info("Deleting all deposit account bills");
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.clear();
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+        this.ElementCount = 0;
     }
 }
