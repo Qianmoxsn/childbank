@@ -100,6 +100,7 @@ public class MainFrame extends JFrame {
         interestService.calculateCurrentInterest();
         homePanel.updateCurrentBallance();
         homePanel.updateGoal();
+        homePanel.updateFixBallance();
 
         setContentPane(this.homePanel.$$$getRootComponent$$$());
         // 显式刷新

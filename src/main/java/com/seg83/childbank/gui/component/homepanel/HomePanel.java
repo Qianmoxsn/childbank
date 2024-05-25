@@ -9,6 +9,7 @@ import com.seg83.childbank.gui.component.homepanel.homepop.HistoryPop;
 import com.seg83.childbank.gui.component.homepanel.homepop.WithdrawPop;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
 import com.seg83.childbank.service.CurrentService;
+import com.seg83.childbank.service.DepositService;
 import com.seg83.childbank.service.GoalService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ import java.util.Locale;
 public class HomePanel {
     @Autowired
     CurrentService currentService;
+    @Autowired
+    DepositService depositService;
     @Autowired
     GoalService goalService;
     @Autowired
@@ -55,6 +58,7 @@ public class HomePanel {
     private JButton fixedDepositAndWithdrawalButton;
     private JButton goalAlterationButton;
     private JLabel displayGoal;
+    private JLabel fixedLabel;
 
     /**
      * Constructor for HomePanel class.
@@ -87,10 +91,12 @@ public class HomePanel {
         fixedDepositAndWithdrawalButton.addActionListener(e -> {
             log.debug("fixedDepositAndWithdrawalButton clicked");
             publisher.publishEvent(new PanelSwitchEvent(this, "fixed"));
+            updateFixBallance();
         });
         currentAccountOperationButton.addActionListener(e -> {
             log.debug("currentAccountOperationButton clicked");
             publisher.publishEvent(new PanelSwitchEvent(this, "current"));
+            updateFixBallance();
         });
         tasksAndRewardsButton.addActionListener(e -> {
             log.debug("tasksAndRewardsButton clicked");
@@ -112,6 +118,14 @@ public class HomePanel {
     public void updateGoal() {
         String str = goalService.toUiContent("total") + "/" + goalService.toUiContent("goal");
         displayGoal.setText(str);
+        rootHomePanel.revalidate();
+        rootHomePanel.repaint();
+    }
+
+    public void updateFixBallance() {
+        updateGoal();
+        double newBallance = depositService.calculateTotalDeposits();
+        fixedLabel.setText(String.valueOf(newBallance));
         rootHomePanel.revalidate();
         rootHomePanel.repaint();
     }
@@ -155,9 +169,9 @@ public class HomePanel {
         panel3.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
         panel2.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         panel3.setBorder(BorderFactory.createTitledBorder(null, "Fixed Balance", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, null, null));
-        final JLabel label1 = new JLabel();
-        label1.setText("$500");
-        panel3.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        fixedLabel = new JLabel();
+        fixedLabel.setText("$500");
+        panel3.add(fixedLabel, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel4 = new JPanel();
         panel4.setLayout(new GridLayoutManager(1, 3, new Insets(0, 0, 0, 0), -1, -1));
         rootHomePanel.add(panel4, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
