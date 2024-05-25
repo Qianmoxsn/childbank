@@ -66,10 +66,10 @@ public class TaskPanel {
         table1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         // 设置列宽
         TableColumnModel columnModel = table1.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(25);  // ID 列
-        columnModel.getColumn(1).setPreferredWidth(80);
+        columnModel.getColumn(0).setPreferredWidth(10);  // ID 列
+        columnModel.getColumn(1).setPreferredWidth(100);
         columnModel.getColumn(2).setPreferredWidth(200);
-        columnModel.getColumn(3).setPreferredWidth(80);
+        columnModel.getColumn(3).setPreferredWidth(70);
     }
 
     public void updatePanel() {

@@ -8,6 +8,7 @@ import com.seg83.childbank.gui.component.taskpanel.TaskPanel;
 import com.seg83.childbank.gui.component.welcome.SetupPanel;
 import com.seg83.childbank.gui.component.welcome.WelcomePanel;
 import com.seg83.childbank.gui.event.PanelSwitchEvent;
+import com.seg83.childbank.service.DepositService;
 import com.seg83.childbank.service.InterestService;
 import com.seg83.childbank.service.SetupService;
 import jakarta.annotation.PostConstruct;
@@ -32,10 +33,11 @@ public class MainFrame extends JFrame {
 
     private SetupService setupService;
     private InterestService interestService;
+    private DepositService depositService;
 
     public MainFrame() throws HeadlessException {
         setTitle("ChildBank");
-        setSize(600, 400);
+        setSize(700, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         log.info("Create MainFrame");
@@ -43,7 +45,7 @@ public class MainFrame extends JFrame {
 
     @Autowired
     private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
-                           SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, CurrentAccountPanel currentAccountPanel, TaskPanel taskPanel) {
+                           SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, CurrentAccountPanel currentAccountPanel, TaskPanel taskPanel, DepositService depositService) {
         this.homePanel = homePanel;
         this.welcomePanel = welcomePanel;
         this.setupPanel = setupPanel;
@@ -53,6 +55,7 @@ public class MainFrame extends JFrame {
         this.fixedAccountPanel = fixedAccountPanel;
         this.currentAccountPanel = currentAccountPanel;
         this.taskPanel = taskPanel;
+        this.depositService = depositService;
     }
 
     @PostConstruct
@@ -98,6 +101,7 @@ public class MainFrame extends JFrame {
     private void initHomePanel() {
         homePanel.$$$getRootComponent$$$().updateUI();
         interestService.calculateCurrentInterest();
+        depositService.processMaturedDeposits();
         homePanel.updateCurrentBallance();
         homePanel.updateGoal();
         homePanel.updateFixBallance();
@@ -137,7 +141,7 @@ public class MainFrame extends JFrame {
         repaint();
         log.info("Create currentAccountPanel in MainFrame");
     }
-      
+
     private void initTaskPanel() {
         taskPanel.createTable();
         taskPanel.$$$getRootComponent$$$().updateUI();

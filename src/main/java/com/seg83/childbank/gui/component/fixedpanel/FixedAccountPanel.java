@@ -35,7 +35,6 @@ public class FixedAccountPanel {
     private JTable table1;
     private JLabel totalLabel;
 
-
     public FixedAccountPanel() {
 //        $$$setupUI$$$();
         backButton.addActionListener(e -> {
@@ -72,9 +71,8 @@ public class FixedAccountPanel {
         columnModel.getColumn(4).setPreferredWidth(200); // Expire Date 列
     }
 
-
     public void setTotalFixedLabel() {
-        totalLabel.setText(String.valueOf(depositService.calculateTotalDeposits()));
+        totalLabel.setText("$" + depositService.calculateTotalDeposits());
     }
 
     {

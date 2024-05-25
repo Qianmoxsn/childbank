@@ -77,9 +77,11 @@ public class DepositService {
                 long days = convert.calculateDaysBetween(bill.getDepositAccountBillEffectiveDate(), bill.getDepositAccountBillExpireDate());
                 double interest = amount * rate * days / 365;
                 double totalAmount = amount + interest;
+                // To .2 decimal places
+                totalAmount = Math.round(totalAmount * 100) / 100.0;
 
                 currentService.depositCurrentAccount(totalAmount);
-                historyService.createOperationHistory(totalAmount, "Matured fixed deposit");
+                historyService.createOperationHistory(totalAmount, "Deposit Expire");
                 depositAccountBillsDao.deleteDepositAccountBill(bill.getDepositAccountBillId());
                 log.info("Processed matured deposit with amount: {}, interest: {}, total: {}", amount, interest, totalAmount);
             }
@@ -89,7 +91,7 @@ public class DepositService {
     public double calculateTotalDeposits() {
         double total = 0;
         for (int i = 0; i < depositAccountBillsDao.ElementCount; i++) {
-            total = total + (double) depositAccountBillsDao.getAttribute("depositAccountBillAmount", (int) (i + 1));
+            total = total + (double) depositAccountBillsDao.getAttribute("depositAccountBillAmount", i + 1);
         }
         return  total;
     }
