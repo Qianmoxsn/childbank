@@ -109,6 +109,9 @@ public class WithdrawPop extends JDialog {
      */
     public void init() {
         log.debug("Initializing DepositePop dialog");
+        // Clear the text fields
+        textField1.setText("");
+        passwordField1.setText("");
         this.pack();  // Use the existing this reference instead of creating a new instance
         setLocationRelativeTo(null);  // Place the window at the center of the screen
         this.setVisible(true);

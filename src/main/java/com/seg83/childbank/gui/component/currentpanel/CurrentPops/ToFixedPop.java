@@ -141,6 +141,9 @@ public class ToFixedPop extends JDialog {
 
     public void init() {
         log.debug("Initializing tofix dialog");
+        // Clear the text fields
+        amountField.setText("");
+        passwordField1.setText("");
         this.pack();  // 使用已经存在的this引用而不是创建新的实例
         setLocationRelativeTo(null);  // null 使窗口居中于屏幕
         this.setVisible(true);
