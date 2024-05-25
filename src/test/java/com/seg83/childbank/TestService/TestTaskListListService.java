@@ -56,12 +56,10 @@ class TestTaskListListService {
         assertNotNull(data);
         assertEquals(2, data.length);
         assertEquals(1, data[0][0]);
-        assertEquals("task1", data[0][1]);
-        assertEquals("task1 description", data[0][2]);
+        assertEquals("[$10]Tidying Up", data[0][1]);
         assertTrue((boolean) data[0][3]);
         assertEquals(2, data[1][0]);
-        assertEquals("task2", data[1][1]);
-        assertEquals("task2 description", data[1][2]);
+        assertEquals("[$30]Household Cleaning", data[1][1]);
         assertFalse((boolean) data[1][3]);
     }
 }

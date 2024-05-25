@@ -1,11 +1,13 @@
 spring:
   application:
     name: child-bank
+  profiles:
+    active: prod
 
 json:
-  template-path: data_template.json5
+  template-path: data_template.json
   data-path: ./data.json
 
 logging:
   level:
-    com.seg83.childbank: DEBUG
+    com.seg83.childbank: info
