@@ -1,86 +1,79 @@
 {
-  //  DataWrapper.java
   "admin": {
-    //  Admin.java
     "adminPassword": "114514",
-    "firstLogin": true,
+    "firstLogin": true
   },
   "account": {
-    //  Account.java
     "accountPassword": "123456",
     "depositAccount": {
-      //  DepositAccount.java
       "depositAccountBills": [
-        //  Bill.java
         {
           "depositAccountBillId": 1,
           "depositAccountBillAmount": 100.0,
           "depositAccountBillRate": 0.5,
           "depositAccountBillEffectiveDate": "2019-01-01",
-          "depositAccountBillExpireDate": "2025-01-01",
+          "depositAccountBillExpireDate": "2025-01-01"
         },
         {
             "depositAccountBillId": 2,
             "depositAccountBillAmount": 200.0,
             "depositAccountBillRate": 0.7,
             "depositAccountBillEffectiveDate": "2024-05-01",
-            "depositAccountBillExpireDate": "2024-05-20",
+            "depositAccountBillExpireDate": "2024-05-20"
         }
-      ],
+      ]
     },
     "currentAccount": {
-      //  CurrentAccount.java
       "currentAccountAmount": 1000.0,
       "currentAccountRate": 0.3,
-      "lastInterestDate": "2024-05-01 12:34:56",
-    },
+      "lastInterestDate": "2024-05-01 12:34:56"
+    }
   },
   "history": {
     "historyActions": [
       {
         "historyId": 1,
         "historyDateTime": "2019-01-01 00:00:00",
-        "historyAmount": 100.0,
-        "historyType": "current deposit",
+        "historyAmount": 1200.0,
+        "historyType": "current deposit"
       },
       {
         "historyId": 2,
         "historyDateTime": "2019-01-02 00:12:34",
         "historyAmount": 200.0,
-        "historyType": "current withdraw",
+        "historyType": "current withdraw"
       },
       {
         "historyId": 3,
-        "historyDateTime": "2019-01-03 12:34:56",
-        "historyAmount": 300.0,
-        "historyType": "deposit deposit",
+        "historyDateTime": "2019-01-01 12:34:56",
+        "historyAmount": 100.0,
+        "historyType": "deposit deposit"
       },
       {
         "historyId": 4,
-        "historyDateTime": "2019-01-04 23:45:56",
-        "historyAmount": 400.0,
-        "historyType": "deposit withdraw",
+        "historyDateTime": "2024-05-01 23:45:56",
+        "historyAmount": 200.0,
+        "historyType": "deposit deposit"
       }
     ]
   },
   "goal": {
-    //  Goal.java
-    "goalAmount": 2000.0,
+    "goalAmount": 2000.0
   },
   "task": {
     "taskList": [
       {
         "taskId": 1,
-        "taskName": "task1",
-        "taskDescription": "task1 description",
-        "taskStatus": true,
+        "taskName": "[$10]Tidying Up",
+        "taskDescription": "Making the Bed & Cleaning the Room",
+        "taskStatus": true
       },
       {
         "taskId": 2,
-        "taskName": "task2",
-        "taskDescription": "task2 description",
-        "taskStatus": false,
-      },
-    ],
-  },
+        "taskName": "[$30]Household Cleaning",
+        "taskDescription": "Sweeping and Mopping Floors & Cleaning Windows",
+        "taskStatus": false
+      }
+    ]
+  }
 }

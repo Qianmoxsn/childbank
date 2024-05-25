@@ -71,7 +71,7 @@ class TestHistoryActionsDao {
         log.info("Testing :: get history action amount");
         long historyId = 1;
         double amount = (Double) historyActionsDao.getAttribute("historyAmount", historyId);
-        assertEquals(100.0, amount);
+        assertEquals(1200.0, amount);
     }
     /**
      * Tests the retrieval of the type attribute for a specific history action.
