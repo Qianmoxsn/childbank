@@ -62,6 +62,7 @@ public class CurrentAccountPanel {
         });
         transferToFixedButton.addActionListener(e -> {
             toFixedPop.init();
+            updatePanel();
         });
         backHomeButton.addActionListener(e -> {
             publisher.publishEvent(new PanelSwitchEvent(this, "home"));
