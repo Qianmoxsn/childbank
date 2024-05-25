@@ -4,15 +4,17 @@ import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import com.intellij.uiDesigner.core.Spacer;
 import com.seg83.childbank.dao.AdminDao;
-import com.seg83.childbank.service.CurrentService;
+import com.seg83.childbank.service.DepositService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.swing.*;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * A JDialog component that facilitates depositing money into fixed account
@@ -21,12 +23,21 @@ import java.awt.event.*;
 @Component
 @Slf4j
 public class ToFixedPop extends JDialog {
+
+    @Autowired
+    DepositService depositService;
+
+    @Autowired
+    AdminDao adminDao;
+
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
-    private JTextField textField1;
-    private JComboBox comboBox1;
+    private JTextField amountField;
     private JPasswordField passwordField1;
+    private JLabel rateLabel;
+    private JTextField rateField;
+    private JTextField monthField;
 
     public ToFixedPop() {
         setContentPane(contentPane);
@@ -63,11 +74,67 @@ public class ToFixedPop extends JDialog {
 
     private void onOK() {
         // add your code here
-        dispose();
+        String amount = amountField.getText();
+        int amountInt;
+        // ammount should be a integer
+        try {
+            amountInt = Integer.parseInt(amount);
+        } catch (NumberFormatException e) {
+            // show a dialog
+            JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String rate = rateField.getText();
+        double rateDouble;
+        try {
+            rateDouble = Double.parseDouble(rate);
+        } catch (NumberFormatException e) {
+            // show a dialog
+            JOptionPane.showMessageDialog(this, "Amount should be an Double", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String month = monthField.getText();
+        int monthInt;
+        try {
+            monthInt = Integer.parseInt(amount);
+        } catch (NumberFormatException e) {
+            // show a dialog
+            JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+
+        char[] pass = passwordField1.getPassword();
+        String password = new String(pass);
+        log.debug("Amount: {}, Password: {}", amount, password);
+
+
+        // 处理日期
+        LocalDate today = LocalDate.now();
+        LocalDate futureDate = today.plusMonths(monthInt);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+        String todayStr = formatter.format(today);
+        String futureDateStr = formatter.format(futureDate);
+
+
+        String target = (String) adminDao.getAttribute("adminPassword");
+        boolean check = password.equals(target);
+        if (!check) {
+            JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            depositService.depositFixAccount(amountInt, rateDouble, todayStr, futureDateStr);
+            dispose();
+        }
     }
 
     private void onCancel() {
         // add your code here if necessary
+
+
         dispose();
     }
 
@@ -110,29 +177,28 @@ public class ToFixedPop extends JDialog {
         buttonCancel.setText("Cancel");
         panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(3, 2, new Insets(0, 0, 0, 0), -1, -1));
+        panel3.setLayout(new GridLayoutManager(4, 2, new Insets(0, 0, 0, 0), -1, -1));
         contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         final JLabel label1 = new JLabel();
         label1.setText("Deposit Amount");
         panel3.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label2 = new JLabel();
-        label2.setText("Deposit Period");
-        panel3.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        label2.setText("Deposit Period (mounth)");
+        panel3.add(label2, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         final JLabel label3 = new JLabel();
         label3.setText("Password");
-        panel3.add(label3, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        textField1 = new JTextField();
-        panel3.add(textField1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        comboBox1 = new JComboBox();
-        final DefaultComboBoxModel defaultComboBoxModel1 = new DefaultComboBoxModel();
-        defaultComboBoxModel1.addElement("3 months");
-        defaultComboBoxModel1.addElement("6 months");
-        defaultComboBoxModel1.addElement("1 year");
-        defaultComboBoxModel1.addElement("3 years");
-        comboBox1.setModel(defaultComboBoxModel1);
-        panel3.add(comboBox1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        panel3.add(label3, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         passwordField1 = new JPasswordField();
-        panel3.add(passwordField1, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel3.add(passwordField1, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        amountField = new JTextField();
+        panel3.add(amountField, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        rateLabel = new JLabel();
+        rateLabel.setText("Deposit rate");
+        panel3.add(rateLabel, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        rateField = new JTextField();
+        panel3.add(rateField, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        monthField = new JTextField();
+        panel3.add(monthField, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
     }
 
     /**
@@ -141,4 +207,5 @@ public class ToFixedPop extends JDialog {
     public JComponent $$$getRootComponent$$$() {
         return contentPane;
     }
+
 }
