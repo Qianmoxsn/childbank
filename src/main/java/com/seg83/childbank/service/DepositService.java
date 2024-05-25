@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class DepositService {
     private final DepositAccountBillsDao depositAccountBillsDao;
     private final HistoryService historyService;
     private final StringDateConvert convert;
+    private JLabel totalFixedBalanceLabel;
 
     @Autowired
     public DepositService(DepositAccountDao depositAccountDao, DepositAccountBillsDao depositAccountBillsDao, HistoryService historyService, CurrentService currentService, StringDateConvert convert) {
@@ -55,8 +57,8 @@ public class DepositService {
         depositAccountBillsDao.createDepositAccountBill(amount, rate, effectiveDate, expireDate);
     }
 
-    public void depositFixAccount(double amount, double rate, String effectiveDate, String expireDate){
-        currentService.withdrawCurrentAccount((int)amount);
+    public void depositFixAccount(double amount, double rate, String effectiveDate, String expireDate) {
+        currentService.withdrawCurrentAccount((int) amount);
         createDepositAccountBill(amount, rate, effectiveDate, expireDate);
         log.info("Deposit fix {}", amount);
         historyService.createOperationHistory(amount, "Fix deposit");
@@ -83,4 +85,13 @@ public class DepositService {
             }
         }
     }
+
+    public double calculateTotalDeposits() {
+        double total = 0;
+        for (int i = 0; i < depositAccountBillsDao.ElementCount; i++) {
+            total = total + (double) depositAccountBillsDao.getAttribute("depositAccountBillAmount", (int) (i + 1));
+        }
+        return  total;
+    }
+
 }
