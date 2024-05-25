@@ -16,6 +16,9 @@ public class GoalService {
     private double totalAmount;
 
     @Autowired
+    DepositService depositService;
+
+    @Autowired
     public GoalService(GoalDao goalDao, CurrentAccountDao currentAccountDao) {
         this.goalDao = goalDao;
         this.currentAccountDao = currentAccountDao;
@@ -32,7 +35,7 @@ public class GoalService {
         this.goalAmount = (Double) goalDao.getAttribute("goalAmount");
         // Get total amount(current+deposit)
         double currAmount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
-        double depoAmount = 0.0;
+        double depoAmount = depositService.calculateTotalDeposits();
         this.totalAmount = currAmount + depoAmount;
 
         if (this.totalAmount >= this.goalAmount) {
