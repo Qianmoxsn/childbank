@@ -98,6 +98,7 @@ public class DepositAccountDao extends AbstractDao {
         List<DepositAccountBills> depositAccountBills = this.load().getJSONArray("depositAccountBills").toJavaList(DepositAccountBills.class);
         log.debug("Get depositAccountBills {}", depositAccountBills);
         return depositAccountBills;
+    }
 
     /**
      * Get all attributes of a deposit account.

@@ -15,6 +15,8 @@ import java.util.List;
 @Component
 @Slf4j
 public class TaskDao extends AbstractDao {
+    @Autowired
+
 
     private DataWrapperDao dataWrapperDao;
 

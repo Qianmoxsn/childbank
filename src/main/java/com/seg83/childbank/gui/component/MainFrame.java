@@ -90,31 +90,31 @@ public class MainFrame extends JFrame {
     /**
      * Autowires the panels and services, and initializes the main window.
      */
-        @Autowired
-        private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
-                               SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, CurrentAccountPanel currentAccountPanel, TaskPanel taskPanel, DepositService depositService) {
-            this.homePanel = homePanel;
-            this.welcomePanel = welcomePanel;
-            this.setupPanel = setupPanel;
-            this.setupService = setupService;
-            this.interestService = interestService;
-            this.settingsPanel = settingsPanel;
-            this.fixedAccountPanel = fixedAccountPanel;
-            this.currentAccountPanel = currentAccountPanel;
-            this.taskPanel = taskPanel;
-            this.depositService = depositService;
-    }
-        /**
-         * Initializes the main window after all panels and services are autowired.
-         */
-        @PostConstruct
-        public void init() {
-            if (setupService.checkFirstLogin()) {
-                initWelcomePanel();
-            } else {
-                initHomePanel();
-            }
+    @Autowired
+    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
+                           SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, CurrentAccountPanel currentAccountPanel, TaskPanel taskPanel, DepositService depositService) {
+        this.homePanel = homePanel;
+        this.welcomePanel = welcomePanel;
+        this.setupPanel = setupPanel;
+        this.setupService = setupService;
+        this.interestService = interestService;
+        this.settingsPanel = settingsPanel;
+        this.fixedAccountPanel = fixedAccountPanel;
+        this.currentAccountPanel = currentAccountPanel;
+        this.taskPanel = taskPanel;
+        this.depositService = depositService;
+}
+    /**
+     * Initializes the main window after all panels and services are autowired.
+     */
+    @PostConstruct
+    public void init() {
+        if (setupService.checkFirstLogin()) {
+            initWelcomePanel();
+        } else {
+            initHomePanel();
         }
+    }
 
      /**
      * Handles panel switch events by updating the main window's content pane.
@@ -204,19 +204,6 @@ public class MainFrame extends JFrame {
         log.info("Create fixedAccountPanel in MainFrame");
     }
 
-    /**
-     * Initializes the current account panel and sets it as the main window's content pane.
-     * Updates the panel.
-     */
-    private void initCurrentPanel() {
-        currentAccountPanel.$$$getRootComponent$$$().updateUI();
-        currentAccountPanel.updatePanel();
-        setContentPane(this.currentAccountPanel.$$$getRootComponent$$$());
-        // 显式刷新
-        revalidate();
-        repaint();
-        log.info("Create currentAccountPanel in MainFrame");
-    }
 
     /**
      * Initializes the task panel and sets it as the main window's content pane.

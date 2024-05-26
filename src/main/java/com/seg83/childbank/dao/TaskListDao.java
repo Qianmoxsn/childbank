@@ -62,7 +62,7 @@ public class TaskListDao extends AbstractArrayDao {
      * @return TaskList object containing the task data.
      */
     @Override
-     Object getElementById(long Id) {
+    Object getElementById(long Id) {
         log.info("Request task by id {}", Id);
         List<TaskList> taskLists = this.load().toList(TaskList.class);
         for (TaskList taskList : taskLists) {
@@ -192,7 +192,7 @@ public class TaskListDao extends AbstractArrayDao {
      * @return List of Objects containing all attributes of a task.
      */
     @Override
-     List<Object> getAllAttributes() {
+    List<Object> getAllAttributes() {
         return List.of();
     }
 }
