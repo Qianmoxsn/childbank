@@ -69,7 +69,8 @@ public class MainFrame extends JFrame {
 
     /**
      * InterestService instance for handling interest-related business logic.
-     */    private InterestService interestService;
+     */
+    private InterestService interestService;
      /**
      * DepositService instance for handling deposit-related business logic.
      */
