@@ -42,7 +42,9 @@ public class FixedAccountPanel {
         });
     }
 
-
+    /**
+     * This method is called to create the table.
+     */
     public void createTable() {
         // TODO: use actual data
         Object[][] data = depositService.generateDepositList();
@@ -66,7 +68,9 @@ public class FixedAccountPanel {
         columnModel.getColumn(3).setPreferredWidth(200); // Effective Date 列
         columnModel.getColumn(4).setPreferredWidth(200); // Expire Date 列
     }
-
+    /**
+     * This method is called to set the total fixed label.
+     */
     public void setTotalFixedLabel() {
         totalLabel.setText("$" + depositService.calculateTotalDeposits());
     }

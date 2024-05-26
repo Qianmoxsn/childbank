@@ -31,7 +31,10 @@ public class SettingsPanel {
     private JButton backHomeButton;
     private JButton resetSoftwareButton;
     private JTextPane theResetButtonIsTextPane;
-
+/**
+ * Creates an instance of SettingsPanel.
+ * Initializes UI components and sets up action listeners.
+ */
     public SettingsPanel() {
         backHomeButton.addActionListener(e -> {
             log.info("Back Home button clicked");

@@ -16,99 +16,99 @@ import java.awt.event.*;
 /**
  * A JDialog component that facilitates alter interest rate
  * It includes fields for entering the period to be select, the new interest rate and password, and buttons for OK and Cancel actions
- */
-@Component
-@Slf4j
-public class InterestRatePop extends JDialog {
-    @Autowired
-    CurrentService currentService;
-    @Autowired
-    AdminDao adminDao;
+*/
 
-    private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JComboBox comboBox1;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
+   // @Autowired private CurrentService currentService;
+   // @Autowired private AdminDao adminDao;
 
-    public InterestRatePop() {
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+   private JPanel contentPane;
+   private JButton buttonOK;
+   private JButton buttonCancel;
+   private JComboBox comboBox1;
+   private JTextField textField1;
+   private JPasswordField passwordField1;
 
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
+   public InterestRatePop() {
+       setContentPane(contentPane);
+       setModal(true);
+       getRootPane().setDefaultButton(buttonOK);
 
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+       buttonOK.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               onOK();
+           }
+       });
 
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
+       buttonCancel.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               onCancel();
+           }
+       });
 
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
+       // call onCancel() when cross is clicked
+       setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+       addWindowListener(new WindowAdapter() {
+           public void windowClosing(WindowEvent e) {
+               onCancel();
+           }
+       });
 
-    private void onOK() {
-        // add your code here
-        String ratetxt = textField1.getText();
-        String password = new String(passwordField1.getPassword());
-        String passtarget = (String) adminDao.getAttribute("adminPassword");
-        double rate = 0.0;
-        try {
-            rate = Double.parseDouble(ratetxt);
-            if (rate < 0) {
-                JOptionPane.showMessageDialog(this, "Interest rate cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Invalid interest rate", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        if (password.equals(passtarget)) {
-            currentService.modifyInterestRate(rate);
-        } else {
-            JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        dispose();
-    }
+       // call onCancel() on ESCAPE
+       contentPane.registerKeyboardAction(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               onCancel();
+           }
+       }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+   }
 
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
-    }
+   /**
+    * This method is called when the user clicks the OK button.
+    */
+   private void onOK() {
+       String ratetxt = textField1.getText();
+       String password = new String(passwordField1.getPassword());
+       String passtarget = (String) adminDao.getAttribute("adminPassword");
+       double rate = 0.0;
+       try {
+           rate = Double.parseDouble(ratetxt);
+           if (rate < 0) {
+               JOptionPane.showMessageDialog(this, "Interest rate cannot be negative", "Error", JOptionPane.ERROR_MESSAGE);
+               return;
+           }
+       } catch (NumberFormatException e) {
+           JOptionPane.showMessageDialog(this, "Invalid interest rate", "Error", JOptionPane.ERROR_MESSAGE);
+       }
+       if (password.equals(passtarget)) {
+           currentService.modifyInterestRate(rate);
+       } else {
+           JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
+       }
+       dispose();
+   }
 
-    public void init() {
-        log.debug("Initializing rate setting dialog");
-        // Clear the text fields
-        textField1.setText("");
-        passwordField1.setText("");
-        this.pack();  // 使用已经存在的this引用而不是创建新的实例
-        setLocationRelativeTo(null);  // null 使窗口居中于屏幕
-        this.setVisible(true);
-    }
+   /**
+    * This method is called when the user clicks the Cancel button.
+    */
+   private void onCancel() {
+       dispose();
+   }
 
-    {
-// GUI initializer generated by IntelliJ IDEA GUI Designer
-// >>> IMPORTANT!! <<<
-// DO NOT EDIT OR ADD ANY CODE HERE!
-        $$$setupUI$$$();
-    }
+   /**
+    * This method is called to initialize the dialog.
+    */
+   public void init() {
+       log.debug("Initializing rate setting dialog");
+       // Clear the text fields
+       textField1.setText("");
+       passwordField1.setText("");
+       // Use the existing this reference instead of creating a new instance
+       this.pack();
+       // Center the dialog
+       setLocationRelativeTo(null);
+       this.setVisible(true);
+   }
+}
+
 
     /**
      * Method generated by IntelliJ IDEA GUI Designer

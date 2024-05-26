@@ -5,11 +5,15 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * DepositAccount class represents a deposit account.
+ */
 @Data
 public class DepositAccount {
 
-
+    /**
+     * List of DepositAccountBills objects associated with the deposit account.
+     */
     @JSONField(name = "depositAccountBills")
     private List<DepositAccountBills> depositAccountBills;
-
 }
