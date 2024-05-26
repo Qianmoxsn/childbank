@@ -100,6 +100,10 @@ public class TaskPop extends JDialog {
 
         // id should be a number
         try {
+            if (id <= 0) {
+                JOptionPane.showMessageDialog(this, "Task No. should be a positive number", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
             id = Long.parseLong(textField1.getText());
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "Task No. should be a number", "Error", JOptionPane.ERROR_MESSAGE);
