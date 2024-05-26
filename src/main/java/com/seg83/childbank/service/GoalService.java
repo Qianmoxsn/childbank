@@ -32,7 +32,7 @@ public class GoalService {
     /**
      * The goal amount.
      */
-    private double goalAmount;
+    private double totalAmount;
 
     /**
      * The total amount (current + deposit).
