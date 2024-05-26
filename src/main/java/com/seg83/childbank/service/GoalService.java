@@ -37,7 +37,7 @@ public class GoalService {
     /**
      * The total amount (current + deposit).
      */
-    private double totalAmount;
+    private double goalAmount;
 
     /**
      * Constructor for creating a new GoalService instance.
