@@ -62,8 +62,8 @@ public class WelcomePanel {
         weInviteYouToTextPane = new JTextPane();
         weInviteYouToTextPane.setBackground(new Color(-1118482));
         weInviteYouToTextPane.setEditable(false);
-        weInviteYouToTextPane.setText("We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids! ");
-        rootPanel.add(weInviteYouToTextPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
+        weInviteYouToTextPane.setText("  We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids! ");
+        rootPanel.add(weInviteYouToTextPane, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_WANT_GROW, null, new Dimension(150, 50), null, 0, false));
     }
 
     /**

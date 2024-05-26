@@ -29,14 +29,14 @@
       </component>
       <component id="1d6b2" class="javax.swing.JTextPane" binding="weInviteYouToTextPane" default-binding="true">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="6" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
         <properties>
           <background color="-1118482"/>
           <editable value="false"/>
-          <text value="We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids! "/>
+          <text value="  We invite you to explore, learn, and grow with us in the safe, fun world of virtual banking for kids! "/>
         </properties>
       </component>
     </children>
