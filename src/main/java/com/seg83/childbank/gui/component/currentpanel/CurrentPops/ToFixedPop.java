@@ -72,7 +72,9 @@ public class ToFixedPop extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
-
+    /**
+     * This method is called when the user clicks the OK button.
+     */
     private void onOK() {
         // add your code here
         String amount = amountField.getText();
@@ -135,7 +137,9 @@ public class ToFixedPop extends JDialog {
 
         }
     }
-
+    /**
+     * This method is called when the user clicks the Cancel button.
+     */
     private void onCancel() {
         // add your code here if necessary
 
