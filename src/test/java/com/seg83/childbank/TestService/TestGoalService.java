@@ -43,6 +43,7 @@ class TestGoalService {
         }
         System.out.println("Remove :: test data json\n");
     }
+
     /**
      * Tests the modifyGoal() method.
      */

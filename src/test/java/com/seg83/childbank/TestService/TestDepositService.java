@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * TestDepositService is a test class for testing the DepositService class.
  */
@@ -105,7 +106,6 @@ class TestDepositService {
     /**
      * Tests the createDepositAccountBill() method.
      */
-
     @Test
     void createDepositAccountBill() {
         long initialElementCount = depositAccountBillsDao.ElementCount;
@@ -131,9 +131,9 @@ class TestDepositService {
         assertNotNull(expireDate, "Deposit account bill expire date should not be null");
         assertEquals("2024-08-03", expireDate, "Deposit account bill expire date should be '2024-08-03'");
     }
-        /**
-         * Tests the depositFixAccount() method.
-         */
+    /**
+     * Tests the depositFixAccount() method.
+     */
     @Test
     void depositFixAccount() {
         double initialBalance = currentService.checkCurrentAccountBalance();
