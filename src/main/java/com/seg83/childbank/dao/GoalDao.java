@@ -104,7 +104,7 @@ public class GoalDao extends AbstractDao {
      * @return List of Objects containing all attributes of a goal.
      */
     @Override
-    public List<Object> getAllAttributes() {
+    List<Object> getAllAttributes() {
         return List.of();
     }
 }

@@ -36,7 +36,7 @@ public class TaskDao extends AbstractDao {
      * @return JSONObject containing task data.
      */
     @Override
-    public JSONObject load() {
+    JSONObject load() {
         log.info("Request task data in JSON format");
         JSONObject task = dataWrapperDao.load().getJSONObject("task");
         log.debug("Get task data {}", task);

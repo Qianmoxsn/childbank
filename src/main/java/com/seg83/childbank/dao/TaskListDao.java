@@ -35,7 +35,7 @@ public class TaskListDao extends AbstractArrayDao {
      * @return JSONArray containing task list data.
      */
     @Override
-     JSONArray load() {
+    JSONArray load() {
         log.info("Request task list data in JSON format");
         JSONArray taskList = taskDao.load().getJSONArray("taskList");
         log.debug("Get task list data {}", taskList);
