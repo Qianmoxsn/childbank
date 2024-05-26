@@ -81,9 +81,12 @@ public class WithdrawPop extends JDialog {
         // Amount should be an integer
         try {
             amountInt = Integer.parseInt(amount);
+            if (amountInt <= 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             // Show a dialog
-            JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Amount should be an non-negative Integer", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

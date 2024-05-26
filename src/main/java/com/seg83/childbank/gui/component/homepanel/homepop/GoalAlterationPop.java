@@ -69,6 +69,9 @@ public class GoalAlterationPop extends JDialog {
         // newGoal should be a Integer
         try {
             doubleGoal = Double.parseDouble(newGoal);
+            if (doubleGoal < 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             log.error("Invalid goal: {}", newGoal);
             JOptionPane.showMessageDialog(this, "Invalid goal: " + newGoal, "Error", JOptionPane.ERROR_MESSAGE);

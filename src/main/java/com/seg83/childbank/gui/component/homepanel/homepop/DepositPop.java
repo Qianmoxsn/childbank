@@ -85,12 +85,15 @@ public class DepositPop extends JDialog {
         String password = new String(pass);
         log.debug("Amount: {}, Password: {}", amount, password);
 
-        // ammount should be a integer
+        // ammount should be a integer and non-negtive
         try {
             amountInt = Integer.parseInt(amount);
+            if (amountInt < 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             // show a dialog
-            JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Amount should be an non-negative Integer", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

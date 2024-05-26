@@ -80,9 +80,12 @@ public class ToFixedPop extends JDialog {
         // ammount should be a integer
         try {
             amountInt = Integer.parseInt(amount);
+            if (amountInt < 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             // show a dialog
-            JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Amount should be an non-negative Integer", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -90,9 +93,12 @@ public class ToFixedPop extends JDialog {
         double rateDouble;
         try {
             rateDouble = Double.parseDouble(rate);
+            if (rateDouble < 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             // show a dialog
-            JOptionPane.showMessageDialog(this, "Amount should be an Double", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Rate should be an non-negative Double", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -100,9 +106,12 @@ public class ToFixedPop extends JDialog {
         int monthInt;
         try {
             monthInt = Integer.parseInt(month);
+            if (monthInt < 0) {
+                throw new NumberFormatException();
+            }
         } catch (NumberFormatException e) {
             // show a dialog
-            JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Month should be an non-negative Integer", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
