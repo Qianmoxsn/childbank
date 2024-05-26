@@ -22,7 +22,9 @@ import java.awt.*;
  */
 @Component
 @Slf4j
-
+/**
+ * FixedAccountPanel is a JPanel class that represents the fixed account panel in the childbank application.
+ */
 public class FixedAccountPanel {
     @Autowired
     DepositService depositService;
@@ -30,19 +32,35 @@ public class FixedAccountPanel {
     @Autowired
     private ApplicationEventPublisher publisher;
 
-    private JPanel panel1;
+  /**
+     * The backButton is a JButton that allows the user to go back to the home panel.
+     */
     private JButton backButton;
-    private JTable table1;
-    private JLabel totalLabel;
 
+    /**
+     * The table1 is a JTable that displays the deposit account information.
+     */
+    private JTable table1;
+
+    /**
+     * The totalLabel is a JLabel that shows the total fixed balance.
+     */
+    private JLabel totalLabel;
+    /**
+     * Constructs a new FixedAccountPanel.
+     */
     public FixedAccountPanel() {
 //        $$$setupUI$$$();
+
+        // Add action listener to the back button
         backButton.addActionListener(e -> {
             publisher.publishEvent(new PanelSwitchEvent(this, "home"));
         });
     }
 
-
+    /**
+     * Creates the table1 and sets its model with the deposit account data.
+     */
     public void createTable() {
         // TODO: use actual data
         Object[][] data = depositService.generateDepositList();
@@ -66,7 +84,9 @@ public class FixedAccountPanel {
         columnModel.getColumn(3).setPreferredWidth(200); // Effective Date 列
         columnModel.getColumn(4).setPreferredWidth(200); // Expire Date 列
     }
-
+    /**
+     * Sets the text of the totalLabel to the total fixed balance.
+     */
     public void setTotalFixedLabel() {
         totalLabel.setText("$" + depositService.calculateTotalDeposits());
     }

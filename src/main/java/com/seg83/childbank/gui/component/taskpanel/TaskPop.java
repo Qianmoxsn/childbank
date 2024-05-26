@@ -1,151 +1,179 @@
-package com.seg83.childbank.gui.component.taskpanel;
+package com.seg83.childbank.TestService;
 
-import com.intellij.uiDesigner.core.GridConstraints;
-import com.intellij.uiDesigner.core.GridLayoutManager;
-import com.intellij.uiDesigner.core.Spacer;
-import com.seg83.childbank.dao.AdminDao;
-import com.seg83.childbank.service.TaskListService;
+import com.seg83.childbank.dao.DepositAccountBillsDao;
+import com.seg83.childbank.service.CurrentService;
+import com.seg83.childbank.service.DepositService;
+import com.seg83.childbank.service.HistoryService;
+import com.seg83.childbank.utils.StringDateConvert;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 /**
- * Pop of Confirming Tasks
+ * TestDepositService is a JUnit test class for testing the DepositService class.
  */
-@Component
+@SpringBootTest
 @Slf4j
-public class TaskPop extends JDialog {
+class TestDepositService {
+    /**
+     * The DepositService instance for testing.
+     */
     @Autowired
-    private TaskListService taskListService;
+    private DepositService depositService;
+    /**
+     * The DepositAccountBillsDao instance for testing.
+     */
     @Autowired
-    private AdminDao adminDao;
-
-    private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
-
-    public TaskPop() {
-        $$$setupUI$$$();
-        setContentPane(contentPane);
-        setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
-
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() when cross is clicked
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                onCancel();
-            }
-        });
-
-        // call onCancel() on ESCAPE
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    private DepositAccountBillsDao depositAccountBillsDao;
+    /**
+     * The CurrentService instance for testing.
+     */
+    @Autowired
+    private CurrentService currentService;
+    /**
+     * The HistoryService instance for testing.
+     */
+    @Autowired
+    private HistoryService historyService;
+    /**
+     * The StringDateConvert instance for testing.
+     */
+    @Autowired
+    private StringDateConvert stringDateConvert;
+    /**
+     * Sets up the test environment before each test.
+     */
+    @BeforeAll
+    static void setup() {
+        System.setProperty("java.awt.headless", "false");
     }
-
-    private void onOK() {
-        // add your code here
-        String password = new String(passwordField1.getPassword());
-        String passTarget = (String) adminDao.getAttribute("adminPassword");
-        long id;
-
-        // id should be a number
+    /**
+     * Initializes the test data before each test.
+     */
+    @BeforeEach
+    void setUp() {
+        // 删除所有现有的存款账单
+        depositAccountBillsDao.deleteAllDepositAccountBills();
+        // 创建初始测试数据
+        depositService.createDepositAccountBill(100.0, 0.5, "2019-01-01", "2025-01-01");
+    }
+    /**
+     * Restores the test data after each test.
+     */
+    @AfterEach
+    void restoreTestJson() {
         try {
-            id = Long.parseLong(textField1.getText());
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Task No. should be a number", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            Files.deleteIfExists(Path.of("data.json"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        // check admin password
-        if (passTarget.equals(password)) {
-            taskListService.finishTask(id);
-        } else {
-            JOptionPane.showMessageDialog(this, "Password is incorrect", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        dispose();
-
-    }
-
-    private void onCancel() {
-        // add your code here if necessary
-        dispose();
-    }
-
-    public void init() {
-        log.debug("Initializing DepositePop dialog");
-        // Clear the text fields
-        textField1.setText("");
-        passwordField1.setText("");
-        this.pack();  // 使用已经存在的this引用而不是创建新的实例
-        setLocationRelativeTo(null);  // null 使窗口居中于屏幕
-        this.setVisible(true);
+        System.out.println("Remove :: test data json\n");
     }
 
     /**
-     * Method generated by IntelliJ IDEA GUI Designer
-     * >>> IMPORTANT!! <<<
-     * DO NOT edit this method OR call it in your code!
-     *
-     * @noinspection ALL
+     * Tests the generateDepositList method.
      */
-    private void $$$setupUI$$$() {
-        contentPane = new JPanel();
-        contentPane.setLayout(new GridLayoutManager(2, 1, new Insets(10, 10, 10, 10), -1, -1));
-        final JPanel panel1 = new JPanel();
-        panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel1, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, 1, null, null, null, 0, false));
-        final Spacer spacer1 = new Spacer();
-        panel1.add(spacer1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, 1, null, null, null, 0, false));
-        final JPanel panel2 = new JPanel();
-        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1, true, false));
-        panel1.add(panel2, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        buttonOK = new JButton();
-        buttonOK.setText("OK");
-        panel2.add(buttonOK, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        buttonCancel = new JButton();
-        buttonCancel.setText("Cancel");
-        panel2.add(buttonCancel, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JPanel panel3 = new JPanel();
-        panel3.setLayout(new GridLayoutManager(2, 2, new Insets(0, 0, 0, 0), -1, -1));
-        contentPane.add(panel3, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
-        final JLabel label1 = new JLabel();
-        label1.setText("Confirming Task No.");
-        panel3.add(label1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        final JLabel label2 = new JLabel();
-        label2.setText("Password");
-        panel3.add(label2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        textField1 = new JTextField();
-        panel3.add(textField1, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
-        passwordField1 = new JPasswordField();
-        panel3.add(passwordField1, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+    @Test
+    void generateDepositList() {
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        Object[][] depositList = depositService.generateDepositList();
+        assertNotNull(depositList, "Deposit list should not be null");
+        assertTrue(depositList.length > 0, "Deposit list should not be empty");
+        System.out.println(Arrays.deepToString(depositList));
+    }
+    /**
+     * Tests the createDepositAccountBill method.
+     */
+    @Test
+    void createDepositAccountBill() {
+        long initialElementCount = depositAccountBillsDao.ElementCount;
+
+        depositService.createDepositAccountBill(100, 0.1, "2023-08-03", "2024-08-03");
+
+        long newElementCount = depositAccountBillsDao.ElementCount;
+        assertEquals(initialElementCount + 1, newElementCount, "Element count should have incremented by 1");
+
+        Object amount = depositAccountBillsDao.getAttribute("depositAccountBillAmount", newElementCount);
+        assertNotNull(amount, "Deposit account bill amount should not be null");
+        assertEquals(100.0, amount, "Deposit account bill amount should be 100.0");
+
+        Object rate = depositAccountBillsDao.getAttribute("depositAccountBillRate", newElementCount);
+        assertNotNull(rate, "Deposit account bill rate should not be null");
+        assertEquals(0.1, rate, "Deposit account bill rate should be 0.1");
+
+        Object effectiveDate = depositAccountBillsDao.getAttribute("depositAccountBillEffectiveDate", newElementCount);
+        assertNotNull(effectiveDate, "Deposit account bill effective date should not be null");
+        assertEquals("2023-08-03", effectiveDate, "Deposit account bill effective date should be '2023-08-03'");
+
+        Object expireDate = depositAccountBillsDao.getAttribute("depositAccountBillExpireDate", newElementCount);
+        assertNotNull(expireDate, "Deposit account bill expire date should not be null");
+        assertEquals("2024-08-03", expireDate, "Deposit account bill expire date should be '2024-08-03'");
+    }
+    /**
+     * Tests the depositFixAccount method.
+     */
+    @Test
+    void depositFixAccount() {
+        double initialBalance = currentService.checkCurrentAccountBalance();
+
+        depositService.depositFixAccount(100, 0.1, "2023-08-03", "2024-08-03");
+
+        double newBalance = currentService.checkCurrentAccountBalance();
+        assertEquals(initialBalance - 100, newBalance, "Current account balance should be decreased by 100");
+
+        long newElementCount = depositAccountBillsDao.ElementCount;
+        assertEquals(2, newElementCount);
+
+        Object amount = depositAccountBillsDao.getAttribute("depositAccountBillAmount", newElementCount);
+        assertNotNull(amount, "Deposit account bill amount should not be null");
+        assertEquals(100.0, amount, "Deposit account bill amount should be 100.0");
+    }
+    /**
+     * Tests the processMaturedDeposits method.
+     */
+    @Test
+    void processMaturedDeposits() {
+        double initialBalance = currentService.checkCurrentAccountBalance();
+
+        // 创建一个已到期的定期存款账单
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        assertEquals(initialBalance, currentService.checkCurrentAccountBalance());
+
+        depositService.processMaturedDeposits();
+
+        double newBalance = currentService.checkCurrentAccountBalance();
+        double expectedInterest = 200 * 0.1 * 272 / 365; // Assuming the deposit has been active for 273 days
+        double expectedBalance = initialBalance + 200 + expectedInterest;
+        assertEquals(expectedBalance, newBalance, 0.01, "Current account balance should include principal and interest");
+
+        List<Object> bills = depositAccountBillsDao.getAllAttributes();
+        assertFalse(bills.isEmpty(), "There should be no deposit account bills after processing matured deposits");
     }
 
     /**
-     * @noinspection ALL
+     * Tests the calculateDaysBetween method.
      */
-    public JComponent $$$getRootComponent$$$() {
-        return contentPane;
-    }
+    @Test
+    void testCalculateDaysBetween() {
+        long days = stringDateConvert.calculateDaysBetween("2023-08-03", "2024-05-01");
+        assertEquals(272, days, "Days between 2023-08-03 and 2024-05-01 should be 272");
 
+        days = stringDateConvert.calculateDaysBetween("2023-01-01", "2023-12-31");
+        assertEquals(364, days, "Days between 2023-01-01 and 2023-12-31 should be 364"); // 2023 is not a leap year
+
+        days = stringDateConvert.calculateDaysBetween("2020-01-01", "2020-12-31");
+        assertEquals(365, days, "Days between 2020-01-01 and 2020-12-31 should be 365"); // 2020 is a leap year
+    }
 }
