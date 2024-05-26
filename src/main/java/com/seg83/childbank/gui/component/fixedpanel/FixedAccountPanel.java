@@ -19,12 +19,10 @@ import java.awt.*;
 
 /**
  * Panel of Deposit Account
+ * FixedAccountPanel is a JPanel class that represents the fixed account panel in the childbank application.
  */
 @Component
 @Slf4j
-/**
- * FixedAccountPanel is a JPanel class that represents the fixed account panel in the childbank application.
- */
 public class FixedAccountPanel {
     @Autowired
     DepositService depositService;
@@ -46,6 +44,7 @@ public class FixedAccountPanel {
      * The totalLabel is a JLabel that shows the total fixed balance.
      */
     private JLabel totalLabel;
+
     /**
      * Constructs a new FixedAccountPanel.
      */
@@ -86,6 +85,7 @@ public class FixedAccountPanel {
         columnModel.getColumn(3).setPreferredWidth(200); // Effective Date 列
         columnModel.getColumn(4).setPreferredWidth(200); // Expire Date 列
     }
+
     /**
      * Sets the text of the totalLabel to the total fixed balance.
      */

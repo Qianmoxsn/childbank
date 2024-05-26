@@ -23,37 +23,45 @@ import java.awt.event.ActionListener;
 @Component
 @Slf4j
 public class TaskPanel {
+
     /**
      * The TaskListService interface instance for handling task list-related business logic.
      */
     @Autowired
     TaskListService taskListService;
+
     /**
      * The TaskPop class instance for displaying the task confirmation dialog.
      */
     @Autowired
     TaskPop taskPop;
+
     /**
      * The ApplicationEventPublisher interface instance for publishing panel switch events.
      */
     @Autowired
     private ApplicationEventPublisher publisher;
+
     /**
      * The Back Home button.
      */
     private JButton backHomeButton;
+
     /**
      * The Task list table.
      */
     private JTable table1;
+
     /**
      * The Confirm Task button.
      */
     private JButton confirmTaskButton;
+
     /**
      * The Main panel.
      */
     private JPanel rootpanel;
+
     /**
      * Constructor that initializes the UI components and sets up action listeners.
      */
@@ -73,6 +81,7 @@ public class TaskPanel {
             }
         });
     }
+
     /**
      * Creates the Task list table.
      */
@@ -95,6 +104,7 @@ public class TaskPanel {
         columnModel.getColumn(2).setPreferredWidth(200);
         columnModel.getColumn(3).setPreferredWidth(70);
     }
+
     /**
      * Updates the panel by recreating the Task list table.
      */

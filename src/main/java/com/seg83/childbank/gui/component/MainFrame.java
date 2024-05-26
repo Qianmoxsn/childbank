@@ -71,10 +71,12 @@ public class MainFrame extends JFrame {
      * InterestService instance for handling interest-related business logic.
      */
     private InterestService interestService;
+
      /**
      * DepositService instance for handling deposit-related business logic.
      */
     private DepositService depositService;
+
     /**
      * Constructor for creating a new MainFrame instance.
      *
@@ -87,6 +89,7 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         log.info("Create MainFrame");
     }
+
     /**
      * Autowires the panels and services, and initializes the main window.
      */
@@ -218,6 +221,7 @@ public class MainFrame extends JFrame {
         repaint();
         log.info("Create currentAccountPanel in MainFrame");
     }
+
     /**
      * Initializes the task panel and sets it as the main window's content pane.
      * Creates the table.

@@ -14,6 +14,10 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 
+/**
+ * SetupPanel is a class that represents the setup panel for initializing the application.
+ * It allows an admin to set up the initial admin password, trade password, and start the application.
+ */
 @Component
 @Slf4j
 public class SetupPanel {
@@ -35,6 +39,11 @@ public class SetupPanel {
     private JTextPane welcomeToTheVirtualTextPane;
 
     public SetupPanel() {
+
+        /**
+        * Action listener for the btnAdmin button.
+        * When the admin button is clicked, it publishes a AdminSetupEvent event.
+        */
         btnAdmin.addActionListener(e -> {
             log.info("Admin button clicked");
             int state = setupService.checkPass(new String(passwordField1.getPassword()), new String(passwordField2.getPassword()));

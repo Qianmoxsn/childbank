@@ -14,6 +14,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.*;
+
 /**
  * HistoryPop.java
  * This class represents a dialog for displaying history records.
@@ -54,6 +55,7 @@ public class HistoryPop extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
+
     /**
      * This method is called when the user clicks the OK button.
      */
@@ -61,6 +63,7 @@ public class HistoryPop extends JDialog {
         // 在此处添加您的代码
         dispose();
     }
+
     /**
      * This method is called when the user clicks the Cancel button.
      */
@@ -68,6 +71,7 @@ public class HistoryPop extends JDialog {
         // 必要时在此处添加您的代码
         dispose();
     }
+
     /**
      * This method is called to create the table.
      */
@@ -90,6 +94,7 @@ public class HistoryPop extends JDialog {
         columnModel.getColumn(2).setPreferredWidth(120); // Type 列
         columnModel.getColumn(3).setPreferredWidth(80);  // Amount 列
     }
+
     /**
      * This method is called to initialize the dialog.
      */

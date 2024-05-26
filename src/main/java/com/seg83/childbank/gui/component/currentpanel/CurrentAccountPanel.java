@@ -68,6 +68,7 @@ public class CurrentAccountPanel {
             publisher.publishEvent(new PanelSwitchEvent(this, "home"));
         });
     }
+
     /**
      * This method is called to update the panel.
      */

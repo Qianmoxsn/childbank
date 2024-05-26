@@ -72,6 +72,7 @@ public class ToFixedPop extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
+
     /**
      * This method is called when the user clicks the OK button.
      */
@@ -146,6 +147,7 @@ public class ToFixedPop extends JDialog {
 
         }
     }
+
     /**
      * This method is called when the user clicks the Cancel button.
      */
