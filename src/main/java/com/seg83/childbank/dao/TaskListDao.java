@@ -52,7 +52,6 @@ public class TaskListDao extends AbstractArrayDao {
         log.info("Request tasks count");
         this.ElementCount = this.load().size();
         log.debug("Get history actions count {}", this.ElementCount);
-        return this.ElementCount;
     }
 
     /**
