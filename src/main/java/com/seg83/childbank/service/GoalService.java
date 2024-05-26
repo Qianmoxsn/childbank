@@ -26,7 +26,6 @@ public class GoalService {
     /**
      * DepositService instance for handling deposit operations.
      */
-    @Autowired
     private DepositService depositService;
 
     /**
@@ -42,13 +41,14 @@ public class GoalService {
     /**
      * Constructor for creating a new GoalService instance.
      *
-     * @param goalDao      GoalDao instance
+     * @param goalDao           GoalDao instance
      * @param currentAccountDao CurrentAccountDao instance
      */
     @Autowired
-    public GoalService(GoalDao goalDao, CurrentAccountDao currentAccountDao) {
+    public GoalService(GoalDao goalDao, CurrentAccountDao currentAccountDao, DepositService depositService) {
         this.goalDao = goalDao;
         this.currentAccountDao = currentAccountDao;
+        this.depositService = depositService;
     }
 
     /**
