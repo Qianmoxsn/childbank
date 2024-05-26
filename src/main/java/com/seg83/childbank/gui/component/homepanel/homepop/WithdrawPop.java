@@ -92,8 +92,11 @@ public class WithdrawPop extends JDialog {
         if (!check) {
             JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            currentService.withdrawCurrentAccount(amountInt);
-            dispose();
+            if (currentService.withdrawCurrentAccount(amountInt)) {
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Not enough balance", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
@@ -103,6 +106,8 @@ public class WithdrawPop extends JDialog {
     private void onCancel() {
         dispose();
     }
+
+    // IntelliJ IDEA GUI Designer code
 
     /**
      * Initializes the WithdrawPop dialog.
@@ -116,8 +121,6 @@ public class WithdrawPop extends JDialog {
         setLocationRelativeTo(null);  // Place the window at the center of the screen
         this.setVisible(true);
     }
-
-    // IntelliJ IDEA GUI Designer code
 
     /**
      * @noinspection ALL

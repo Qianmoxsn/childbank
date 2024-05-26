@@ -99,7 +99,7 @@ public class ToFixedPop extends JDialog {
         String month = monthField.getText();
         int monthInt;
         try {
-            monthInt = Integer.parseInt(amount);
+            monthInt = Integer.parseInt(month);
         } catch (NumberFormatException e) {
             // show a dialog
             JOptionPane.showMessageDialog(this, "Amount should be an Integer", "Error", JOptionPane.ERROR_MESSAGE);
@@ -127,8 +127,12 @@ public class ToFixedPop extends JDialog {
         if (!check) {
             JOptionPane.showMessageDialog(this, "Password mistake", "Error", JOptionPane.ERROR_MESSAGE);
         } else {
-            depositService.depositFixAccount(amountInt, rateDouble, todayStr, futureDateStr);
-            dispose();
+            if (depositService.depositFixAccount(amountInt, rateDouble, todayStr, futureDateStr)) {
+                dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Deposit failed", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
         }
     }
 
@@ -143,6 +147,7 @@ public class ToFixedPop extends JDialog {
         log.debug("Initializing tofix dialog");
         // Clear the text fields
         amountField.setText("");
+        monthField.setText("");
         passwordField1.setText("");
         this.pack();  // 使用已经存在的this引用而不是创建新的实例
         setLocationRelativeTo(null);  // null 使窗口居中于屏幕
