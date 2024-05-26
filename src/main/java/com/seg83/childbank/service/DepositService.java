@@ -57,11 +57,16 @@ public class DepositService {
         depositAccountBillsDao.createDepositAccountBill(amount, rate, effectiveDate, expireDate);
     }
 
-    public void depositFixAccount(double amount, double rate, String effectiveDate, String expireDate) {
-        currentService.withdrawCurrentAccount((int) amount);
-        createDepositAccountBill(amount, rate, effectiveDate, expireDate);
-        log.info("Deposit fix {}", amount);
-        historyService.createOperationHistory(amount, "Fix deposit");
+    public boolean depositFixAccount(double amount, double rate, String effectiveDate, String expireDate) {
+        if (currentService.withdrawCurrentAccount((int) amount)) {
+            createDepositAccountBill(amount, rate, effectiveDate, expireDate);
+            log.info("Deposit fix {}", amount);
+            historyService.createOperationHistory(amount, "Fix deposit");
+            return true;
+        }else {
+            log.error("Deposit fix failed");
+            return false;
+        }
     }
 
     public void processMaturedDeposits() {
@@ -77,9 +82,11 @@ public class DepositService {
                 long days = convert.calculateDaysBetween(bill.getDepositAccountBillEffectiveDate(), bill.getDepositAccountBillExpireDate());
                 double interest = amount * rate * days / 365;
                 double totalAmount = amount + interest;
+                // To .2 decimal places
+                totalAmount = Math.round(totalAmount * 100) / 100.0;
 
                 currentService.depositCurrentAccount(totalAmount);
-                historyService.createOperationHistory(totalAmount, "Matured fixed deposit");
+                historyService.createOperationHistory(totalAmount, "Deposit Expire");
                 depositAccountBillsDao.deleteDepositAccountBill(bill.getDepositAccountBillId());
                 log.info("Processed matured deposit with amount: {}, interest: {}, total: {}", amount, interest, totalAmount);
             }
@@ -89,7 +96,7 @@ public class DepositService {
     public double calculateTotalDeposits() {
         double total = 0;
         for (int i = 0; i < depositAccountBillsDao.ElementCount; i++) {
-            total = total + (double) depositAccountBillsDao.getAttribute("depositAccountBillAmount", (int) (i + 1));
+            total = total + (double) depositAccountBillsDao.getAttribute("depositAccountBillAmount", i + 1);
         }
         return  total;
     }

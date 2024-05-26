@@ -95,6 +95,9 @@ public class GoalAlterationPop extends JDialog {
         log.debug("Initializing GoalPop dialog");
 
         log.info("Load current goal");
+        // Clear the text fields
+        textField1.setText("");
+        passwordField1.setText("");
         String goal = goalService.toUiContent("goal");
         goalDisplay.setText(goal);
         this.pack();  // 使用已经存在的this引用而不是创建新的实例

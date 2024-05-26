@@ -67,13 +67,18 @@ public class CurrentService {
      *
      * @param amount The amount to withdraw.
      */
-    public void withdrawCurrentAccount(int amount) {
+    public boolean withdrawCurrentAccount(int amount) {
         double currentAmount = (Double) currentAccountDao.getAttribute("currentAccountAmount");
         double newAmount = currentAmount - amount;
+        if (newAmount < 0) {
+            log.error("Withdraw current {} failed, not enough balance", amount);
+            return false;
+        }
         currentAccountDao.setAttribute("currentAccountAmount", newAmount);
         log.info("Withdraw current {} now {} -> {}", amount, currentAmount, newAmount);
         // Create a history
         historyService.createOperationHistory(amount, "current withdraw");
+        return true;
     }
 
     public void modifyInterestRate(double rate) {
