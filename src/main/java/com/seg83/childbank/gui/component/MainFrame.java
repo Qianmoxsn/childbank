@@ -90,138 +90,138 @@ public class MainFrame extends JFrame {
     /**
      * Autowires the panels and services, and initializes the main window.
      */
-    @Autowired
-    private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
-                           SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, CurrentAccountPanel currentAccountPanel, TaskPanel taskPanel, DepositService depositService) {
-        this.homePanel = homePanel;
-        this.welcomePanel = welcomePanel;
-        this.setupPanel = setupPanel;
-        this.setupService = setupService;
-        this.interestService = interestService;
-        this.settingsPanel = settingsPanel;
-        this.fixedAccountPanel = fixedAccountPanel;
-        this.currentAccountPanel = currentAccountPanel;
-        this.taskPanel = taskPanel;
-        this.depositService = depositService;
+        @Autowired
+        private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
+                               SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, CurrentAccountPanel currentAccountPanel, TaskPanel taskPanel, DepositService depositService) {
+            this.homePanel = homePanel;
+            this.welcomePanel = welcomePanel;
+            this.setupPanel = setupPanel;
+            this.setupService = setupService;
+            this.interestService = interestService;
+            this.settingsPanel = settingsPanel;
+            this.fixedAccountPanel = fixedAccountPanel;
+            this.currentAccountPanel = currentAccountPanel;
+            this.taskPanel = taskPanel;
+            this.depositService = depositService;
     }
-    /**
-     * Initializes the main window after all panels and services are autowired.
+        /**
+         * Initializes the main window after all panels and services are autowired.
+         */
+        @PostConstruct
+        public void init() {
+            if (setupService.checkFirstLogin()) {
+                initWelcomePanel();
+            } else {
+                initHomePanel();
+            }
+        }
+
+     /**
+     * Handles panel switch events by updating the main window's content pane.
+     *
+     * @param event the PanelSwitchEvent triggered by a panel switch
      */
-    @PostConstruct
-    public void init() {
-        if (setupService.checkFirstLogin()) {
-            initWelcomePanel();
-        } else {
-            initHomePanel();
+    @EventListener
+    public void onPanelSwitch(PanelSwitchEvent event) {
+        switch (event.getPanelName()) {
+            case "setup" -> initSetupPanel();
+            case "home" -> initHomePanel();
+            case "setting" -> initSettingsPanel();
+            case "fixed" -> initFixedAccountPanel();
+            case "current" -> initCurrentPanel();
+            case "task" -> initTaskPanel();
+            default -> throw new IllegalArgumentException("Unknown panel name: " + event.getPanelName());
         }
     }
 
- /**
- * Handles panel switch events by updating the main window's content pane.
- *
- * @param event the PanelSwitchEvent triggered by a panel switch
- */
-@EventListener
-public void onPanelSwitch(PanelSwitchEvent event) {
-    switch (event.getPanelName()) {
-        case "setup" -> initSetupPanel();
-        case "home" -> initHomePanel();
-        case "setting" -> initSettingsPanel();
-        case "fixed" -> initFixedAccountPanel();
-        case "current" -> initCurrentPanel();
-        case "task" -> initTaskPanel();
-        default -> throw new IllegalArgumentException("Unknown panel name: " + event.getPanelName());
+    /**
+     * Initializes the welcome panel and sets it as the main window's content pane.
+     */
+    private void initWelcomePanel() {
+        welcomePanel.$$$getRootComponent$$$().updateUI();
+        setContentPane(this.welcomePanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create welcomePanel in MainFrame");
     }
-}
 
-/**
- * Initializes the welcome panel and sets it as the main window's content pane.
- */
-private void initWelcomePanel() {
-    welcomePanel.$$$getRootComponent$$$().updateUI();
-    setContentPane(this.welcomePanel.$$$getRootComponent$$$());
-    // 显式刷新
-    revalidate();
-    repaint();
-    log.info("Create welcomePanel in MainFrame");
-}
+    /**
+     * Initializes the setup panel and sets it as the main window's content pane.
+     */
+    private void initSetupPanel() {
+        setupPanel.$$$getRootComponent$$$().updateUI();
+        setContentPane(this.setupPanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create setupPanel in MainFrame");
+    }
 
-/**
- * Initializes the setup panel and sets it as the main window's content pane.
- */
-private void initSetupPanel() {
-    setupPanel.$$$getRootComponent$$$().updateUI();
-    setContentPane(this.setupPanel.$$$getRootComponent$$$());
-    // 显式刷新
-    revalidate();
-    repaint();
-    log.info("Create setupPanel in MainFrame");
-}
+    /**
+     * Initializes the home panel and sets it as the main window's content pane.
+     * Calculates current interest and processes matured deposits.
+     */
+    private void initHomePanel() {
+        homePanel.$$$getRootComponent$$$().updateUI();
+        interestService.calculateCurrentInterest();
+        depositService.processMaturedDeposits();
+        homePanel.updateCurrentBallance();
+        homePanel.updateGoal();
+        homePanel.updateFixBallance();
 
-/**
- * Initializes the home panel and sets it as the main window's content pane.
- * Calculates current interest and processes matured deposits.
- */
-private void initHomePanel() {
-    homePanel.$$$getRootComponent$$$().updateUI();
-    interestService.calculateCurrentInterest();
-    depositService.processMaturedDeposits();
-    homePanel.updateCurrentBallance();
-    homePanel.updateGoal();
-    homePanel.updateFixBallance();
+        setContentPane(this.homePanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create homePanel in MainFrame");
+    }
 
-    setContentPane(this.homePanel.$$$getRootComponent$$$());
-    // 显式刷新
-    revalidate();
-    repaint();
-    log.info("Create homePanel in MainFrame");
-}
+    /**
+     * Initializes the settings panel and sets it as the main window's content pane.
+     */
+    private void initSettingsPanel() {
+        settingsPanel.$$$getRootComponent$$$().updateUI();
+        setContentPane(this.settingsPanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create settingPanel in MainFrame");
+    }
 
-/**
- * Initializes the settings panel and sets it as the main window's content pane.
- */
-private void initSettingsPanel() {
-    settingsPanel.$$$getRootComponent$$$().updateUI();
-    setContentPane(this.settingsPanel.$$$getRootComponent$$$());
-    // 显式刷新
-    revalidate();
-    repaint();
-    log.info("Create settingPanel in MainFrame");
-}
+    /**
+     * Initializes the fixed account panel and sets it as the main window's content pane.
+     * Creates the table and sets the total fixed label.
+     */
+    private void initFixedAccountPanel() {
+        fixedAccountPanel.createTable();
+        fixedAccountPanel.setTotalFixedLabel();
+        fixedAccountPanel.$$$getRootComponent$$$().updateUI();
+        setContentPane(this.fixedAccountPanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create fixedAccountPanel in MainFrame");
+    }
 
-/**
- * Initializes the fixed account panel and sets it as the main window's content pane.
- * Creates the table and sets the total fixed label.
- */
-private void initFixedAccountPanel() {
-    fixedAccountPanel.createTable();
-    fixedAccountPanel.setTotalFixedLabel();
-    fixedAccountPanel.$$$getRootComponent$$$().updateUI();
-    setContentPane(this.fixedAccountPanel.$$$getRootComponent$$$());
-    // 显式刷新
-    revalidate();
-    repaint();
-    log.info("Create fixedAccountPanel in MainFrame");
-}
+    /**
+     * Initializes the current account panel and sets it as the main window's content pane.
+     * Updates the panel.
+     */
+    private void initCurrentPanel() {
+        currentAccountPanel.$$$getRootComponent$$$().updateUI();
+        currentAccountPanel.updatePanel();
+        setContentPane(this.currentAccountPanel.$$$getRootComponent$$$());
+        // 显式刷新
+        revalidate();
+        repaint();
+        log.info("Create currentAccountPanel in MainFrame");
+    }
 
-/**
- * Initializes the current account panel and sets it as the main window's content pane.
- * Updates the panel.
- */
-private void initCurrentPanel() {
-    currentAccountPanel.$$$getRootComponent$$$().updateUI();
-    currentAccountPanel.updatePanel();
-    setContentPane(this.currentAccountPanel.$$$getRootComponent$$$());
-    // 显式刷新
-    revalidate();
-    repaint();
-    log.info("Create currentAccountPanel in MainFrame");
-}
-
-/**
- * Initializes the task panel and sets it as the main window's content pane.
- * Creates the table.
- */
+    /**
+     * Initializes the task panel and sets it as the main window's content pane.
+     * Creates the table.
+     */
     private void initCurrentPanel() {
         currentAccountPanel.$$$getRootComponent$$$().updateUI();
         currentAccountPanel.updatePanel();
