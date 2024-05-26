@@ -17,6 +17,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
     /**
      * The DepositAccountDao instance for interacting with deposit account data.
      */
+
     private final DepositAccountDao depositAccountDao;
     /**
      * The number of elements in the deposit account bills array.
@@ -44,6 +45,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         this.ElementCount = this.load().size();
         log.debug("Get deposit account count {}", this.ElementCount);
     }
+
     /**
      * Loads the deposit account bills data in JSON format.
      *
@@ -56,6 +58,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         log.debug("Get deposit account data {}", depositAccountBills);
         return depositAccountBills;
     }
+
     /**
      * Retrieves a deposit account bill by its ID.
      *
@@ -74,6 +77,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         }
         throw new RuntimeException("Invalid Id");
     }
+
     /**
      * Sets the attribute of a deposit account bill with the specified name and value.
      *
@@ -103,6 +107,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
             default -> throw new RuntimeException("Invalid attribute name");
         }
     }
+
     /**
      * Sets the deposit account bill amount for the deposit account bill with the specified ID.
      *
@@ -114,6 +119,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         bill.setDepositAccountBillAmount(value);
         updateAccountBill(bill);
     }
+
     /**
      * Sets the deposit account bill rate for the deposit account bill with the specified ID.
      *
@@ -125,6 +131,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         bill.setDepositAccountBillRate(value);
         updateAccountBill(bill);
     }
+
     /**
      * Sets the deposit account bill expire date for the deposit account bill with the specified ID.
      *
@@ -136,6 +143,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         bill.setDepositAccountBillExpireDate(value);
         updateAccountBill(bill);
     }
+
     /**
      * Sets the deposit account bill effective date for the deposit account bill with the specified ID.
      *
@@ -147,6 +155,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         bill.setDepositAccountBillEffectiveDate(value);
         updateAccountBill(bill);
     }
+
     /**
      * Updates the deposit account bill with the specified ID.
      *
@@ -163,6 +172,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         log.debug("Update DepositAccountBill Array {}", depositAccountBills);
         this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
     }
+
     /**
      * Creates a new deposit account bill with the specified amount, rate, effective date, and expire date.
      *
@@ -183,6 +193,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         log.debug("Set DepositAccountBill Array {}", depositAccountBills);
         this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
     }
+
     /**
      * Deletes the deposit account bill with the specified ID.
      *
@@ -196,6 +207,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
         this.ElementCount = depositAccountBills.size(); // 更新 ElementCount
     }
+
     /**
      * Retrieves the attribute of a deposit account bill with the specified name and ID.
      *
@@ -216,6 +228,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
             default -> throw new RuntimeException("Invalid attribute name");
         };
     }
+
     /**
      * Retrieves the deposit account bill amount for the deposit account bill with the specified ID.
      *
@@ -226,6 +239,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillAmount();
     }
+
    /**
      * Retrieves the deposit account bill rate for the deposit account bill with the specified ID.
      *
@@ -236,6 +250,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillRate();
     }
+
     /**
      * Retrieves the deposit account bill effective date for the deposit account bill with the specified ID.
      *
@@ -246,6 +261,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         DepositAccountBills bills = this.getElementById(depositAccountBillId);
         return bills.getDepositAccountBillEffectiveDate();
     }
+
     /**
      * Retrieves the deposit account bill expire date for the deposit account bill with the specified ID.
      *
@@ -256,6 +272,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         DepositAccountBills bill = this.getElementById(depositAccountBillId);
         return bill.getDepositAccountBillExpireDate();
     }
+
     /**
      * Retrieves a list of all deposit account bills.
      *
@@ -266,6 +283,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
         return List.copyOf(depositAccountBills);
     }
+
     /**
      * Deletes all deposit account bills.
      */

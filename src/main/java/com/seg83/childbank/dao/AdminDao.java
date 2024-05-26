@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 @Slf4j
 public class AdminDao extends AbstractDao {
+
     /**
      * An instance of DataWrapperDao for data encapsulation and unencapsulation operations
      */

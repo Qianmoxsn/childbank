@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 @Slf4j
 public class HistoryDao extends AbstractDao {
+
     /**
      * The DataWrapperDao used for accessing the underlying data store
      */
