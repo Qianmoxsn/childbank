@@ -20,21 +20,66 @@ import org.springframework.stereotype.Component;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * MainFrame is the main window of the ChildBank application.
+ */
 @Component
 @Slf4j
 public class MainFrame extends JFrame {
+
+    /**
+     * HomePanel instance for displaying the home page.
+     */
     private HomePanel homePanel;
+
+    /**
+     * WelcomePanel instance for displaying the welcome page.
+     */
     private WelcomePanel welcomePanel;
+
+    /**
+     * SetupPanel instance for handling setup-related tasks.
+     */
     private SetupPanel setupPanel;
+
+    /**
+     * SettingsPanel instance for displaying and updating user settings.
+     */
     private SettingsPanel settingsPanel;
+
+    /**
+     * FixedAccountPanel instance for managing fixed-term accounts.
+     */
     private FixedAccountPanel fixedAccountPanel;
+
+    /**
+     * CurrentAccountPanel instance for managing current accounts.
+     */
     private CurrentAccountPanel currentAccountPanel;
+
+    /**
+     * TaskPanel instance for displaying and managing tasks.
+     */
     private TaskPanel taskPanel;
 
+    /**
+     * SetupService instance for handling setup-related business logic.
+     */
     private SetupService setupService;
-    private InterestService interestService;
-    private DepositService depositService;
 
+    /**
+     * InterestService instance for handling interest-related business logic.
+     */
+    private InterestService interestService;
+     /**
+     * DepositService instance for handling deposit-related business logic.
+     */
+    private DepositService depositService;
+    /**
+     * Constructor for creating a new MainFrame instance.
+     *
+     * @throws HeadlessException if the main window cannot be created
+     */
     public MainFrame() throws HeadlessException {
         setTitle("ChildBank");
         setSize(700, 500);
@@ -42,7 +87,9 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         log.info("Create MainFrame");
     }
-
+    /**
+     * Autowires the panels and services, and initializes the main window.
+     */
     @Autowired
     private void setPanels(HomePanel homePanel, WelcomePanel welcomePanel, SetupPanel setupPanel, SetupService setupService, InterestService interestService,
                            SettingsPanel settingsPanel, FixedAccountPanel fixedAccountPanel, CurrentAccountPanel currentAccountPanel, TaskPanel taskPanel, DepositService depositService) {
@@ -56,8 +103,10 @@ public class MainFrame extends JFrame {
         this.currentAccountPanel = currentAccountPanel;
         this.taskPanel = taskPanel;
         this.depositService = depositService;
-    }
-
+}
+    /**
+     * Initializes the main window after all panels and services are autowired.
+     */
     @PostConstruct
     public void init() {
         if (setupService.checkFirstLogin()) {
@@ -67,6 +116,11 @@ public class MainFrame extends JFrame {
         }
     }
 
+     /**
+     * Handles panel switch events by updating the main window's content pane.
+     *
+     * @param event the PanelSwitchEvent triggered by a panel switch
+     */
     @EventListener
     public void onPanelSwitch(PanelSwitchEvent event) {
         switch (event.getPanelName()) {
@@ -80,6 +134,9 @@ public class MainFrame extends JFrame {
         }
     }
 
+    /**
+     * Initializes the welcome panel and sets it as the main window's content pane.
+     */
     private void initWelcomePanel() {
         welcomePanel.$$$getRootComponent$$$().updateUI();
         setContentPane(this.welcomePanel.$$$getRootComponent$$$());
@@ -89,6 +146,9 @@ public class MainFrame extends JFrame {
         log.info("Create welcomePanel in MainFrame");
     }
 
+    /**
+     * Initializes the setup panel and sets it as the main window's content pane.
+     */
     private void initSetupPanel() {
         setupPanel.$$$getRootComponent$$$().updateUI();
         setContentPane(this.setupPanel.$$$getRootComponent$$$());
@@ -98,6 +158,10 @@ public class MainFrame extends JFrame {
         log.info("Create setupPanel in MainFrame");
     }
 
+    /**
+     * Initializes the home panel and sets it as the main window's content pane.
+     * Calculates current interest and processes matured deposits.
+     */
     private void initHomePanel() {
         homePanel.$$$getRootComponent$$$().updateUI();
         interestService.calculateCurrentInterest();
@@ -113,6 +177,9 @@ public class MainFrame extends JFrame {
         log.info("Create homePanel in MainFrame");
     }
 
+    /**
+     * Initializes the settings panel and sets it as the main window's content pane.
+     */
     private void initSettingsPanel() {
         settingsPanel.$$$getRootComponent$$$().updateUI();
         setContentPane(this.settingsPanel.$$$getRootComponent$$$());
@@ -122,6 +189,10 @@ public class MainFrame extends JFrame {
         log.info("Create settingPanel in MainFrame");
     }
 
+    /**
+     * Initializes the fixed account panel and sets it as the main window's content pane.
+     * Creates the table and sets the total fixed label.
+     */
     private void initFixedAccountPanel() {
         fixedAccountPanel.createTable();
         fixedAccountPanel.setTotalFixedLabel();
@@ -133,6 +204,11 @@ public class MainFrame extends JFrame {
         log.info("Create fixedAccountPanel in MainFrame");
     }
 
+
+    /**
+     * Initializes the task panel and sets it as the main window's content pane.
+     * Creates the table.
+     */
     private void initCurrentPanel() {
         currentAccountPanel.$$$getRootComponent$$$().updateUI();
         currentAccountPanel.updatePanel();
@@ -142,7 +218,10 @@ public class MainFrame extends JFrame {
         repaint();
         log.info("Create currentAccountPanel in MainFrame");
     }
-
+    /**
+     * Initializes the task panel and sets it as the main window's content pane.
+     * Creates the table.
+     */
     private void initTaskPanel() {
         taskPanel.createTable();
         taskPanel.$$$getRootComponent$$$().updateUI();

@@ -85,7 +85,7 @@ public class DepositPop extends JDialog {
         String password = new String(pass);
         log.debug("Amount: {}, Password: {}", amount, password);
 
-        // ammount should be a integer and non-negtive
+        // amount should be a integer and non-negtive
         try {
             amountInt = Integer.parseInt(amount);
             if (amountInt < 0) {

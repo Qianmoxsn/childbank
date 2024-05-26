@@ -70,6 +70,9 @@ public class TestInterestService {
 //        assertEquals(101.0, currentAccountDao.getAttribute("currentAccountAmount"));
 //    }
 
+    /**
+     * Tests the calculateCurrentInterest() method.
+     */
     @Test
     void testCalculateCurrentInterest() {
         // Set the current account rate and amount
@@ -93,7 +96,5 @@ public class TestInterestService {
         // Check history(contains HistoryActions(historyId=6, historyAmount=1.01, historyType=daily interest))
         assertEquals(1.01, historyActionsDao.getAttribute("historyAmount", 6));
         assertEquals("daily interest", historyActionsDao.getAttribute("historyType", 6));
-
     }
-
 }

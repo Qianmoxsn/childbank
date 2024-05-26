@@ -10,23 +10,39 @@ import org.springframework.stereotype.Service;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * InterestService provides methods for managing current account interest calculations and related operations.
+ */
 @Service
 @Slf4j
 public class InterestService {
+
+    /**
+     * CurrentAccountDao instance for handling current account data access.
+     */
     @Autowired
     private CurrentAccountDao currentAccountDao;
 
+    /**
+     * CurrentService instance for handling current account operations.
+     */
     @Autowired
     CurrentService currentService;
 
+    /**
+     * HistoryActionsDao instance for handling history actions data access.
+     */
     @Autowired
     private HistoryActionsDao historyActionsDao;
 
+    /**
+     * StringDateConvert instance for converting date strings to Date objects.
+     */
     @Autowired
     private StringDateConvert convert;
 
     /**
-     * Calculate the daily interest for the current accounts and update the history actions
+     * Calculates the daily interest for the current accounts and updates the history actions.
      * <p>
      * Interest rate is "currentAccountRate"% per day Calculated and added to account when the app starts
      */
@@ -43,6 +59,9 @@ public class InterestService {
         currentService.payDailyCurrentInterest(interest);
     }
 
+    /**
+     * Calculates the current account interest based on the number of days since the last interest payment.
+     */
     public void calculateCurrentInterest() {
         // Check days not paid the interest
         Date lastInterestDate = convert.StringToDate((String) currentAccountDao.getAttribute("lastInterestDate"));
