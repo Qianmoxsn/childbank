@@ -25,6 +25,7 @@ import java.util.List;
 @Repository
 @Slf4j
 public class DataWrapperDao extends AbstractDao {
+
     /**
      * The file path where the JSON data is stored
      */

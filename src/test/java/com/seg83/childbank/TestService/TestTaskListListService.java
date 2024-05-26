@@ -13,18 +13,35 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * TestTaskListListService is a test class for testing the TaskListService class.
+ */
 @SpringBootTest
 class TestTaskListListService {
+
+    /**
+     * TaskListService instance for handling task list operations.
+     */
     @Autowired
     private TaskListService taskListService;
+
+    /**
+     * TaskListDao instance for handling task list data access.
+     */
     @Autowired
     private TaskListDao taskListDao;
 
+    /**
+     * Sets up the test environment before each test.
+     */
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
     }
 
+    /**
+     * Restores the test JSON file after each test.
+     */
     @AfterEach
     void restoreTestJson() {
         try {
@@ -35,6 +52,9 @@ class TestTaskListListService {
         System.out.println("Remove :: test data json\n");
     }
 
+    /**
+     * Tests the addNewTask() method.
+     */
     @Test
     void addNewTask() {
         taskListService.addNewTask("testTask", "testDescription");
@@ -43,6 +63,9 @@ class TestTaskListListService {
         assertEquals(false, taskListDao.getAttribute("taskStatus", 3));
     }
 
+    /**
+     * Tests the finishTask() method.
+     */
     @Test
     void finishTask() {
         long id = 2;
@@ -50,6 +73,9 @@ class TestTaskListListService {
         assertEquals(true, taskListDao.getAttribute("taskStatus", 2));
     }
 
+    /**
+     * Tests the generateTaskList() method.
+     */
     @Test
     void generateTaskList() {
         Object[][] data = taskListService.generateTaskList();

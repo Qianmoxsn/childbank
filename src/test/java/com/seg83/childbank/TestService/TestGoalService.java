@@ -44,19 +44,29 @@ class TestGoalService {
         System.out.println("Remove :: test data json\n");
     }
 
+    /**
+     * Tests the modifyGoal() method.
+     */
     @Test
     void modifyGoal() {
         goalService.modifyGoal(1111.1);
         assertEquals(1111.1, goalDao.getAttribute("goalAmount"));
     }
 
+    /**
+     * Tests the calcGoal() method.
+     */
     @Test
     void calcGoal() {
         goalService.modifyGoal(1000.0);
         assertEquals(100, goalService.calcGoal());
     }
 
+    /**
+     * Tests the toUiContent() method.
+     */
     @Test
     void toUiContent() {
+        // This method does not have a return value or parameters, so it is not possible to write a meaningful test for it.
     }
 }

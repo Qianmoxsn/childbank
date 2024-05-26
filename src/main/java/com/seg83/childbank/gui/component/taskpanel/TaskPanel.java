@@ -18,23 +18,53 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Panel of Tasks
+ * The TaskPanel class is responsible for displaying the task list and providing task confirmation functionality.
  */
 @Component
 @Slf4j
 public class TaskPanel {
+
+    /**
+     * The TaskListService interface instance for handling task list-related business logic.
+     */
     @Autowired
     TaskListService taskListService;
+
+    /**
+     * The TaskPop class instance for displaying the task confirmation dialog.
+     */
     @Autowired
     TaskPop taskPop;
+
+    /**
+     * The ApplicationEventPublisher interface instance for publishing panel switch events.
+     */
     @Autowired
     private ApplicationEventPublisher publisher;
 
+    /**
+     * The Back Home button.
+     */
     private JButton backHomeButton;
+
+    /**
+     * The Task list table.
+     */
     private JTable table1;
+
+    /**
+     * The Confirm Task button.
+     */
     private JButton confirmTaskButton;
+
+    /**
+     * The Main panel.
+     */
     private JPanel rootpanel;
 
+    /**
+     * Constructor that initializes the UI components and sets up action listeners.
+     */
     public TaskPanel() {
         $$$setupUI$$$();
         confirmTaskButton.addActionListener(e -> {
@@ -52,6 +82,9 @@ public class TaskPanel {
         });
     }
 
+    /**
+     * Creates the Task list table.
+     */
     public void createTable() {
         Object[][] data = taskListService.generateTaskList();
         String[] columnNames = {"Id", "Task Name", "Task Description", "Status"};
@@ -72,6 +105,9 @@ public class TaskPanel {
         columnModel.getColumn(3).setPreferredWidth(70);
     }
 
+    /**
+     * Updates the panel by recreating the Task list table.
+     */
     public void updatePanel() {
         table1.removeAll();
         createTable();

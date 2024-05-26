@@ -21,6 +21,7 @@ import java.util.List;
 @Repository
 @Slf4j
 public class AccountDao extends AbstractDao {
+
     /**
      * DataWrapperDao instance for data encapsulation and unencapsulation.
      */

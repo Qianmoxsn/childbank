@@ -16,14 +16,17 @@ import java.util.List;
 @Repository
 @Slf4j
 public class HistoryActionsDao extends AbstractArrayDao {
+
     /**
      * The HistoryDao instance used for accessing history data
      */
     private final HistoryDao historyDao;
+
     /**
      * Utility for converting between String and Date formats
      */
     private final StringDateConvert convert;
+
     /**
      * The count of elements in the history actions array
      */

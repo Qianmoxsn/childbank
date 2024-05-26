@@ -14,6 +14,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+/**
+ * GoalAlterationPop.java
+ * This class represents a dialog for altering the goal.
+ */
 @Component
 @Slf4j
 public class GoalAlterationPop extends JDialog {
@@ -58,6 +62,9 @@ public class GoalAlterationPop extends JDialog {
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * This method is called when the user clicks the OK button.
+     */
     private void onOK() {
         // check admin password, if correct, update goal
         // else, show error dialog
@@ -76,6 +83,7 @@ public class GoalAlterationPop extends JDialog {
             log.error("Invalid goal: {}", newGoal);
             JOptionPane.showMessageDialog(this, "Invalid goal: " + newGoal, "Error", JOptionPane.ERROR_MESSAGE);
             return;
+
         }
 
         String passtarget = (String) adminDao.getAttribute("adminPassword");
@@ -89,11 +97,17 @@ public class GoalAlterationPop extends JDialog {
         }
     }
 
+    /**
+     * This method is called when the user clicks the Cancel button.
+     */
     private void onCancel() {
         // add your code here if necessary
         dispose();
     }
 
+    /**
+     * This method is called to initialize the dialog.
+     */
     public void init() {
         log.debug("Initializing GoalPop dialog");
 

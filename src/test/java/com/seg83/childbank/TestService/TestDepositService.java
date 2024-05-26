@@ -20,25 +20,54 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * TestDepositService is a test class for testing the DepositService class.
+ */
 @SpringBootTest
 @Slf4j
 class TestDepositService {
+
+    /**
+     * DepositService instance for handling deposit operations.
+     */
     @Autowired
     private DepositService depositService;
+
+    /**
+     * DepositAccountBillsDao instance for handling deposit account bills data access.
+     */
     @Autowired
     private DepositAccountBillsDao depositAccountBillsDao;
+
+    /**
+     * CurrentService instance for handling current account operations.
+     */
     @Autowired
     private CurrentService currentService;
+
+    /**
+     * HistoryService instance for handling history operations.
+     */
     @Autowired
     private HistoryService historyService;
+
+    /**
+     * StringDateConvert instance for converting date strings to Date objects.
+     */
     @Autowired
     private StringDateConvert stringDateConvert;
 
+    /**
+     * Sets up the test environment before all tests.
+     */
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
     }
 
+    /**
+     * Sets up the test environment before each test.
+     */
     @BeforeEach
     void setUp() {
         // 删除所有现有的存款账单
@@ -47,6 +76,9 @@ class TestDepositService {
         depositService.createDepositAccountBill(100.0, 0.5, "2019-01-01", "2025-01-01");
     }
 
+    /**
+     * Restores the test JSON file after each test.
+     */
     @AfterEach
     void restoreTestJson() {
         try {
@@ -57,6 +89,9 @@ class TestDepositService {
         System.out.println("Remove :: test data json\n");
     }
 
+    /**
+     * Tests the generateDepositList() method.
+     */
     @Test
     void generateDepositList() {
         depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
@@ -68,6 +103,9 @@ class TestDepositService {
         System.out.println(Arrays.deepToString(depositList));
     }
 
+    /**
+     * Tests the createDepositAccountBill() method.
+     */
     @Test
     void createDepositAccountBill() {
         long initialElementCount = depositAccountBillsDao.ElementCount;
@@ -93,7 +131,9 @@ class TestDepositService {
         assertNotNull(expireDate, "Deposit account bill expire date should not be null");
         assertEquals("2024-08-03", expireDate, "Deposit account bill expire date should be '2024-08-03'");
     }
-
+    /**
+     * Tests the depositFixAccount() method.
+     */
     @Test
     void depositFixAccount() {
         double initialBalance = currentService.checkCurrentAccountBalance();
@@ -111,6 +151,9 @@ class TestDepositService {
         assertEquals(100.0, amount, "Deposit account bill amount should be 100.0");
     }
 
+    /**
+     * Tests the processMaturedDeposits() method.
+     */
     @Test
     void processMaturedDeposits() {
         double initialBalance = currentService.checkCurrentAccountBalance();
@@ -130,6 +173,9 @@ class TestDepositService {
         assertFalse(bills.isEmpty(), "There should be no deposit account bills after processing matured deposits");
     }
 
+    /**
+     * Tests the calculateDaysBetween() method.
+     */
     @Test
     void testCalculateDaysBetween() {
         long days = stringDateConvert.calculateDaysBetween("2023-08-03", "2024-05-01");

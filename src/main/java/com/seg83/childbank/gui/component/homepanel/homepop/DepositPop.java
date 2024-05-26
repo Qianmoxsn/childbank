@@ -21,6 +21,7 @@ import java.awt.event.*;
 @Component
 @Slf4j
 public class DepositPop extends JDialog {
+
     /**
      * The CurrentService instance used for depositing money into a current account
      * This field is autowired by Spring
@@ -85,7 +86,7 @@ public class DepositPop extends JDialog {
         String password = new String(pass);
         log.debug("Amount: {}, Password: {}", amount, password);
 
-        // ammount should be a integer and non-negtive
+        // amount should be a integer and non-negtive
         try {
             amountInt = Integer.parseInt(amount);
             if (amountInt < 0) {
@@ -112,7 +113,6 @@ public class DepositPop extends JDialog {
      * Handles the Cancel button click event and the window closing event
      * Disposes of the dialog
      */
-
     private void onCancel() {
         // 必要时在此处添加您的代码
         dispose();
@@ -121,7 +121,6 @@ public class DepositPop extends JDialog {
     /**
      * Initializes the DepositPop dialog by packing it, centering it on the screen, and making it visible
      */
-
     public void init() {
         log.debug("Initializing DepositePop dialog");
         // Clear the text fields

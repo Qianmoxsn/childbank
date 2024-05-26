@@ -8,18 +8,32 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Data Access Object (DAO) for managing task list data.
+ */
 @Component
 @Slf4j
 public class TaskListDao extends AbstractArrayDao {
     long ElementCount;
+
     private TaskDao taskDao;
 
+    /**
+     * Constructor for TaskListDao.
+     *
+     * @param taskDao TaskDao instance for managing task data.
+     */
     @Autowired
     public TaskListDao(TaskDao taskDao) {
         this.taskDao = taskDao;
         this.getElementCount();
     }
 
+    /**
+     * Load task list data in JSON format.
+     *
+     * @return JSONArray containing task list data.
+     */
     @Override
     JSONArray load() {
         log.info("Request task list data in JSON format");
@@ -28,6 +42,11 @@ public class TaskListDao extends AbstractArrayDao {
         return taskList;
     }
 
+    /**
+     * Get the number of tasks in the task list.
+     *
+     * @return Long containing the number of tasks in the task list.
+     */
     @Override
     void getElementCount() {
         log.info("Request tasks count");
@@ -35,6 +54,12 @@ public class TaskListDao extends AbstractArrayDao {
         log.debug("Get history actions count {}", this.ElementCount);
     }
 
+    /**
+     * Get a task by its ID.
+     *
+     * @param Id ID of the task to get.
+     * @return TaskList object containing the task data.
+     */
     @Override
     Object getElementById(long Id) {
         log.info("Request task by id {}", Id);
@@ -48,6 +73,12 @@ public class TaskListDao extends AbstractArrayDao {
         throw new RuntimeException("Invalid task id");
     }
 
+    /**
+     * Set the task status for a specific task.
+     *
+     * @param Id       ID of the task to set the status for.
+     * @param value  Value to set for the task status.
+     */
     @Override
     @Deprecated
     public void setAttribute(String attrname, Object value, long Id) {
@@ -60,6 +91,12 @@ public class TaskListDao extends AbstractArrayDao {
         }
     }
 
+    /**
+     * Set the task status for a specific task.
+     *
+     * @param Id       ID of the task to set the status for.
+     * @param value  Value to set for the task status.
+     */
     private void setTaskStatue(long Id, boolean value) {
         List<TaskList> taskLists = this.load().toList(TaskList.class);
         for (TaskList taskList : taskLists) {
@@ -73,6 +110,12 @@ public class TaskListDao extends AbstractArrayDao {
         throw new RuntimeException("Invalid task id");
     }
 
+    /**
+     * Create a new task.
+     *
+     * @param taskName  Name of the task to create.
+     * @param taskDescription Description of the task to create.
+     */
     public void createTask(String taskName, String taskDescription) {
         log.info("Create task with name {} and description {}", taskName, taskDescription);
         TaskList newtask = new TaskList(this.ElementCount + 1, taskName, taskDescription, false);
@@ -86,6 +129,13 @@ public class TaskListDao extends AbstractArrayDao {
         taskDao.setAttribute("taskList", taskList);
     }
 
+    /**
+     * Get an attribute of a task.
+     *
+     * @param attrname   Name of the attribute to get.
+     * @param Id       ID of the task to get the attribute for.
+     * @return Object containing the attribute value.
+     */
     @Override
     public Object getAttribute(String attrname, long Id) {
         switch (attrname) {
@@ -105,18 +155,41 @@ public class TaskListDao extends AbstractArrayDao {
         }
     }
 
+    /**
+     * Get the task name for a specific task.
+     *
+     * @param Id ID of the task to get the name for.
+     * @return String containing the task name.
+     */
     private String getTaskName(long Id) {
         return ((TaskList) this.getElementById(Id)).getTaskName();
     }
 
+    /**
+     * Get the task description for a specific task.
+     *
+     * @param Id ID of the task to get the description for.
+     * @return String containing the task description.
+     */
     private String getTaskDescription(long Id) {
         return ((TaskList) this.getElementById(Id)).getTaskDescription();
     }
 
+    /**
+     * Get the task status for a specific task.
+     *
+     * @param Id ID of the task to get the status for.
+     * @return Boolean containing the task status.
+     */
     private boolean getTaskStatus(long Id) {
         return ((TaskList) this.getElementById(Id)).isTaskStatus();
     }
 
+    /**
+     * Get all attributes of a task.
+     *
+     * @return List of Objects containing all attributes of a task.
+     */
     @Override
     List<Object> getAllAttributes() {
         return List.of();

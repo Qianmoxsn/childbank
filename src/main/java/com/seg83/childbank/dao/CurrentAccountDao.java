@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Marks this class as a Spring Repository bean and enables SLF4J logging
  */
-
 @Repository
 @Slf4j
 public class CurrentAccountDao extends AbstractDao {
+
     /**
      * The AccountDao instance used for accessing account data.
      */

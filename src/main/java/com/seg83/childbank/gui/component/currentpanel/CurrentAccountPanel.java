@@ -69,6 +69,9 @@ public class CurrentAccountPanel {
         });
     }
 
+    /**
+     * This method is called to update the panel.
+     */
     public void updatePanel() {
         amountLabel.setText(currentService.amountToUiContent());
         rateLabel.setText(currentService.rateToUiContent());

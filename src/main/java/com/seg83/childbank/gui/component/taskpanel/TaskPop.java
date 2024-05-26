@@ -19,17 +19,48 @@ import java.awt.event.*;
 @Component
 @Slf4j
 public class TaskPop extends JDialog {
+
+    /**
+     * TaskListService instance for handling task operations.
+     */
     @Autowired
     private TaskListService taskListService;
+
+    /**
+     * AdminDao instance for handling admin data access.
+     */
     @Autowired
     private AdminDao adminDao;
 
+    /**
+     * Content pane of the dialog window.
+     */
     private JPanel contentPane;
+
+    /**
+     * OK button for confirming the task.
+     */
     private JButton buttonOK;
+
+    /**
+     * Cancel button for closing the dialog.
+     */
     private JButton buttonCancel;
+
+    /**
+     * Text field for entering the task number.
+     */
     private JTextField textField1;
+
+    /**
+     * Password field for entering the admin password.
+     */
     private JPasswordField passwordField1;
 
+    /**
+     * Constructor for TaskPop class.
+     * Initializes the dialog window and sets up the UI components.
+     */
     public TaskPop() {
         $$$setupUI$$$();
         setContentPane(contentPane);
@@ -64,6 +95,12 @@ public class TaskPop extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
+    /**
+     * Handles the OK button click event.
+     * Retrieves the password and task number entered by the admin, and checks if the password is correct.
+     * If the password is correct, it marks the task as finished using the TaskListService.
+     * If the password is incorrect, it shows an error message.
+     */
     private void onOK() {
         // add your code here
         String password = new String(passwordField1.getPassword());
@@ -91,11 +128,19 @@ public class TaskPop extends JDialog {
 
     }
 
+    /**
+     * Handles the Cancel button click event or dialog window close event.
+     * Disposes of the dialog window.
+     */
     private void onCancel() {
         // add your code here if necessary
         dispose();
     }
 
+    /**
+     * Initializes the dialog window.
+     * Clears the text fields, sets up the UI components, and makes the dialog window visible.
+     */
     public void init() {
         log.debug("Initializing DepositePop dialog");
         // Clear the text fields

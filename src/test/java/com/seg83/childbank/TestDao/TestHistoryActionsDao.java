@@ -24,19 +24,19 @@ class TestHistoryActionsDao {
     private SwingApp swingApp; //avoid the GUI
     @Autowired
     private HistoryActionsDao historyActionsDao;
+
     /**
      * Sets up the testing environment before all tests are run.
      * This includes copying a template JSON file to be used by the tests.
      */
-
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
     }
+
     /**
      * Restores the template JSON file after each test to ensure consistency between tests.
      */
-
     @AfterEach
     void restoreTestJson() {
         try {
@@ -46,11 +46,10 @@ class TestHistoryActionsDao {
         }
         System.out.println("Remove :: test data json\n");
     }
+
     /**
      * Tests the retrieval of the datetime attribute for a specific history action.
      */
-
-
     @Test
     void getHistoryActionDatetime() {
         log.info("Testing :: get history action datetime");
@@ -62,10 +61,10 @@ class TestHistoryActionsDao {
         expected.set(2019, Calendar.JANUARY, 1, 0, 0, 0);
         assertEquals(expected.getTime(), datetime);
     }
+
     /**
      * Tests the retrieval of the datetime attribute for a specific history action.
      */
-
     @Test
     void getHistoryActionAmount() {
         log.info("Testing :: get history action amount");
@@ -73,10 +72,10 @@ class TestHistoryActionsDao {
         double amount = (Double) historyActionsDao.getAttribute("historyAmount", historyId);
         assertEquals(1200.0, amount);
     }
+
     /**
      * Tests the retrieval of the type attribute for a specific history action.
      */
-
     @Test
     void getHistoryActionType() {
         log.info("Testing :: get history action type");
@@ -84,10 +83,10 @@ class TestHistoryActionsDao {
         String type = (String) historyActionsDao.getAttribute("historyType", historyId);
         assertEquals("current deposit", type);
     }
+
     /**
      * Tests the creation of a new history action and verifies its attributes.
      */
-
     @Test
     void createHistoryAction() {
         log.info("Testing :: create history action");

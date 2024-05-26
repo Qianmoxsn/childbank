@@ -20,24 +20,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TestCurrentAccountDao {
     @MockBean
     private SwingApp swingApp; //avoid the GUI
+
     /**
      * Instance of {@link CurrentAccountDao} to be tested.
      */
     @Autowired
     private CurrentAccountDao currentAccountDao;
+
     /**
      * Sets up the testing environment before all tests are run.
      * Copies the data template file to a temporary location for use in tests.
      */
-
     @BeforeAll
     static void setup() {
         System.setProperty("java.awt.headless", "false");
     }
+
     /**
      * Restores the original data template file after each test.
      */
-
     @AfterEach
     void restoreTestJson() {
         try {
@@ -47,10 +48,10 @@ public class TestCurrentAccountDao {
         }
         System.out.println("Remove :: test data json\n");
     }
+
     /**
      * Tests the retrieval of the current account amount from the DAO.
      */
-
     @Test
     public void testGetCurrentAccountAmount() {
         log.info("Testing :: get current account amount");
@@ -61,27 +62,26 @@ public class TestCurrentAccountDao {
     /**
      * Tests the retrieval of the current account rate from the DAO
      */
-
     @Test
     public void testGetCurrentAccountRate() {
         log.info("Testing :: get current account rate");
         Double rate = (Double) currentAccountDao.getAttribute("currentAccountRate");
         assertEquals(0.3, rate);
     }
+
     /**
      * Tests setting the current account amount in the DAO.
      */
-
     @Test
     public void testSetCurrentAccountAmount() {
         log.info("Testing :: set current account amount");
         currentAccountDao.setAttribute("currentAccountAmount", 2000.0);
         assertEquals(2000.0, (Double) currentAccountDao.getAttribute("currentAccountAmount"));
     }
+
     /**
      * Tests setting the current account amount in the DAO.
      */
-
     @Test
     public void testSetCurrentAccountRate() {
         log.info("Testing :: set current account rate");
