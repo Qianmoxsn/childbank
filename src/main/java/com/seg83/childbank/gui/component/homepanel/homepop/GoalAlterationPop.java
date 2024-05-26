@@ -13,6 +13,7 @@ import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.*;
+
 /**
  * GoalAlterationPop.java
  * This class represents a dialog for altering the goal.
@@ -60,6 +61,7 @@ public class GoalAlterationPop extends JDialog {
         // call onCancel() on ESCAPE
         contentPane.registerKeyboardAction(e -> onCancel(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
+
     /**
      * This method is called when the user clicks the OK button.
      */
@@ -94,6 +96,7 @@ public class GoalAlterationPop extends JDialog {
             dispose();
         }
     }
+
     /**
      * This method is called when the user clicks the Cancel button.
      */
@@ -101,6 +104,7 @@ public class GoalAlterationPop extends JDialog {
         // add your code here if necessary
         dispose();
     }
+
     /**
      * This method is called to initialize the dialog.
      */

@@ -15,14 +15,34 @@ import javax.swing.text.StyleContext;
 import java.awt.*;
 import java.util.Locale;
 
+/**
+ * WelcomePanel is a class that represents the welcome panel for the application.
+ * It displays a welcome message and provides a button to navigate to the setup panel.
+ */
 @Component
 @Slf4j
 public class WelcomePanel {
+
+    /**
+     * ApplicationEventPublisher instance for publishing events.
+     */
     @Autowired
     private ApplicationEventPublisher publisher;
 
+    /**
+     * Button for switching to the setup panel.
+     * When clicked, it publishes a PanelSwitchEvent event with the target panel name "setup".
+     */
     private JButton setupButton;
+
+    /**
+     * JPanel that is the root of the welcome panel.
+     */
     private JPanel rootPanel;
+
+    /**
+     * JTextPane for displaying the welcome message.
+     */
     private JTextPane weInviteYouToTextPane;
 
     public WelcomePanel() {
