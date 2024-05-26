@@ -7,30 +7,36 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
 /**
- * Repository class for managing deposit account bills.
- * Extends {@link AbstractArrayDao} to handle deposit account bills data in JSON format.
+ * DepositAccountBillsDao is a data access object (DAO) for managing deposit account bills.
  */
+
 @Repository
 @Slf4j
 public class DepositAccountBillsDao extends AbstractArrayDao {
-
+    /**
+     * The DepositAccountDao instance for interacting with deposit account data.
+     */
     private final DepositAccountDao depositAccountDao;
+    /**
+     * The number of elements in the deposit account bills array.
+     */
+    public long ElementCount;
 
     /**
-     * Constructor for DepositAccountBillsDao.
+     * Constructs a new DepositAccountBillsDao instance.
      *
-     * @param depositAccountDao DepositAccountDao instance for managing deposit account data.
+     * @param depositAccountDao the DepositAccountDao instance for interacting with deposit account data
      */
     @Autowired
     public DepositAccountBillsDao(DepositAccountDao depositAccountDao) {
         this.depositAccountDao = depositAccountDao;
-        getElementCount();
+        // 修正 ElementCount 初始化
+        this.getElementCount();
     }
 
     /**
-     * Get the number of deposit account bills.
+     * Retrieves the number of elements in the deposit account bills array.
      */
     @Override
     void getElementCount() {
@@ -38,11 +44,10 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         this.ElementCount = this.load().size();
         log.debug("Get deposit account count {}", this.ElementCount);
     }
-
     /**
-     * Load deposit account bills data in JSON format.
+     * Loads the deposit account bills data in JSON format.
      *
-     * @return JSONArray containing deposit account bills data.
+     * @return a JSON array containing the deposit account bills data
      */
     @Override
     JSONArray load() {
@@ -51,12 +56,11 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         log.debug("Get deposit account data {}", depositAccountBills);
         return depositAccountBills;
     }
-
     /**
-     * Get a deposit account bill by its ID.
+     * Retrieves a deposit account bill by its ID.
      *
-     * @param depositAccountBillId ID of the deposit account bill to retrieve.
-     * @return DepositAccountBills object with the specified ID.
+     * @param depositAccountBillId the ID of the deposit account bill to retrieve
+     * @return the deposit account bill with the specified ID
      */
     @Override
     DepositAccountBills getElementById(long depositAccountBillId) {
@@ -70,13 +74,12 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
         }
         throw new RuntimeException("Invalid Id");
     }
-
     /**
-     * Set an attribute of a deposit account bill.
+     * Sets the attribute of a deposit account bill with the specified name and value.
      *
-     * @param attrname             Name of the attribute to set.
-     * @param value                Value to set for the attribute.
-     * @param depositAccountBillId ID of the deposit account bill to update.
+     * @param attrname         the name of the attribute to set
+     * @param value            the value to set the attribute to
+     * @param depositAccountBillId the ID of the deposit account bill to modify
      */
     @Override
     void setAttribute(String attrname, Object value, long depositAccountBillId) {
@@ -100,219 +103,177 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
             default -> throw new RuntimeException("Invalid attribute name");
         }
     }
-
     /**
-     * Set the deposit account bill amount.
+     * Sets the deposit account bill amount for the deposit account bill with the specified ID.
      *
-     * @param depositAccountBillId ID of the deposit account bill to update.
-     * @param value                Value to set for the deposit account bill amount.
+     * @param depositAccountBillId the ID of the deposit account bill to modify
+     * @param value              the new deposit account bill amount
      */
-    private void setDepositAccountBillAmount(long depositAccountBillId, double value
-}
-            case"depositAccountBillRate"->{
-                    log.
-
-info("Set depositAccountBillRate to {}",value);
-                this.
-
-setDepositAccountBillRate(depositAccountBillId, (double) value);
-        }
-        case"depositAccountBillExpireDate"->{
-        log.
-
-info("Set depositAccountBillExpireDate to {}",value);
-                this.
-
-setDepositAccountBillExpireDate(depositAccountBillId, (String) value);
-        }
-        case"depositAccountBillEffectiveDate"->{
-        log.
-
-info("Set depositAccountBillEffectiveDate to {} ",value);
-                this.
-
-setDepositAccountBillEffectiveDate(depositAccountBillId, (String) value);
-        }
-default ->throw new
-
-RuntimeException("Invalid attribute name");
-        }
-                }
-
-/**
- * Set the deposit account bill rate.
- *
- * @param depositAccountBillId ID of the deposit account bill to update.
- * @param value                Value to set for the deposit account bill rate.
- */
-private void setDepositAccountBillRate(long depositAccountBillId, double value) {
-    DepositAccountBills bill = this.getElementById(depositAccountBillId);
-    bill.setDepositAccountBillRate(value);
-    updateAccountBill(bill);
-}
-
-/**
- * Set the deposit account bill expire date.
- *
- * @param depositAccountBillId ID of the deposit account bill to update.
- * @param value                Value to set for the deposit account bill expire date.
- */
-private void setDepositAccountBillExpireDate(long depositAccountBillId, String value) {
-    DepositAccountBills bill = this.getElementById(depositAccountBillId);
-    bill.setDepositAccountBillExpireDate(value);
-    updateAccountBill(bill);
-}
-
-/**
- * Set the deposit account bill effective date.
- *
- * @param depositAccountBillId ID of the deposit account bill to update.
- * @param value                Value to set for the deposit account bill effective date.
- */
-private void setDepositAccountBillEffectiveDate(long depositAccountBillId, String value) {
-    DepositAccountBills bill = this.getElementById(depositAccountBillId);
-    bill.setDepositAccountBillEffectiveDate(value);
-    updateAccountBill(bill);
-}
-
-/**
- * Update the deposit account bill.
- *
- * @param bill DepositAccountBills object to update.
- */
-private void updateAccountBill(DepositAccountBills bill) {
-    List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
-    for (int i = 0; i < depositAccountBills.size(); i++) {
-        if (depositAccountBills.get(i).getDepositAccountBillId() == bill.getDepositAccountBillId()) {
-            depositAccountBills.set(i, bill);
-            break;
-        }
+    private void setDepositAccountBillAmount(long depositAccountBillId, double value) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        bill.setDepositAccountBillAmount(value);
+        updateAccountBill(bill);
     }
-    log.debug("Update DepositAccountBill Array {}", depositAccountBills);
-    this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
-}
-
-/**
- * Create a new deposit account bill.
- *
- * @param amount        Value to set for the deposit account bill amount.
- * @param rate          Value to set for the deposit account bill rate.
- * @param effectiveDate Value to set for the deposit account bill effective date.
- * @param expireDate    Value to set for the deposit account bill expire date.
- */
-public void createDepositAccountBill(double amount, double rate, String effectiveDate, String expireDate) {
-    log.info("Create DepositAccountBill with date amount {}, rate {}, effectiveDate {}, expireDate {}", amount, rate, effectiveDate, expireDate);
-    DepositAccountBills newDepositAccountBills = new DepositAccountBills(this.ElementCount + 1, amount, rate, effectiveDate, expireDate);
-    log.debug("this.ElementCount = {}", this.ElementCount);
-    log.debug("DepositAccountBill created {}", newDepositAccountBills);
-
-    List<DepositAccountBills> depositAccountBills = this.load().toJava
-    List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
-    depositAccountBills.add(newDepositAccountBills);
-    this.ElementCount = depositAccountBills.size(); // 更新 ElementCount
-    log.debug("Set DepositAccountBill Array {}", depositAccountBills);
-    this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
-}
-
-/**
- * Delete a deposit account bill.
- *
- * @param depositAccountBillId ID of the deposit account bill to delete.
- */
-public void deleteDepositAccountBill(long depositAccountBillId) {
-    log.info("Delete DepositAccountBill with id {}", depositAccountBillId);
-    List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
-    depositAccountBills.removeIf(bill -> bill.getDepositAccountBillId() == depositAccountBillId);
-    log.debug("Set DepositAccountBill Array after deletion {}", depositAccountBills);
-    this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
-    this.ElementCount = depositAccountBills.size(); // 更新 ElementCount
-}
-
-/**
- * Get an attribute of a deposit account bill.
- *
- * @param attrname             Name of the attribute to get.
- * @param depositAccountBillId ID of the deposit account bill to retrieve.
- * @return Object containing the attribute value.
- */
-@Override
-public Object getAttribute(String attrname, long depositAccountBillId) {
-    if (depositAccountBillId < 0 || depositAccountBillId > this.ElementCount) {
-        throw new RuntimeException("Invalid Id range");
+    /**
+     * Sets the deposit account bill rate for the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill to modify
+     * @param value              the new deposit account bill rate
+     */
+    private void setDepositAccountBillRate(long depositAccountBillId, double value) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        bill.setDepositAccountBillRate(value);
+        updateAccountBill(bill);
     }
-    return switch (attrname) {
-        case "depositAccountBillAmount" -> this.getDepositAccountBillAmount(depositAccountBillId);
-        case "depositAccountBillRate" -> this.getDepositAccountBillRate(depositAccountBillId);
-        case "depositAccountBillExpireDate" -> this.getDepositAccountBillExpireDate(depositAccountBillId);
-        case "depositAccountBillEffectiveDate" -> this.getDepositAccountBillEffectiveDate(depositAccountBillId);
-        default -> throw new RuntimeException("Invalid attribute name");
-    };
-}
+    /**
+     * Sets the deposit account bill expire date for the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill to modify
+     * @param value              the new deposit account bill expire date
+     */
+    private void setDepositAccountBillExpireDate(long depositAccountBillId, String value) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        bill.setDepositAccountBillExpireDate(value);
+        updateAccountBill(bill);
+    }
+    /**
+     * Sets the deposit account bill effective date for the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill to modify
+     * @param value              the new deposit account bill effective date
+     */
+    private void setDepositAccountBillEffectiveDate(long depositAccountBillId, String value) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        bill.setDepositAccountBillEffectiveDate(value);
+        updateAccountBill(bill);
+    }
+    /**
+     * Updates the deposit account bill with the specified ID.
+     *
+     * @param bill the updated deposit account bill
+     */
+    private void updateAccountBill(DepositAccountBills bill) {
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        for (int i = 0; i < depositAccountBills.size(); i++) {
+            if (depositAccountBills.get(i).getDepositAccountBillId() == bill.getDepositAccountBillId()) {
+                depositAccountBills.set(i, bill);
+                break;
+            }
+        }
+        log.debug("Update DepositAccountBill Array {}", depositAccountBills);
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+    }
+    /**
+     * Creates a new deposit account bill with the specified amount, rate, effective date, and expire date.
+     *
+     * @param amount        the deposit account bill amount
+     * @param rate         the deposit account bill rate
+     * @param effectiveDate the deposit account bill effective date
+     * @param expireDate   the deposit account bill expire date
+     */
+    public void createDepositAccountBill(double amount, double rate, String effectiveDate, String expireDate) {
+        log.info("Create DepositAccountBill with date amount {}, rate {}, effectiveDate {}, expireDate {}", amount, rate, effectiveDate, expireDate);
+        DepositAccountBills newDepositAccountBills = new DepositAccountBills(this.ElementCount + 1, amount, rate, effectiveDate, expireDate);
+        log.debug("this.ElementCount = {}", this.ElementCount);
+        log.debug("DepositAccountBill created {}", newDepositAccountBills);
 
-/**
- * Get the deposit account bill amount.
- *
- * @param depositAccountBillId ID of the deposit account bill to retrieve.
- * @return Double containing the deposit account bill amount.
- */
-private Object getDepositAccountBillAmount(long depositAccountBillId) {
-    DepositAccountBills bill = this.getElementById(depositAccountBillId);
-    return bill.getDepositAccountBillAmount();
-}
-
-/**
- * Get the deposit account bill rate.
- *
- * @param depositAccountBillId ID of the deposit account bill to retrieve.
- * @return Double containing the deposit account bill rate.
- */
-private Object getDepositAccountBillRate(long depositAccountBillId) {
-    DepositAccountBills bill = this.getElementById(depositAccountBillId);
-    return bill.getDepositAccountBillRate();
-}
-
-/**
- * Get the deposit account bill expire date.
- *
- * @param depositAccountBillId ID of the deposit account bill to retrieve.
- * @return String containing the deposit account bill expire date.
- */
-private Object getDepositAccountBillExpireDate(long depositAccountBillId) {
-    DepositAccountBills bill = this.getElementById(depositAccountBillId);
-    return bill.getDepositAccountBillExpireDate();
-}
-
-/**
- * Get the deposit account bill effective date.
- *
- * @param depositAccountBillId ID of the deposit account bill to retrieve.
- * @return String containing the deposit account bill effective date.
- */
-private Object getDepositAccountBillEffectiveDate(long depositAccountBillId) {
-    DepositAccountBills bill = this.getElementById(depositAccountBillId);
-    return bill.getDepositAccountBillEffectiveDate();
-}
-
-/**
- * Get all attributes
- * Get all attributes of a deposit account bill.
- *
- * @return List of Objects containing all attributes of a deposit account bill.
- */
-@Override
-public List<Object> getAllAttributes() {
-    List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
-    return List.copyOf(depositAccountBills);
-}
-
-/**
- * Delete all deposit account bills.
- */
-public void deleteAllDepositAccountBills() {
-    log.info("Deleting all deposit account bills");
-    List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
-    depositAccountBills.clear();
-    this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
-    this.ElementCount = 0;
-}
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.add(newDepositAccountBills);
+        this.ElementCount = depositAccountBills.size(); // 更新 ElementCount
+        log.debug("Set DepositAccountBill Array {}", depositAccountBills);
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+    }
+    /**
+     * Deletes the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill to delete
+     */
+    public void deleteDepositAccountBill(long depositAccountBillId) {
+        log.info("Delete DepositAccountBill with id {}", depositAccountBillId);
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.removeIf(bill -> bill.getDepositAccountBillId() == depositAccountBillId);
+        log.debug("Set DepositAccountBill Array after deletion {}", depositAccountBills);
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+        this.ElementCount = depositAccountBills.size(); // 更新 ElementCount
+    }
+    /**
+     * Retrieves the attribute of a deposit account bill with the specified name and ID.
+     *
+     * @param attrname the name of the attribute to retrieve
+     * @param depositAccountBillId the ID of the deposit account bill
+     * @return the value of the attribute
+     */
+    @Override
+    public Object getAttribute(String attrname, long depositAccountBillId) {
+        if (depositAccountBillId < 0 || depositAccountBillId > this.ElementCount) {
+            throw new RuntimeException("Invalid Id range");
+        }
+        return switch (attrname) {
+            case "depositAccountBillAmount" -> this.getDepositAccountBillAmount(depositAccountBillId);
+            case "depositAccountBillRate" -> this.getDepositAccountBillRate(depositAccountBillId);
+            case "depositAccountBillEffectiveDate" -> this.getDepositAccountBillEffectiveDate(depositAccountBillId);
+            case "depositAccountBillExpireDate" -> this.getDepositAccountBillExpireDate(depositAccountBillId);
+            default -> throw new RuntimeException("Invalid attribute name");
+        };
+    }
+    /**
+     * Retrieves the deposit account bill amount for the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill
+     * @return the deposit account bill amount
+     */
+    private Object getDepositAccountBillAmount(long depositAccountBillId) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        return bill.getDepositAccountBillAmount();
+    }
+   /**
+     * Retrieves the deposit account bill rate for the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill
+     * @return the deposit account bill rate
+     */
+    private Object getDepositAccountBillRate(long depositAccountBillId) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        return bill.getDepositAccountBillRate();
+    }
+    /**
+     * Retrieves the deposit account bill effective date for the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill
+     * @return the deposit account bill effective date
+     */
+    private Object getDepositAccountBillEffectiveDate(long depositAccountBillId) {
+        DepositAccountBills bills = this.getElementById(depositAccountBillId);
+        return bills.getDepositAccountBillEffectiveDate();
+    }
+    /**
+     * Retrieves the deposit account bill expire date for the deposit account bill with the specified ID.
+     *
+     * @param depositAccountBillId the ID of the deposit account bill
+     * @return the deposit account bill expire date
+     */
+    private Object getDepositAccountBillExpireDate(long depositAccountBillId) {
+        DepositAccountBills bill = this.getElementById(depositAccountBillId);
+        return bill.getDepositAccountBillExpireDate();
+    }
+    /**
+     * Retrieves a list of all deposit account bills.
+     *
+     * @return a list of all deposit account bills
+     */
+    @Override
+    public List<Object> getAllAttributes() {
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        return List.copyOf(depositAccountBills);
+    }
+    /**
+     * Deletes all deposit account bills.
+     */
+    public void deleteAllDepositAccountBills() {
+        log.info("Deleting all deposit account bills");
+        List<DepositAccountBills> depositAccountBills = this.load().toJavaList(DepositAccountBills.class);
+        depositAccountBills.clear();
+        this.depositAccountDao.setAttribute("depositAccountBills", depositAccountBills);
+        this.ElementCount = 0;
+    }
 }
