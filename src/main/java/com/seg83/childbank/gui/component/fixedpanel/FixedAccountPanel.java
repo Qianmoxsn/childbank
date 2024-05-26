@@ -42,10 +42,6 @@ public class FixedAccountPanel {
         });
     }
 
-    @PostConstruct
-    public void init() {
-        setTotalFixedLabel();
-    }
 
     public void createTable() {
         // TODO: use actual data

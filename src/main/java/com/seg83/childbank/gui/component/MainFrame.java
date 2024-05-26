@@ -124,6 +124,7 @@ public class MainFrame extends JFrame {
 
     private void initFixedAccountPanel() {
         fixedAccountPanel.createTable();
+        fixedAccountPanel.setTotalFixedLabel();
         fixedAccountPanel.$$$getRootComponent$$$().updateUI();
         setContentPane(this.fixedAccountPanel.$$$getRootComponent$$$());
         // 显式刷新
