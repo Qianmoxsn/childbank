@@ -119,7 +119,7 @@ public class DepositService {
             log.info("Deposit fix {}", amount);
             historyService.createOperationHistory(amount, "Fix deposit");
             return true;
-        } else {
+        }else {
             log.error("Deposit fix failed");
             return false;
         }
@@ -162,7 +162,7 @@ public class DepositService {
         for (int i = 0; i < depositAccountBillsDao.ElementCount; i++) {
             total = total + (double) depositAccountBillsDao.getAttribute("depositAccountBillAmount", i + 1);
         }
-        return total;
+        return  total;
     }
 }
 

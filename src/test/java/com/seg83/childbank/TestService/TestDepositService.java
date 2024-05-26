@@ -134,57 +134,57 @@ class TestDepositService {
         /**
          * Tests the depositFixAccount() method.
          */
-        @Test
-        void depositFixAccount() {
-            double initialBalance = currentService.checkCurrentAccountBalance();
+    @Test
+    void depositFixAccount() {
+        double initialBalance = currentService.checkCurrentAccountBalance();
 
-            depositService.depositFixAccount(100, 0.1, "2023-08-03", "2024-08-03");
+        depositService.depositFixAccount(100, 0.1, "2023-08-03", "2024-08-03");
 
-            double newBalance = currentService.checkCurrentAccountBalance();
-            assertEquals(initialBalance - 100, newBalance, "Current account balance should be decreased by 100");
+        double newBalance = currentService.checkCurrentAccountBalance();
+        assertEquals(initialBalance - 100, newBalance, "Current account balance should be decreased by 100");
 
-            long newElementCount = depositAccountBillsDao.ElementCount;
-            assertEquals(2, newElementCount);
+        long newElementCount = depositAccountBillsDao.ElementCount;
+        assertEquals(2, newElementCount);
 
-            Object amount = depositAccountBillsDao.getAttribute("depositAccountBillAmount", newElementCount);
-            assertNotNull(amount, "Deposit account bill amount should not be null");
-            assertEquals(100.0, amount, "Deposit account bill amount should be 100.0");
-        }
-
-        /**
-         * Tests the processMaturedDeposits() method.
-         */
-        @Test
-        void processMaturedDeposits() {
-            double initialBalance = currentService.checkCurrentAccountBalance();
-
-            // 创建一个已到期的定期存款账单
-            depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
-            assertEquals(initialBalance, currentService.checkCurrentAccountBalance());
-
-            depositService.processMaturedDeposits();
-
-            double newBalance = currentService.checkCurrentAccountBalance();
-            double expectedInterest = 200 * 0.1 * 272 / 365; // Assuming the deposit has been active for 273 days
-            double expectedBalance = initialBalance + 200 + expectedInterest;
-            assertEquals(expectedBalance, newBalance, 0.01, "Current account balance should include principal and interest");
-
-            List<Object> bills = depositAccountBillsDao.getAllAttributes();
-            assertFalse(bills.isEmpty(), "There should be no deposit account bills after processing matured deposits");
-        }
-
-        /**
-         * Tests the calculateDaysBetween() method.
-         */
-        @Test
-        void testCalculateDaysBetween() {
-            long days = stringDateConvert.calculateDaysBetween("2023-08-03", "2024-05-01");
-            assertEquals(272, days, "Days between 2023-08-03 and 2024-05-01 should be 272");
-
-            days = stringDateConvert.calculateDaysBetween("2023-01-01", "2023-12-31");
-            assertEquals(364, days, "Days between 2023-01-01 and 2023-12-31 should be 364"); // 2023 is not a leap year
-
-            days = stringDateConvert.calculateDaysBetween("2020-01-01", "2020-12-31");
-            assertEquals(365, days, "Days between 2020-01-01 and 2020-12-31 should be 365"); // 2020 is a leap year
-        }
+        Object amount = depositAccountBillsDao.getAttribute("depositAccountBillAmount", newElementCount);
+        assertNotNull(amount, "Deposit account bill amount should not be null");
+        assertEquals(100.0, amount, "Deposit account bill amount should be 100.0");
     }
+
+    /**
+     * Tests the processMaturedDeposits() method.
+     */
+    @Test
+    void processMaturedDeposits() {
+        double initialBalance = currentService.checkCurrentAccountBalance();
+
+        // 创建一个已到期的定期存款账单
+        depositService.createDepositAccountBill(200, 0.1, "2023-08-03", "2024-05-01");
+        assertEquals(initialBalance, currentService.checkCurrentAccountBalance());
+
+        depositService.processMaturedDeposits();
+
+        double newBalance = currentService.checkCurrentAccountBalance();
+        double expectedInterest = 200 * 0.1 * 272 / 365; // Assuming the deposit has been active for 273 days
+        double expectedBalance = initialBalance + 200 + expectedInterest;
+        assertEquals(expectedBalance, newBalance, 0.01, "Current account balance should include principal and interest");
+
+        List<Object> bills = depositAccountBillsDao.getAllAttributes();
+        assertFalse(bills.isEmpty(), "There should be no deposit account bills after processing matured deposits");
+    }
+
+    /**
+     * Tests the calculateDaysBetween() method.
+     */
+    @Test
+    void testCalculateDaysBetween() {
+        long days = stringDateConvert.calculateDaysBetween("2023-08-03", "2024-05-01");
+        assertEquals(272, days, "Days between 2023-08-03 and 2024-05-01 should be 272");
+
+        days = stringDateConvert.calculateDaysBetween("2023-01-01", "2023-12-31");
+        assertEquals(364, days, "Days between 2023-01-01 and 2023-12-31 should be 364"); // 2023 is not a leap year
+
+        days = stringDateConvert.calculateDaysBetween("2020-01-01", "2020-12-31");
+        assertEquals(365, days, "Days between 2020-01-01 and 2020-12-31 should be 365"); // 2020 is a leap year
+    }
+}
