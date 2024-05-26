@@ -14,6 +14,7 @@ import java.util.List;
 @Component
 @Slf4j
 public class TaskListDao extends AbstractArrayDao {
+    long ElementCount;
 
     private TaskDao taskDao;
 
@@ -34,7 +35,7 @@ public class TaskListDao extends AbstractArrayDao {
      * @return JSONArray containing task list data.
      */
     @Override
-    public JSONArray load() {
+     JSONArray load() {
         log.info("Request task list data in JSON format");
         JSONArray taskList = taskDao.load().getJSONArray("taskList");
         log.debug("Get task list data {}", taskList);
@@ -47,7 +48,7 @@ public class TaskListDao extends AbstractArrayDao {
      * @return Long containing the number of tasks in the task list.
      */
     @Override
-    public long getElementCount() {
+    void getElementCount() {
         log.info("Request tasks count");
         this.ElementCount = this.load().size();
         log.debug("Get history actions count {}", this.ElementCount);
@@ -61,7 +62,7 @@ public class TaskListDao extends AbstractArrayDao {
      * @return TaskList object containing the task data.
      */
     @Override
-    public Object getElementById(long Id) {
+     Object getElementById(long Id) {
         log.info("Request task by id {}", Id);
         List<TaskList> taskLists = this.load().toList(TaskList.class);
         for (TaskList taskList : taskLists) {
@@ -191,7 +192,7 @@ public class TaskListDao extends AbstractArrayDao {
      * @return List of Objects containing all attributes of a task.
      */
     @Override
-    public List<Object> getAllAttributes() {
+     List<Object> getAllAttributes() {
         return List.of();
     }
 }

@@ -93,12 +93,11 @@ public class DepositAccountDao extends AbstractDao {
      *
      * @return DepositAccount object containing the deposit account data.
      */
-    private DepositAccount getDepositAccount() {
-        log.info("Getting depositAccount");
-        JSONObject depositAccountData = accountDao.load().getJSONObject("depositAccount");
-        log.debug("Get depositAccount data {}", depositAccountData);
-        return depositAccountData.toJavaObject(DepositAccount.class);
-    }
+    private List<DepositAccountBills> getDepositAccount() {
+        log.info("Getting historyActions");
+        List<DepositAccountBills> depositAccountBills = this.load().getJSONArray("depositAccountBills").toJavaList(DepositAccountBills.class);
+        log.debug("Get depositAccountBills {}", depositAccountBills);
+        return depositAccountBills;
 
     /**
      * Get all attributes of a deposit account.
