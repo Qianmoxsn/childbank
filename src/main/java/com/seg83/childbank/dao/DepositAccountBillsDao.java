@@ -20,7 +20,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
 
     private final DepositAccountDao depositAccountDao;
     /**
-     * The number of elements in the deposit account bills array.
+     * The count of elements in the deposit account bills array.
      */
     public long ElementCount;
 
@@ -64,6 +64,7 @@ public class DepositAccountBillsDao extends AbstractArrayDao {
      *
      * @param depositAccountBillId the ID of the deposit account bill to retrieve
      * @return the deposit account bill with the specified ID
+     * @throws RuntimeException if the ID is invalid
      */
     @Override
     DepositAccountBills getElementById(long depositAccountBillId) {
